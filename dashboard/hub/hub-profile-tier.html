@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Profil & Tier — Jastip Hub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="hub-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Profil & Membership</h1>
+      <p>Kelola profil dan pantau tier membership hub</p>
+      <div class="cust-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Profil & Tier</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container" style="display:grid; grid-template-columns: 1fr; gap:20px; align-items:start;">
+
+      <!-- Profil -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Info Profil</h3><a href="#" class="hint" onclick="alert('Edit profil (Demo)')">Edit</a></div>
+        <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+          <div style="width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg,var(--gn500),var(--gn700)); color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:800;">HJ</div>
+          <div>
+            <p style="font-size:16px; font-weight:800; color:var(--nn950);">Hub Jakarta Selatan</p>
+            <p style="font-size:13px; color:var(--nn500);">hub@jastip.id · +62 812-3456-7890</p>
+            <p style="font-size:12px; color:var(--nn400);">Bergabung: 20 Juni 2025 · Hub Jakarta Selatan</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Membership Tier</h3></div>
+        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+          <span class="badge badge-green" style="font-size:13px; padding:6px 16px;"><i class="fa-solid fa-gem"></i> <span id="tierName">Gold Member</span></span>
+          <span class="hint" id="tierValid">Berlaku s/d 20 Jun 2027</span>
+        </div>
+        <div id="tierWarningBox" class="info-warning" style="display:none;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Tier Telah Diturunkan</strong>
+            <p>Akses benefit tier (cashback, diskon, gratis ongkir, reward premium) tidak lagi aktif setelah Anda berhenti berlangganan.</p>
+          </div>
+        </div>
+        <div class="tier-progress" id="tierProgressBox">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--nn600);">
+            <span id="tierProgressLabel">Progress ke Platinum</span>
+            <span style="font-weight:700; color:var(--gn600);" id="tierProgressPercent">75%</span>
+          </div>
+          <div class="tier-progress-bar"><div class="tier-progress-fill" id="tierProgressFill" style="width:75%;"></div></div>
+          <div class="tier-labels"><span id="tierNeedLabel">Perlu belanja Rp 250.000 lagi</span><span id="tierTargetLabel">Target: Rp 1.000.000</span></div>
+        </div>
+
+        <!-- Benefits -->
+        <div style="margin-top:20px;">
+          <h4 style="font-size:13px; font-weight:700; color:var(--nn950); margin-bottom:12px;">Benefit Tier Anda</h4>
+          <div class="cust-table-wrap">
+            <table class="cust-table">
+              <thead><tr><th>Benefit</th><th>Bronze</th><th>Silver</th><th>Gold</th><th>Platinum</th><th>Diamond</th></tr></thead>
+              <tbody>
+                <tr><td>Cashback</td><td>0%</td><td>1%</td><td style="color:var(--gn600); font-weight:700;">3%</td><td>5%</td><td>8%</td></tr>
+                <tr><td>Diskon Transaksi</td><td>0%</td><td>0%</td><td style="color:var(--gn600); font-weight:700;">2%</td><td>4%</td><td>6%</td></tr>
+                <tr><td>Gratis Ongkir / Bulan</td><td>0</td><td>0</td><td style="color:var(--gn600); font-weight:700;">2x</td><td>5x</td><td>10x</td></tr>
+                <tr><td>Akses Reward Premium</td><td>✕</td><td>✕</td><td style="color:var(--gn600); font-weight:700;">✓</td><td>✓</td><td>✓</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ketentuan Poin -->
+      <div class="cust-panel">
+        <div class="info-note">
+          <i class="fa-solid fa-circle-info"></i>
+          <div>
+            <strong>Ketentuan Penggunaan Poin</strong>
+            <p>Poin hanya dapat digunakan/ditukar dengan <strong>barang atau reward</strong> (produk, voucher belanja, paket umroh, berqurban, dll).</p>
+            <p>Poin <strong>TIDAK dapat ditukar menjadi uang tunai</strong> dan tidak dapat ditarik (non-cashable / non-withdrawable).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabungan Poin -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Tabungan Poin (Goals)</h3><button type="button" class="btn btn-outline" style="height:30px;" onclick="alert('Buat tabungan baru (Demo)')">+ Buat Baru</button></div>
+        <div class="cust-card-stat" style="margin-bottom:10px;">
+          <div class="cs-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-plane"></i></div>
+          <div style="flex:1;">
+            <p class="cs-label">Umroh Bersama Keluarga</p>
+            <div class="tier-progress-bar" style="margin-top:6px;"><div class="tier-progress-fill" style="width:40%;"></div></div>
+            <p class="hint" style="font-size:11px; margin-top:4px;">400.000 / 1.000.000 pts · 40%</p>
+          </div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-gift"></i></div>
+          <div style="flex:1;">
+            <p class="cs-label">Dana Berqurban</p>
+            <div class="tier-progress-bar" style="margin-top:6px;"><div class="tier-progress-fill" style="width:15%;"></div></div>
+            <p class="hint" style="font-size:11px; margin-top:4px;">150.000 / 1.000.000 pts · 15%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/tier.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    // ===== DATA MOCK (prototype) — dalam Laravel akan dibaca dari database =====
+    var TOTAL_SPEND = 7500000;   // Rp 7,5 jt
+    var SUBSCRIPTION_YEARS = 3;  // sudah 3 tahun berlangganan
+
+    // Pastikan auto-upgrade dijalankan terlebih dahulu
+    if (window.JastipTier) {
+      window.JastipTier.autoUpgradeTier();
+    }
+
+    function getTier() {
+      try {
+        if (window.JastipTier) return window.JastipTier.getTier();
+      } catch (e) {}
+      try { return localStorage.getItem('jastip_tier') || 'gold'; }
+      catch (e) { return 'gold'; }
+    }
+    function getTierReason() {
+      try { return localStorage.getItem('jastip_tier_alasan') || ''; }
+      catch (e) { return ''; }
+    }
+
+    var TIER_META = {
+      'bronze':   { label: 'Bronze Member',  next: 'Silver',   percent: 0 },
+      'silver':   { label: 'Silver Member',  next: 'Gold',     percent: 25 },
+      'gold':     { label: 'Gold Member',    next: 'Platinum', percent: 75 },
+      'platinum': { label: 'Platinum Member', next: 'Diamond',  percent: 90 },
+      'diamond':  { label: 'Diamond Member', next: '',          percent: 100 }
+    };
+    var TIER_COL_INDEX = { bronze: 1, silver: 2, gold: 3, platinum: 4, diamond: 5 };
+
+    var tier = getTier();
+    var meta = TIER_META[tier] || TIER_META.gold;
+
+    document.getElementById('tierName').textContent = meta.label;
+    if (tier === 'diamond') {
+      document.getElementById('tierValid').textContent = 'Tier tertinggi — terima kasih atas kesetiaan Anda!';
+    } else {
+      document.getElementById('tierValid').textContent = 'Progress ke ' + meta.next + ' · spend Rp 7,5 jt · 3 tahun berlangganan';
+    }
+
+    // Progress
+    document.getElementById('tierProgressLabel').textContent = 'Progress ke ' + (meta.next || 'Tertinggi');
+    document.getElementById('tierProgressPercent').textContent = meta.percent + '%';
+    document.getElementById('tierProgressFill').style.width = meta.percent + '%';
+    document.getElementById('tierTargetLabel').textContent = (meta.next ? 'Target: Tier ' + meta.next : 'Target: Tier tertinggi');
+
+    // Perbarui label "perlu belanja"
+    if (tier === 'bronze') {
+      document.getElementById('tierNeedLabel').textContent = 'Belanja Rp 1.000.000 untuk naik ke Silver, atau berlangganan paket';
+    } else if (tier === 'silver') {
+      document.getElementById('tierNeedLabel').textContent = 'Perlu belanja hingga Rp 5.000.000 untuk naik ke Gold';
+    } else if (tier === 'gold') {
+      document.getElementById('tierNeedLabel').textContent = 'Perlu belanja hingga Rp 10.000.000 untuk naik ke Platinum';
+    } else if (tier === 'platinum') {
+      document.getElementById('tierNeedLabel').textContent = 'Perlu belanja hingga Rp 25.000.000 untuk naik ke Diamond';
+    } else {
+      document.getElementById('tierNeedLabel').textContent = 'Tier tertinggi tercapai 🎉';
+    }
+
+    // Muat peringatan jika ada (mis. berhenti langganan)
+    var alasan = getTierReason();
+    if (alasan) {
+      document.getElementById('tierWarningBox').style.display = 'flex';
+      var warn = document.getElementById('tierWarningBox');
+      var p = warn.querySelector('p');
+      if (p) p.textContent = 'Alasan: ' + alasan + '. Benefit tier dihitung ulang berdasarkan total belanja & durasi berlangganan.';
+    }
+
+    // Highlight kolom tier aktif pada tabel benefit
+    var table = document.querySelector('.cust-table');
+    if (table) {
+      var rows = table.querySelectorAll('tbody tr');
+      var colIdx = TIER_COL_INDEX[tier] || 3;
+      rows.forEach(function (row) {
+        var cells = row.querySelectorAll('td');
+        for (var i = 1; i < cells.length; i++) {
+          cells[i].style.color = '';
+          cells[i].style.fontWeight = '';
+        }
+        if (cells[colIdx]) { cells[colIdx].style.color = 'var(--gn600)'; cells[colIdx].style.fontWeight = '700'; }
+      });
+    }
+
+    // Panel info: durasi member & auto-upgrade tier
+    var infoPanel = document.createElement('div');
+    infoPanel.className = 'info-note';
+    infoPanel.style.marginTop = '14px';
+    infoPanel.innerHTML =
+      '<i class="fa-solid fa-timeline"></i>' +
+      '<div>' +
+      '<strong>Skema Upgrade Otomatis</strong>' +
+      '<p>Tier naik otomatis berdasarkan <strong>total belanja</strong> (≤ 1 jt → Silver, ≤ 5 jt → Gold, ≤ 10 jt → Platinum, ≤ 25 jt → Diamond) dan <strong>lama berlangganan</strong> (1 th → Silver, 3 th → Gold, 5 th → Platinum).</p>' +
+      '<p>Saat ini Anda sudah menjadi member <strong>3 tahun</strong> dengan total belanja <strong>Rp 7.500.000</strong> — tier Anda: <strong>' + meta.label + '</strong>.</p>' +
+      '</div>';
+    var tierPanel = document.querySelector('.cust-panel .tier-progress');
+    if (tierPanel) tierPanel.parentElement.appendChild(infoPanel);
+  </script>
+</body>
+</html>

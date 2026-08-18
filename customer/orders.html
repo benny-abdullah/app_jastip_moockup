@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Riwayat Pesanan — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Riwayat Pesanan</h1>
+      <p>Semua pesanan dari belanja & paket member dalam satu tampilan</p>
+      <div class="cust-breadcrumb"><a href="../dashboard/customer.html">Dashboard</a><span>/</span><span>Riwayat Pesanan</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container">
+      <!-- Stats -->
+      <div class="cust-grid-cards">
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-cart-shopping"></i></div>
+          <div><p class="cs-label">Total Pesanan</p><p class="cs-value" id="statTotal">0</p></div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-truck"></i></div>
+          <div><p class="cs-label">Dalam Pengiriman</p><p class="cs-value" id="statDikirim">0</p></div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-clock"></i></div>
+          <div><p class="cs-label">Diproses</p><p class="cs-value" id="statProses">0</p></div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#FEF2F2; color:#F94D63;"><i class="fa-solid fa-xmark"></i></div>
+          <div><p class="cs-label">Dibatalkan</p><p class="cs-value" id="statBatal">0</p></div>
+        </div>
+      </div>
+
+      <div class="cust-panel">
+        <!-- Filter + Search -->
+        <div class="cust-panel-head">
+          <h3>Semua Pesanan (Belanja + Paket Member)</h3>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="position:relative;">
+              <input type="search" id="orderSearch" class="form-control" style="width:180px; padding-left:34px;" placeholder="Cari order...">
+              <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--nn400); font-size:12px;"></i>
+            </div>
+            <select id="orderFilter" class="form-control" style="width:auto;">
+              <option value="all">Semua Status</option>
+              <option value="Selesai">Selesai</option>
+              <option value="Dikirim">Dikirim</option>
+              <option value="Diproses">Diproses</option>
+              <option value="Dibatalkan">Dibatalkan</option>
+            </select>
+            <select id="sourceFilter" class="form-control" style="width:auto;">
+              <option value="all">Semua Sumber</option>
+              <option value="checkout">Belanja</option>
+              <option value="subscription">Paket Member</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cust-table-wrap">
+          <table class="cust-table">
+            <thead><tr><th>Order ID</th><th>Produk</th><th>Sumber</th><th>Total</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+            <tbody id="orderBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="summary-row" style="border-top:1px solid var(--nn100); margin-top:14px; padding-top:14px; align-items:center;">
+          <span id="orderInfo">Menampilkan 0 data</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/order-data.js"></script>
+  <script>
+    function renderOrders() {
+      var orders = window.JastipOrders ? window.JastipOrders.getAll() : [];
+      var body = document.getElementById('orderBody');
+      if (!body) return;
+      body.innerHTML = '';
+
+      // Stat cards
+      document.getElementById('statTotal').textContent = orders.length;
+      document.getElementById('statDikirim').textContent = orders.filter(function (o) {
+        return o.status === 'Dikirim' || o.status === 'Terkirim' || o.status === 'Terbayar';
+      }).length;
+      document.getElementById('statProses').textContent = orders.filter(function (o) {
+        return o.status === 'Diproses';
+      }).length;
+      document.getElementById('statBatal').textContent = orders.filter(function (o) {
+        return o.status === 'Dibatalkan';
+      }).length;
+
+      if (orders.length === 0) {
+        body.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--nn400);">Belum ada pesanan.</td></tr>';
+        return;
+      }
+
+      // Filter nilai
+      var fStatus = document.getElementById('orderFilter').value;
+      var fSource = document.getElementById('sourceFilter').value;
+      var q = document.getElementById('orderSearch').value.toLowerCase();
+
+      var filtered = orders.filter(function (o) {
+        var okStatus = (fStatus === 'all' || o.status === fStatus);
+        var okSource = (fSource === 'all' || o.source === fSource);
+        var okSearch = !q || (o.id + ' ' + (o.produk || []).map(function (p) { return p.nama; }).join(' ')).toLowerCase().indexOf(q) !== -1;
+        return okStatus && okSource && okSearch;
+      });
+
+      filtered.forEach(function (o) {
+        var namaProduk = (o.produk || []).map(function (p) { return p.nama + ' x' + p.qty; }).join(', ');
+        var badgeStatus = window.JastipOrders ? window.JastipOrders.statusBadge(o.status) : o.status;
+        var badgeSource = window.JastipOrders ? window.JastipOrders.sourceBadge(o.source) : o.source;
+        var aksi = (o.status === 'Dibatalkan')
+          ? '<a href="#" class="btn btn-outline" style="height:28px; padding:0 10px;">Detail</a>'
+          : '<a href="order-tracking.html" class="btn btn-outline" style="height:28px; padding:0 10px;">Lacak</a>';
+
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + o.id + '</td>' +
+          '<td>' + namaProduk + '</td>' +
+          '<td>' + badgeSource + '</td>' +
+          '<td>' + Number(o.totalPts || 0).toLocaleString('id-ID') + ' pts</td>' +
+          '<td>' + badgeStatus + '</td>' +
+          '<td>' + (o.tanggal || '—') + '</td>' +
+          '<td>' + aksi + '</td>';
+        body.appendChild(tr);
+      });
+
+      document.getElementById('orderInfo').textContent = 'Menampilkan ' + filtered.length + ' dari ' + orders.length + ' data';
+    }
+
+    // Re-render saat filter/search berubah
+    document.getElementById('orderFilter').addEventListener('change', renderOrders);
+    document.getElementById('sourceFilter').addEventListener('change', renderOrders);
+    document.getElementById('orderSearch').addEventListener('input', renderOrders);
+
+    // Render awal
+    renderOrders();
+  </script>
+</body>
+</html>

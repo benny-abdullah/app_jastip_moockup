@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Referral — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Program Referral</h1>
+      <p>Ajak teman, dapatkan bonus points untuk kalian berdua!</p>
+      <div class="cust-breadcrumb"><a href="../dashboard/customer.html">Dashboard</a><span>/</span><span>Referral</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container" style="max-width:760px;">
+      <!-- Kotak Referral -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Link Referral Anda</h3></div>
+        <div class="referral-box">
+          <i class="fa-solid fa-user-plus" style="font-size:36px; color:var(--gn500); margin-bottom:10px;"></i>
+          <h4 style="font-size:16px; font-weight:800; color:var(--nn950);">Dapatkan 10.000 pts untuk setiap teman!</h4>
+          <p style="font-size:12px; color:var(--nn500); margin-top:6px;">Teman Anda juga mendapat 5.000 pts saat daftar & top-up pertama.</p>
+          <button class="rb-link" onclick="copyReferral()"><i class="fa-regular fa-copy"></i> <span id="refLink">jastip.id/r/CITRA10</span></button>
+        </div>
+      </div>
+
+      <!-- Statistik -->
+      <div class="cust-grid-cards">
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-users"></i></div>
+          <div><p class="cs-label">Teman Diundang</p><p class="cs-value">12</p></div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-coins"></i></div>
+          <div><p class="cs-label">Bonus Didapat</p><p class="cs-value">50.000 pts</p></div>
+        </div>
+      </div>
+
+      <!-- Riwayat -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Riwayat Referral</h3></div>
+        <div class="cust-table-wrap">
+          <table class="cust-table">
+            <thead><tr><th>Teman</th><th>Status</th><th>Bonus</th><th>Tanggal</th></tr></thead>
+            <tbody>
+              <tr><td>Dewi Anggraini</td><td><span class="badge badge-green">Aktif</span></td><td style="color:var(--gn500); font-weight:700;">+10.000</td><td>14 Agu 2026</td></tr>
+              <tr><td>Eko Saputra</td><td><span class="badge badge-green">Aktif</span></td><td style="color:var(--gn600); font-weight:700;">+10.000</td><td>12 Agu 2026</td></tr>
+              <tr><td>Fitri Handayani</td><td><span class="badge badge-yellow">Pending</span></td><td>—</td><td>15 Agu 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script>
+    function copyReferral() {
+      var text = document.getElementById('refLink').textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        var label = document.getElementById('refLink');
+        label.textContent = 'Tersalin! ✓';
+        setTimeout(function () { label.textContent = text; }, 2000);
+        alert('Link referral disalin: ' + text + ' (Demo)');
+      });
+    }
+  </script>
+</body>
+</html>

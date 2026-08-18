@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Hub — Jastip</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Order Hub</h1>
+      <p>Riwayat pesanan hub sebagai customer ke pusat</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Order Hub</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Riwayat Pesanan</h3>
+        <div class="hub-panel-tools">
+          <div class="hub-search-box"><input type="search" id="odSearch" placeholder="Cari order..."><i class="fa-solid fa-magnifying-glass"></i></div>
+          <select class="hub-select" id="odFilter">
+            <option value="all">Semua Status</option>
+            <option>Selesai</option><option>Dikirim</option><option>Diproses</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Order ID</th><th>Produk</th><th>Total</th><th>Status</th><th>Tanggal</th></tr></thead>
+          <tbody id="odBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    var ORDERS = [
+      { id: 'ORD-2026-0814-01', produk: 'Beras Premium 5kg (30)', total: '1.500.000 pts', status: 'Selesai', date: '14 Agu 2026' },
+      { id: 'ORD-2026-0814-02', produk: 'Peralatan Kantor (20)', total: '800.000 pts', status: 'Dikirim', date: '14 Agu 2026' },
+      { id: 'ORD-2026-0813-09', produk: 'Kopi Arabika 1kg (12)', total: '380.000 pts', status: 'Dikirim', date: '13 Agu 2026' },
+      { id: 'ORD-2026-0812-07', produk: 'Minyak Goreng 2L (24)', total: '450.000 pts', status: 'Diproses', date: '12 Agu 2026' },
+      { id: 'ORD-2026-0811-03', produk: 'Skincare Set (5)', total: '150.000 pts', status: 'Selesai', date: '11 Agu 2026' }
+    ];
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function badge(s) {
+      var map = { 'Selesai': 'badge-green', 'Dikirim': 'badge-blue', 'Diproses': 'badge-yellow' };
+      return '<span class="badge ' + (map[s] || 'badge-gray') + '">' + s + '</span>';
+    }
+
+    function renderStats() {
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      var total = ORDERS.reduce(function (s, o) { return s + parseInt(o.total.replace(/[^0-9]/g, ''), 10); }, 0);
+      el.innerHTML = [
+        { icon: 'fa-solid fa-clipboard-list', color: '#00AA5B', label: 'Total Order', value: ORDERS.length },
+        { icon: 'fa-solid fa-truck', color: '#2C7AFF', label: 'Dikirim', value: ORDERS.filter(function (o) { return o.status === 'Dikirim'; }).length },
+        { icon: 'fa-solid fa-clock', color: '#F0B429', label: 'Diproses', value: ORDERS.filter(function (o) { return o.status === 'Diproses'; }).length },
+        { icon: 'fa-solid fa-coins', color: '#A78BFA', label: 'Total Belanja', value: (total / 1000).toLocaleString('id-ID') + 'K pts' }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderTable() {
+      var s = document.getElementById('odSearch');
+      var f = document.getElementById('odFilter');
+      var q = s ? s.value.toLowerCase() : '';
+      var st = f ? f.value : 'all';
+      var rows = ORDERS.filter(function (o) {
+        var okS = st === 'all' || o.status === st;
+        var okQ = !q || o.id.toLowerCase().indexOf(q) !== -1;
+        return okS && okQ;
+      });
+      var body = document.getElementById('odBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (o) {
+        return '<tr><td><strong>' + o.id + '</strong></td><td>' + o.produk + '</td><td>' + o.total + '</td><td>' + badge(o.status) + '</td><td>' + o.date + '</td></tr>';
+      }).join('') : '<tr><td colspan="5" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderStats(); renderTable();
+      var s = document.getElementById('odSearch'); if (s) s.addEventListener('input', renderTable);
+      var f = document.getElementById('odFilter'); if (f) f.addEventListener('change', renderTable);
+      var exp = document.getElementById('btnExport'); if (exp) exp.addEventListener('click', function () { showToast('Export menyusul (Demo)'); });
+    });
+  </script>
+</body>
+</html>

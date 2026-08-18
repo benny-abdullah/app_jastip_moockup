@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Katalog Produk — Jastipku</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- ================= PRELOADER ================= -->
+  <div id="preloader">
+    <div class="preloader-logo">J</div>
+  </div>
+
+  <!-- ================= TOPBAR ================= -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+      <a href="#"><span>Download Jastipku App</span></a>
+    </div>
+    <div class="topbar-right">
+      <a href="tentang.html">Tentang Jastipku</a>
+      <a href="berjualan.html">Mulai Berjualan</a>
+      <a href="promo.html">Promo</a>
+      <a href="bantuan.html">Pusat Bantuan</a>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="header-main">
+    <div class="header-inner">
+      <a href="index.html" class="logo" aria-label="Jastipku Home">
+        <span class="logo-badge">J</span>
+        <span class="logo-text">Jastip<strong>ku</strong></span>
+      </a>
+      <div class="header-category">
+        <i class="fa-solid fa-bars"></i>
+        <span>Kategori</span>
+      </div>
+      <div class="search-wrap">
+        <div class="search-box">
+          <svg class="unf-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="m20.53 19.46-4.4-4.4a7.33 7.33 0 1 0-1.07 1.06l4.41 4.41a.77.77 0 0 0 1.06 0 .77.77 0 0 0 0-1.07Zm-15.78-9a5.75 5.75 0 1 1 5.75 5.75 5.76 5.76 0 0 1-5.75-5.72v-.03Z"></path>
+          </svg>
+          <input type="search" aria-label="Cari di Jastipku" placeholder="Cari di Jastipku..." autocomplete="off">
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="login.html" class="header-icon" aria-label="Keranjang">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+        <div class="header-divider"></div>
+        <div class="header-auth">
+          <a href="login.html" class="btn btn-outline">Masuk</a>
+          <a href="register.html" class="btn btn-solid">Daftar</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= PAGE HERO ================= -->
+    <section class="page-hero">
+      <div class="container">
+        <h1>Katalog Produk</h1>
+        <p>Pilih kategori favorit Anda — belanja mudah dengan system points & reward.</p>
+        <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Katalog</span></div>
+      </div>
+    </section>
+
+    <!-- ================= KATALOG ================= -->
+    <section class="section">
+      <div class="container">
+        <!-- Chips kategori (mobile-friendly) -->
+        <div class="catalog-chips" id="categoryChips"></div>
+
+        <div class="catalog-layout">
+          <!-- Sidebar kategori -->
+          <aside class="catalog-side">
+            <div class="catalog-side-title"><i class="fa-solid fa-border-all"></i> Kategori</div>
+            <div class="catalog-side-list" id="categoryList"></div>
+          </aside>
+
+          <!-- Konten -->
+          <div>
+            <!-- Topbar -->
+            <div class="catalog-topbar">
+              <div class="catalog-title-wrap">
+                <h2 id="catalogTitle">Semua Produk</h2>
+                <p id="productCount">0 produk ditemukan</p>
+              </div>
+              <div class="catalog-tools">
+                <div class="catalog-search">
+                  <input type="search" id="catalogSearch" placeholder="Cari produk..." autocomplete="off">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="catalog-sort">
+                  <select id="sortSelect">
+                    <option value="popular">Terpopuler</option>
+                    <option value="price-asc">Harga Terendah</option>
+                    <option value="price-desc">Harga Tertinggi</option>
+                    <option value="rating">Rating Tertinggi</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Grid produk -->
+            <div class="product-grid" id="productGrid"></div>
+
+            <!-- Pagination -->
+            <div class="catalog-pagination" id="pagination"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <span class="logo-badge" style="width: 36px; height: 36px; font-size: 18px;">J</span>
+            <span class="logo-text" style="font-size: 18px;">Jastip<strong>ku</strong></span>
+          </a>
+          <p>Sistem ERP Retail & Titip Beli terintegrasi dengan points, reward, dan multi-hub di seluruh Indonesia.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Layanan</h4>
+          <ul>
+            <li><a href="katalog.html">Katalog Produk</a></li>
+            <li><a href="katalog.html?cat=Rewards">Rewards</a></li>
+            <li><a href="promo.html">Promo</a></li>
+            <li><a href="bantuan.html">Hub Kami</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Perusahaan</h4>
+          <ul>
+            <li><a href="tentang.html">Tentang Kami</a></li>
+            <li><a href="berjualan.html">Karir</a></li>
+            <li><a href="promo.html">Blog</a></li>
+            <li><a href="bantuan.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Kontak Info</h4>
+          <div class="footer-contact"><i class="fa-solid fa-phone"></i><div><strong>Phone number</strong>+62 812 3456 7890</div></div>
+          <div class="footer-contact"><i class="fa-solid fa-envelope"></i><div><strong>Email Address</strong>support@jastip.id</div></div>
+          <div class="footer-contact"><i class="fa-solid fa-location-dot"></i><div><strong>Office Address</strong>Jakarta Selatan, Indonesia</div></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Jastip — ERP Retail/Titip Beli. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Terms of use</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll ke atas"><i class="fa-solid fa-chevron-up"></i></button>
+  <script src="js/main.js"></script>
+  <script src="js/catalog.js"></script>
+</body>
+</html>

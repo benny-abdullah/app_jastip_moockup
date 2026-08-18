@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Katalog — Jastip Hub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Katalog Produk</h1>
+      <p>Belanja kebutuhan operasional hub sebagai customer</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Katalog</span></div>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <!-- Topbar -->
+    <div class="catalog-topbar">
+      <div class="catalog-title-wrap">
+        <h2 id="catalogTitle">Semua Produk</h2>
+        <p id="productCount">0 produk ditemukan</p>
+      </div>
+      <div class="catalog-tools">
+        <div class="catalog-search">
+          <input type="search" id="catalogSearch" placeholder="Cari produk..." autocomplete="off">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="catalog-sort">
+          <select id="sortSelect">
+            <option value="popular">Terpopuler</option>
+            <option value="price-asc">Harga Terendah</option>
+            <option value="price-desc">Harga Tertinggi</option>
+            <option value="rating">Rating Tertinggi</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter kategori -->
+    <div class="catalog-filter">
+      <div class="catalog-filter-label"><i class="fa-solid fa-filter"></i> Kategori:</div>
+      <div class="catalog-filter-chips" id="filterChips"></div>
+    </div>
+
+    <!-- Grid produk -->
+    <div class="product-grid" id="productGrid"></div>
+
+    <!-- Pagination -->
+    <div class="catalog-pagination" id="pagination"></div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/catalog.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+</body>
+</html>

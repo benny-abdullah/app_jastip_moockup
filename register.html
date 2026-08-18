@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Daftar — Jastip</title>
+  <meta name="theme-color" content="#00AA5B">
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300AA5B'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' font-family='Arial' fill='white' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="auth-body">
+
+  <!-- ================= PRELOADER ================= -->
+  <div id="preloader">
+    <div class="preloader-logo">J</div>
+  </div>
+
+  <!-- ================= HEADER AUTH ================= -->
+  <header class="auth-header">
+    <a href="index.html" class="logo" aria-label="Jastip Home">
+      <span class="logo-badge">J</span>
+      <span class="logo-text">Jastip<span>.</span></span>
+    </a>
+    <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-house"></i> Beranda</a>
+  </header>
+
+  <!-- ================= REGISTER FORM ================= -->
+  <main class="auth-main">
+    <div class="auth-card">
+      <h1 class="auth-card-title">Buat Akun Baru</h1>
+      <p class="auth-card-sub">Daftar gratis dan mulai kumpulkan points</p>
+
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="nama">Nama Lengkap</label>
+          <div class="input-wrap">
+            <i class="fa-regular fa-user input-icon"></i>
+            <input type="text" id="nama" class="form-control with-icon" placeholder="Masukkan nama lengkap" autocomplete="name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Alamat Email</label>
+          <div class="input-wrap">
+            <i class="fa-regular fa-envelope input-icon"></i>
+            <input type="email" id="email" class="form-control with-icon" placeholder="nama@email.com" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="hp">No. HP</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-phone input-icon"></i>
+            <input type="tel" id="hp" class="form-control with-icon" placeholder="08xx-xxxx-xxxx" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Kata Sandi</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="password" class="form-control with-icon with-toggle" placeholder="Minimal 8 karakter" autocomplete="new-password">
+            <button type="button" class="input-toggle" data-toggle-password="password" aria-label="Tampilkan kata sandi">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="konfirmasi">Konfirmasi Kata Sandi</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="konfirmasi" class="form-control with-icon with-toggle" placeholder="Ulangi kata sandi" autocomplete="new-password">
+            <button type="button" class="input-toggle" data-toggle-password="konfirmasi" aria-label="Tampilkan kata sandi">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Daftar Sebagai</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-user-tag input-icon"></i>
+            <select id="role" class="form-control with-icon">
+              <option value="customer">Customer</option>
+              <option value="hub">Hub Operasional</option>
+              <option value="superadmin">Superadmin</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="terms-note">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">Saya menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a></label>
+        </div>
+
+        <button type="submit" class="btn btn-solid btn-block btn-lg">
+          <i class="fa-solid fa-user-plus"></i> Daftar Sekarang
+        </button>
+      </form>
+
+      <p class="auth-footer">
+        Sudah punya akun? <a href="login.html">Masuk di sini</a>
+      </p>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

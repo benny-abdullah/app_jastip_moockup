@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Wishlist — Jastip Hub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Wishlist</h1>
+      <p>Produk yang disimpan hub untuk dibeli nanti</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Wishlist</span></div>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="cust-panel-head"><h3 id="wishlistCount">0 Produk Tersimpan</h3></div>
+    <!-- Grid wishlist di-render dinamis oleh js/wishlist.js dari localStorage -->
+    <div class="product-grid" id="wishlistGrid">
+      <div class="catalog-empty">
+        <i class="fa-solid fa-heart-circle-plus"></i>
+        <p>Wishlist kosong</p>
+        <span>Klik ikon hati pada produk di katalog untuk menyimpannya di sini</span>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/wishlist.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+</body>
+</html>

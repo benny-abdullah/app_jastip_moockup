@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jastipku - Situs Jual Beli Online Terlengkap, Mudah & Aman</title>
+  <meta name="description" content="Platform jastip terpercaya. Belanja titip dari mana saja, dikirim dari hub terdekat.">
+  <meta name="theme-color" content="#00AA5B">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300AA5B'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>J</text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- ================= TOPBAR ================= -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+      <a href="#" target="_blank" rel="noopener noreferrer">Download Jastipku App</a>
+    </div>
+    <div class="topbar-right">
+      <a href="tentang.html" target="_blank" rel="noopener noreferrer">Tentang Jastipku</a>
+      <a href="berjualan.html" target="_blank" rel="noopener noreferrer">Mulai Berjualan</a>
+      <a href="promo.html" target="_blank" rel="noopener noreferrer">Promo</a>
+      <a href="bantuan.html" target="_blank" rel="noopener noreferrer">Jastipku Care</a>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="header-main">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-badge">J</span>
+        <span class="logo-text">Jastip<strong>ku</strong></span>
+      </a>
+
+      <div class="header-category">
+        <i class="fa-solid fa-bars"></i>
+        <span>Kategori</span>
+      </div>
+
+      <div class="search-wrap">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="search" placeholder="Cari di Jastipku" aria-label="Cari di Jastipku">
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="cart.html" class="header-icon" aria-label="Keranjang">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+        <div class="header-divider"></div>
+        <div class="header-auth">
+          <a href="login.html" class="btn btn-outline">Masuk</a>
+          <a href="register.html" class="btn btn-solid">Daftar</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- ================= HERO BANNER CAROUSEL ================= -->
+    <section class="carousel-section">
+      <div class="container">
+        <div class="carousel" data-testid="carouselBanner">
+          <div class="carousel-track">
+            <!-- Slide 1 -->
+            <div class="carousel-slide">
+              <a href="register.html">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1208&h=347&fit=crop&q=80" alt="Promo Top Up Points">
+              </a>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+              <a href="katalog.html">
+                <img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=1208&h=347&fit=crop&q=80" alt="Belanja Sembako">
+              </a>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+              <a href="register.html">
+                <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1208&h=347&fit=crop&q=80" alt="Reward Eksklusif">
+              </a>
+            </div>
+            <!-- Slide 4 -->
+            <div class="carousel-slide">
+              <a href="katalog.html">
+                <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=1208&h=347&fit=crop&q=80" alt="Elektronik Terbaik">
+              </a>
+            </div>
+          </div>
+          <div class="carousel-dots"></div>
+          <div class="carousel-bottom">
+            <a href="promo.html" class="carousel-promo-link">Lihat Promo Lainnya</a>
+          </div>
+          <button type="button" class="carousel-nav prev" aria-label="Slide sebelumnya"><i class="fa-solid fa-chevron-left"></i></button>
+          <button type="button" class="carousel-nav next" aria-label="Slide berikutnya"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= KATEGORI ================= -->
+    <section class="section-category">
+      <div class="container">
+        <div class="category-scroll">
+          <a href="katalog.html" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #00AA5B, #008743);"><i class="fa-solid fa-border-all"></i></div>
+            <span>Semua</span>
+          </a>
+          <a href="katalog.html?cat=Sembako" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #FF8A3D, #F26419);"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <span>Sembako</span>
+          </a>
+          <a href="katalog.html?cat=Makanan" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #F5C542, #DBA700);"><i class="fa-solid fa-utensils"></i></div>
+            <span>Makanan</span>
+          </a>
+          <a href="katalog.html?cat=Elektronik" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #4A90E2, #2C6FBE);"><i class="fa-solid fa-mobile-screen"></i></div>
+            <span>Elektronik</span>
+          </a>
+          <a href="katalog.html?cat=Fashion" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #FF6B9D, #E84A7A);"><i class="fa-solid fa-shirt"></i></div>
+            <span>Fashion</span>
+          </a>
+          <a href="katalog.html?cat=Peralatan" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #5BC26D, #3E9C50);"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <span>Peralatan</span>
+          </a>
+          <a href="katalog.html?cat=Kecantikan" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #A78BFA, #7C5CE0);"><i class="fa-solid fa-spa"></i></div>
+            <span>Kecantikan</span>
+          </a>
+          <a href="katalog.html?cat=Rewards" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #F94D63, #D92F48);"><i class="fa-solid fa-gift"></i></div>
+            <span>Rewards</span>
+          </a>
+          <a href="katalog.html?cat=Otomotif" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #64748B, #475569);"><i class="fa-solid fa-car"></i></div>
+            <span>Otomotif</span>
+          </a>
+          <a href="katalog.html?cat=Rumah%20Tangga" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #F97316, #EA580C);"><i class="fa-solid fa-house-chimney"></i></div>
+            <span>Rumah Tangga</span>
+          </a>
+          <a href="katalog.html?cat=Kesehatan" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #EF4444, #DC2626);"><i class="fa-solid fa-heart-pulse"></i></div>
+            <span>Kesehatan</span>
+          </a>
+          <a href="katalog.html?cat=Olahraga" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #3B82F6, #2563EB);"><i class="fa-solid fa-dumbbell"></i></div>
+            <span>Olahraga</span>
+          </a>
+          <a href="katalog.html?cat=Hobi%20%26%20Mainan" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);"><i class="fa-solid fa-gamepad"></i></div>
+            <span>Hobi & Mainan</span>
+          </a>
+          <a href="katalog.html?cat=Buku%20%26%20Alat%20Tulis" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #06B6D4, #0891B2);"><i class="fa-solid fa-book-open"></i></div>
+            <span>Buku & ATK</span>
+          </a>
+          <a href="katalog.html?cat=Bayi%20%26%20Anak" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #EC4899, #DB2777);"><i class="fa-solid fa-baby"></i></div>
+            <span>Bayi & Anak</span>
+          </a>
+          <a href="katalog.html?cat=Peliharaan" class="category-item">
+            <div class="category-icon" style="background: linear-gradient(135deg, #84CC16, #65A30D);"><i class="fa-solid fa-paw"></i></div>
+            <span>Peliharaan</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRODUK UNGGULAN ================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Produk Unggulan</h2>
+            <p class="section-subtitle">Tukar points dengan produk dan reward terbaik</p>
+          </div>
+          <a href="katalog.html" class="section-link">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="product-grid">
+          <!-- Product 1 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Sembako</span>
+              <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop&q=80" alt="Beras Premium 5kg" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Sembako</p>
+              <h3 class="product-name">Beras Premium 5kg — Kualitas Bagus</h3>
+              <p class="product-meta">Jakarta Selatan</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">50.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Kecantikan</span>
+              <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&q=80" alt="Skincare Set Premium" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Kecantikan</p>
+              <h3 class="product-name">Skincare Set Premium — Paket Lengkap</h3>
+              <p class="product-meta">Jakarta Pusat</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">150.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Elektronik</span>
+              <img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop&q=80" alt="Power Bank 20000mAh" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Elektronik</p>
+              <h3 class="product-name">Power Bank 20000mAh — Fast Charging</h3>
+              <p class="product-meta">Jakarta Timur</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">85.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Fashion</span>
+              <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&q=80" alt="Kaos Polos Premium" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Fashion</p>
+              <h3 class="product-name">Kaos Polos Premium — Cotton Combed 30s</h3>
+              <p class="product-meta">Bandung</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">35.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 5 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Reward</span>
+              <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=400&h=400&fit=crop&q=80" alt="Voucher Belanja 100rb" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Reward</p>
+              <h3 class="product-name">Voucher Belanja 100rb — Semua Outlet</h3>
+              <p class="product-meta">Berlaku Nasional</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Points</p>
+                  <p class="product-price">75.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 6 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Makanan</span>
+              <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&h=400&fit=crop&q=80" alt="Kopi Arabika 1kg" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Makanan</p>
+              <h3 class="product-name">Kopi Arabika 1kg — Single Origin Gayo</h3>
+              <p class="product-meta">Aceh</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">95.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 7 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Peralatan</span>
+              <img src="https://images.unsplash.com/photo-1558317374-067fb5f30001?w=400&h=400&fit=crop&q=80" alt="Vacuum Cleaner" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Peralatan</p>
+              <h3 class="product-name">Vacuum Cleaner Cordless — Powerful 120W</h3>
+              <p class="product-meta">Jakarta Barat</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">250.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 8 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Fashion</span>
+              <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&q=80" alt="Backpack Travel" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Fashion</p>
+              <h3 class="product-name">Backpack Travel 40L — Waterproof Anti Air</h3>
+              <p class="product-meta">Yogyakarta</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">120.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 9 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Kecantikan</span>
+              <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop&q=80" alt="Parfum Premium" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Kecantikan</p>
+              <h3 class="product-name">Parfum Premium 100ml — Long Lasting</h3>
+              <p class="product-meta">Surabaya</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">180.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 10 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Sembako</span>
+              <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=400&fit=crop&q=80" alt="Minyak Goreng 2L" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Sembako</p>
+              <h3 class="product-name">Minyak Goreng 2L — Jernih & Sehat</h3>
+              <p class="product-meta">Jakarta Selatan</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">28.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= REKOMENDASI UNTUK KAMU ================= -->
+    <section class="section" style="background: var(--nn50);">
+      <div class="container">
+        <div class="recom-tabs">
+          <button class="recom-tab active">Untuk Kamu</button>
+          <button class="recom-tab">Toko Terpercaya</button>
+          <button class="recom-tab">Official Store</button>
+        </div>
+
+        <div class="product-grid">
+          <!-- Product 11 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Elektronik</span>
+              <img src="https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400&h=400&fit=crop&q=80" alt="Headphone Wireless" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Elektronik</p>
+              <h3 class="product-name">Headphone Wireless — Active Noise Cancelling</h3>
+              <p class="product-meta">Jakarta Selatan</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">199.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 12 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Rumah Tangga</span>
+              <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=400&fit=crop&q=80" alt="Set Peralatan Dapur" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Rumah Tangga</p>
+              <h3 class="product-name">Set Peralatan Dapur — 12 Pcs Anti Karat</h3>
+              <p class="product-meta">Tangerang</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">145.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 13 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Kesehatan</span>
+              <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&q=80" alt="Vitamin C 1000mg" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Kesehatan</p>
+              <h3 class="product-name">Vitamin C 1000mg — Immune Booster</h3>
+              <p class="product-meta">Jakarta Pusat</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">45.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 14 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Olahraga</span>
+              <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&q=80" alt="Yoga Mat Premium" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Olahraga</p>
+              <h3 class="product-name">Yoga Mat Premium — Anti Slip 6mm</h3>
+              <p class="product-meta">Bandung</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">65.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 15 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Bayi & Anak</span>
+              <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&h=400&fit=crop&q=80" alt="Mainan Edukasi" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Bayi & Anak</p>
+              <h3 class="product-name">Mainan Edukasi Kayu — Montessori</h3>
+              <p class="product-meta">Yogyakarta</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">55.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 16 -->
+          <div class="product-card">
+            <div class="product-thumb">
+              <span class="product-badge">Peliharaan</span>
+              <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=400&h=400&fit=crop&q=80" alt="Makanan Kucing" loading="lazy">
+            </div>
+            <div class="product-body">
+              <p class="product-cat">Peliharaan</p>
+              <h3 class="product-name">Makanan Kucing Premium — 1kg Salmon</h3>
+              <p class="product-meta">Jakarta Timur</p>
+              <div class="product-price-row">
+                <div>
+                  <p class="product-price-label">Harga</p>
+                  <p class="product-price">38.000 <small>pts</small></p>
+                </div>
+                <button class="product-btn" data-add-cart aria-label="Tambah ke keranjang"><i class="fa-solid fa-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= POINTS & REWARDS ================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Points & Rewards</h2>
+            <p class="section-subtitle">Kumpulkan points dari setiap transaksi dan tukarkan dengan reward menarik</p>
+          </div>
+          <a href="points-topup.html" class="section-link">Top Up Points <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="points-grid">
+          <div class="points-card">
+            <div class="points-icon" style="background: linear-gradient(135deg, #00AA5B, #008743);"><i class="fa-solid fa-coins"></i></div>
+            <div class="points-info">
+              <h4 class="points-title">Saldo Points</h4>
+              <p class="points-value">0 <small>pts</small></p>
+              <p class="points-desc">Top up sekarang dan dapatkan bonus 10%</p>
+            </div>
+            <a href="points-topup.html" class="points-btn">Top Up</a>
+          </div>
+          <div class="points-card">
+            <div class="points-icon" style="background: linear-gradient(135deg, #F0B429, #D99600);"><i class="fa-solid fa-gift"></i></div>
+            <div class="points-info">
+              <h4 class="points-title">Reward Tersedia</h4>
+              <p class="points-value">500+ <small>reward</small></p>
+              <p class="points-desc">Voucher, produk, hingga paket Umrah</p>
+            </div>
+            <a href="rewards.html" class="points-btn">Lihat Reward</a>
+          </div>
+          <div class="points-card">
+            <div class="points-icon" style="background: linear-gradient(135deg, #4A90E2, #2C6FBE);"><i class="fa-solid fa-ranking-star"></i></div>
+            <div class="points-info">
+              <h4 class="points-title">Tier Membership</h4>
+              <p class="points-value">Bronze</p>
+              <p class="points-desc">Naikkan tier untuk cashback lebih besar</p>
+            </div>
+            <a href="membership.html" class="points-btn">Lihat Tier</a>
+          </div>
+          <div class="points-card">
+            <div class="points-icon" style="background: linear-gradient(135deg, #F94D63, #D92F48);"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="points-info">
+              <h4 class="points-title">Referral Bonus</h4>
+              <p class="points-value">5.000 <small>pts</small></p>
+              <p class="points-desc">Bonus Member Berjenjang</p>
+            </div>
+            <a href="referral.html" class="points-btn">Bonus Member</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SEO LINKS ================= -->
+    <section class="section" style="background: var(--nn50);">
+      <div class="container">
+        <div class="seo-links">
+          <h3 class="seo-title">Jastipku — Belanja Titip Jadi Mudah</h3>
+          <div class="seo-link-list">
+            <!-- <a href="katalog.html">Belanja Sembako</a>
+            <a href="katalog.html?cat=Elektronik">Elektronik</a>
+            <a href="katalog.html?cat=Fashion">Fashion</a>
+            <a href="katalog.html?cat=Kecantikan">Kecantikan</a>
+            <a href="katalog.html?cat=Rewards">Rewards</a> -->
+            <a href="promo.html">Promo</a>
+            <a href="points-topup.html">Top Up Points</a>
+            <a href="rewards.html">Tukar Points</a>
+            <a href="membership.html">Membership</a>
+            <a href="referral.html">Referral</a>
+            <a href="subscription.html">Langganan</a>
+            <a href="wishlist.html">Wishlist</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <span class="logo-badge" style="width: 36px; height: 36px; font-size: 18px;">J</span>
+            <span class="logo-text" style="font-size: 18px;">Jastip<strong>ku</strong></span>
+          </a>
+          <p>Sistem ERP Retail & Titip Beli terintegrasi dengan points, reward, dan multi-hub di seluruh Indonesia.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Layanan</h4>
+          <ul>
+            <li><a href="katalog.html">Katalog Produk</a></li>
+            <li><a href="katalog.html?cat=Rewards">Rewards</a></li>
+            <li><a href="promo.html">Promo</a></li>
+            <li><a href="bantuan.html">Hub Kami</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Perusahaan</h4>
+          <ul>
+            <li><a href="tentang.html">Tentang Kami</a></li>
+            <li><a href="berjualan.html">Karir</a></li>
+            <li><a href="promo.html">Blog</a></li>
+            <li><a href="bantuan.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Kontak Info</h4>
+          <div class="footer-contact">
+            <i class="fa-solid fa-phone"></i>
+            <div><strong>Phone number</strong>+62 812 3456 7890</div>
+          </div>
+          <div class="footer-contact">
+            <i class="fa-solid fa-envelope"></i>
+            <div><strong>Email Address</strong>support@jastip.id</div>
+          </div>
+          <div class="footer-contact">
+            <i class="fa-solid fa-location-dot"></i>
+            <div><strong>Office Address</strong>Jakarta Selatan, Indonesia</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Jastip — ERP Retail/Titip Beli. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Terms of use</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to top -->
+  <button class="scroll-top" aria-label="Scroll ke atas"><i class="fa-solid fa-chevron-up"></i></button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

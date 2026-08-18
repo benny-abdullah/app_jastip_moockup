@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Preferensi Email — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Preferensi Email</h1>
+      <p>Atur notifikasi email yang ingin Anda terima</p>
+      <div class="cust-breadcrumb"><a href="../dashboard/customer.html">Dashboard</a><span>/</span><span>Preferensi Email</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container" style="max-width:720px;">
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Notifikasi Transaksi</h3><span class="hint">Klik toggle untuk on/off</span></div>
+
+        <div class="pref-row">
+          <div class="pref-info"><h5>Update Pesanan</h5><p>Notifikasi email saat status pesanan berubah</p></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="pref-row">
+          <div class="pref-info"><h5>Notifikasi Pembayaran</h5><p>Email saat pembayaran / top-up berhasil</p></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="pref-row">
+          <div class="pref-info"><h5>Tracking Pengiriman</h5><p>Email saat paket dikirim dan diterima</p></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="pref-row">
+          <div class="pref-info"><h5>Pengingat Subscription</h5><p>Email saat tagihan dan auto-renewal</p></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="pref-row">
+          <div class="pref-info"><h5>Promo & Newsletter</h5><p>Email promo terbaru dan newsletter mingguan</p></div>
+          <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <button class="btn btn-solid btn-lg" onclick="alert('Preferensi email berhasil disimpan! (Demo)')"><i class="fa-solid fa-check"></i> Simpan Preferensi</button>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

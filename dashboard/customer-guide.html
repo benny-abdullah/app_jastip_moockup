@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Panduan Dashboard — Jastip</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    /* ===== Gaya khusus Panduan (Premium, Minimalis, Profesional) ===== */
+    :root {
+      --guide-bg: #F8FAFC;
+      --guide-card: #FFFFFF;
+      --guide-border: #E2E8F0;
+      --guide-text: #0F172A;
+      --guide-muted: #64748B;
+      --guide-green: #00AA5B;
+      --guide-green-dk: #008743;
+      --guide-dark: #0B1220;
+      --guide-radius: 16px;
+      --guide-shadow: 0 4px 24px rgba(2, 32, 20, 0.06);
+      --guide-shadow-lg: 0 12px 40px rgba(2, 32, 20, 0.10);
+    }
+
+    body.guide-body {
+      background: var(--guide-bg);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--guide-text);
+      margin: 0;
+    }
+
+    /* ===== HERO ===== */
+    .guide-hero {
+      background: linear-gradient(135deg, #022B18 0%, #00AA5B 100%);
+      color: #fff;
+      padding: 56px 24px 72px;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-hero::before,
+    .guide-hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .guide-hero::before { width: 320px; height: 320px; top: -80px; right: -60px; }
+    .guide-hero::after  { width: 200px; height: 200px; bottom: -60px; left: -40px; }
+    .guide-hero .guide-container { position: relative; z-index: 2; }
+
+    .guide-container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+    .guide-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 18px; flex-wrap: wrap; }
+    .guide-breadcrumb a { color: #fff; text-decoration: none; font-weight: 600; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    .guide-breadcrumb span { opacity: 0.7; }
+
+    .guide-hero h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); margin: 0 0 10px; font-weight: 800; letter-spacing: -0.5px; }
+    .guide-hero p.sub { font-size: clamp(0.9rem, 2vw, 1.05rem); margin: 0 0 26px; max-width: 640px; line-height: 1.6; opacity: 0.92; }
+
+    .guide-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .guide-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 999px; text-decoration: none;
+      font-weight: 700; font-size: 14px; transition: all .2s ease;
+      cursor: pointer; border: none;
+    }
+    .guide-btn-light { background: #fff; color: var(--guide-green-dk); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+    .guide-btn-light:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.18); }
+    .guide-btn-ghost { background: rgba(255,255,255,0.14); color: #fff; border: 1px solid rgba(255,255,255,0.35); }
+    .guide-btn-ghost:hover { background: rgba(255,255,255,0.24); }
+
+    /* ===== STATS ===== */
+    .guide-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: -40px; position: relative; z-index: 5; }
+    .guide-stat { background: var(--guide-card); border: 1px solid var(--guide-border); border-radius: var(--guide-radius); padding: 20px; box-shadow: var(--guide-shadow); display: flex; align-items: center; gap: 14px; }
+    .guide-stat .gs-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .guide-stat .gs-value { font-size: 20px; font-weight: 800; line-height: 1.2; }
+    .guide-stat .gs-label { font-size: 12.5px; color: var(--guide-muted); margin-top: 2px; }
+
+    /* ===== SECTION ===== */
+    .guide-section { padding: 48px 0 12px; }
+    .guide-section-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
+    .guide-section-head .gsh-icon { width: 44px; height: 44px; border-radius: 12px; background: #E5FFF3; color: var(--guide-green); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .guide-section-head h2 { margin: 0 0 4px; font-size: 1.35rem; font-weight: 800; }
+    .guide-section-head p { margin: 0; font-size: 0.92rem; color: var(--guide-muted); }
+
+    /* ===== SEARCH ===== */
+    .guide-search { width: 100%; max-width: 520px; position: relative; margin: 0 0 26px; }
+    .guide-search input {
+      width: 100%; padding: 14px 46px 14px 18px; border-radius: 999px;
+      border: 1px solid var(--guide-border); background: #fff;
+      font-size: 14px; box-shadow: var(--guide-shadow); outline: none;
+      transition: border .2s, box-shadow .2s;
+    }
+    .guide-search input:focus { border-color: var(--guide-green); box-shadow: 0 0 0 4px rgba(0,170,91,0.12); }
+    .guide-search > i { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--guide-muted); }
+
+    /* ===== KARTU MENU ===== */
+    .guide-menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+    .guide-menu-card {
+      background: var(--guide-card); border: 1px solid var(--guide-border);
+      border-radius: var(--guide-radius); padding: 22px; box-shadow: var(--guide-shadow);
+      transition: transform .2s, box-shadow .2s; cursor: default;
+    }
+    .guide-menu-card:hover { transform: translateY(-4px); box-shadow: var(--guide-shadow-lg); }
+    .guide-menu-card .gm-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .guide-menu-card .gm-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .guide-menu-card h3 { margin: 0; font-size: 15.5px; font-weight: 700; }
+    .guide-menu-card .gm-link { font-size: 12px; color: var(--guide-green); text-decoration: none; font-weight: 600; margin-left: auto; white-space: nowrap; }
+    .guide-menu-card .gm-link:hover { text-decoration: underline; }
+
+    .guide-desc { font-size: 13.5px; line-height: 1.6; color: var(--guide-muted); margin-bottom: 14px; }
+    .guide-steps { border-top: 1px dashed var(--guide-border); padding-top: 12px; }
+    .guide-steps-title { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--guide-green); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .guide-steps ol { margin: 0; padding-left: 18px; display: grid; gap: 5px; }
+    .guide-steps li { font-size: 13px; color: var(--guide-text); line-height: 1.5; }
+
+    /* ===== TIPS ===== */
+    .guide-tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .guide-tip { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: var(--guide-radius); padding: 18px; display: flex; gap: 12px; }
+    .guide-tip .gt-icon { font-size: 18px; color: var(--guide-green); flex-shrink: 0; margin-top: 2px; }
+    .guide-tip h4 { margin: 0 0 4px; font-size: 13.5px; font-weight: 800; color: #166534; }
+    .guide-tip p { margin: 0; font-size: 12.8px; color: #14532D; line-height: 1.55; }
+
+    /* ===== ALUR ===== */
+    .guide-flow { background: var(--guide-dark); border-radius: var(--guide-radius); padding: 28px; color: #fff; }
+    .guide-flow h3 { margin: 0 0 18px; font-size: 1.1rem; font-weight: 800; }
+    .flow-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+    .flow-step { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 14px; text-align: center; transition: background .2s; }
+    .flow-step:hover { background: rgba(255,255,255,0.12); }
+    .flow-step .fs-num { width: 26px; height: 26px; border-radius: 50%; background: var(--guide-green); color: #fff; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+    .flow-step .fs-name { font-size: 13px; font-weight: 700; }
+
+    /* ===== FOOTER ===== */
+    .guide-footer { text-align: center; padding: 36px 20px 44px; color: var(--guide-muted); font-size: 13px; }
+    .guide-footer a { color: var(--guide-green); font-weight: 700; text-decoration: none; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .guide-hero { padding: 40px 16px 64px; }
+      .guide-stats { grid-template-columns: 1fr 1fr; margin-top: -32px; }
+      .guide-menu-grid { grid-template-columns: 1fr; }
+      .flow-steps { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body class="guide-body">
+
+  <!-- ===== HERO ===== -->
+  <header class="guide-hero">
+    <div class="guide-container">
+      <div class="guide-breadcrumb">
+        <a href="customer.html"><i class="fa-solid fa-house"></i> Dashboard Customer</a>
+        <span>/</span>
+        <span>Panduan Penggunaan</span>
+      </div>
+      <h1><i class="fa-solid fa-circle-info"></i> Tata Cara Penggunaan Dashboard</h1>
+      <p class="sub">Panduan lengkap untuk memaksimalkan semua fitur di dashboard customer Jastip — mulai dari belanja, kelola poin, subscription, komplain, hingga naik tier membership. Semua dijelaskan satu per satu per menu.</p>
+      <div class="guide-hero-actions">
+        <a href="customer.html" class="guide-btn guide-btn-light"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</a>
+        <a href="#menu" class="guide-btn guide-btn-ghost"><i class="fa-solid fa-list-ul"></i> Lihat Panduan Menu</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== STATS ===== -->
+  <div class="guide-container">
+    <div class="guide-stats">
+      <div class="guide-stat">
+        <div class="gs-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-list-check"></i></div>
+        <div>
+          <div class="gs-value" id="statMenu">13</div>
+          <div class="gs-label">Menu dijelaskan</div>
+        </div>
+      </div>
+      <div class="guide-stat">
+        <div class="gs-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div>
+          <div class="gs-value">100%</div>
+          <div class="gs-label">Fitur interaktif</div>
+        </div>
+      </div>
+      <div class="guide-stat">
+        <div class="gs-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-star"></i></div>
+        <div>
+          <div class="gs-value">Lengkap</div>
+          <div class="gs-label">Info per menu</div>
+        </div>
+      </div>
+      <div class="guide-stat">
+        <div class="gs-icon" style="background:#FDF2F8; color:#DB2777;"><i class="fa-solid fa-gem"></i></div>
+        <div>
+          <div class="gs-value">5 Tier</div>
+          <div class="gs-label">Bronze → Diamond</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="guide-section" id="menu">
+    <div class="guide-container">
+
+      <!-- Pencarian -->
+      <div class="guide-search">
+        <input type="search" id="guideSearch" placeholder="Cari menu panduan (misal: points, review, subscription)...">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+
+      <!-- ===== PANDUAN MENU ===== -->
+      <div class="guide-section-head">
+        <div class="gsh-icon"><i class="fa-solid fa-bars-staggered"></i></div>
+        <div>
+          <h2>Panduan Per Menu</h2>
+          <p>Klik nama menu untuk langsung membuka halaman terkait. Setiap kartu berisi pengertian & langkah pengoperasian.</p>
+        </div>
+      </div>
+
+      <div class="guide-menu-grid" id="guideGrid">
+
+        <!-- 1. DASHBOARD -->
+        <article class="guide-menu-card" data-search="dashboard beranda home ringkasan">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-gauge-high"></i></div>
+            <h3>Dashboard (Beranda)</h3>
+            <a class="gm-link" href="customer.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Halaman utama setelah login. Menampilkan ringkasan saldo points, tier membership, statistik pesanan, quick actions, dan aktivitas terbaru dalam satu tampilan.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Lihat banner sambutan untuk saldo & tier.</li>
+              <li>Gunakan tombol aksi cepat (Belanja / Top Up / Reward / Lacak).</li>
+              <li>Periksa 4 stat card untuk ringkasan pesanan.</li>
+              <li>Gunakan tab <strong>Ringkasan / Pesanan / Aktivitas</strong>.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 2. KATALOG -->
+        <article class="guide-menu-card" data-search="katalog belanja beli produk toko">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-store"></i></div>
+            <h3>Katalog</h3>
+            <a class="gm-link" href="../customer/catalog.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Tempat melihat semua produk yang tersedia (16 kategori) dengan fitur pencarian, filter, dan urutan harga. Produk bisa dibeli dengan points.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Cari produk via kolom pencarian atau pilih kategori.</li>
+              <li>Saring berdasarkan harga / rating / urutkan.</li>
+              <li>Klik produk untuk melihat detail + qty.</li>
+              <li>Klik tombol hati untuk menyimpan ke wishlist.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 3. KERANJANG -->
+        <article class="guide-menu-card" data-search="keranjang cart belanja">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-cart-shopping"></i></div>
+            <h3>Keranjang</h3>
+            <a class="gm-link" href="../customer/cart.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Menyimpan sementara produk yang akan dibeli. Anda dapat mengubah jumlah (qty), menghapus item, dan melihat subtotal sebelum melanjutkan checkout.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Periksa daftar produk + harga per item.</li>
+              <li>Naik/turunkan qty atau klik hapus.</li>
+              <li>Pastikan subtotal sudah sesuai.</li>
+              <li>Klik <strong>Checkout</strong> untuk lanjut ke pembayaran.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 4. PESANAN -->
+        <article class="guide-menu-card" data-search="pesanan order riwayat lacak">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fa-solid fa-list-check"></i></div>
+            <h3>Pesanan</h3>
+            <a class="gm-link" href="../customer/orders.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Daftar riwayat <strong>semua pesanan</strong> — baik dari checkout biasa maupun dari paket member. Dilengkapi kolom sumber, status, dan tombol lacak pengiriman.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Filter sesuai status (Selesai/Dikirim/Diproses/Batal).</li>
+              <li>Filter sumber: <strong>Belanja</strong> atau <strong>Paket Member</strong>.</li>
+              <li>Cari dengan kata kunci order id / produk.</li>
+              <li>Klik <strong>Lacak</strong> untuk melihat posisi paket.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 5. POINTS & TOP UP -->
+        <article class="guide-menu-card" data-search="points point poin top up isi ulang saldo">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-coins"></i></div>
+            <h3>Points & Top Up</h3>
+            <a class="gm-link" href="../customer/points-topup.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Kelola saldo points untuk belanja. Top up via transfer bank dengan memilih nominal + upload bukti. **Poin tidak dapat ditukar uang tunai**.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Pilih nominal (50k/100k/250k) atau isi manual.</li>
+              <li>Pilih bank tujuan → no rekening otomatis tampil.</li>
+              <li>Upload bukti pembayaran (JPG/PNG).</li>
+              <li>Klik <strong>Top Up Sekarang</strong> & tunggu verifikasi 1x24 jam.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 6. REWARDS -->
+        <article class="guide-menu-card" data-search="rewards reward hadiah klaim tukar">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#FDF2F8; color:#DB2777;"><i class="fa-solid fa-gift"></i></div>
+            <h3>Rewards</h3>
+            <a class="gm-link" href="../customer/rewards.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Klaim berbagai reward (voucher, produk, paket umroh, berqurban) dengan menukarkan points yang dimiliki.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Lihat katalog reward + biaya points.</li>
+              <li>Periksa saldo points Anda cukup atau tidak.</li>
+              <li>Klik <strong>Klaim</strong> → points otomatis terpotong.</li>
+              <li>Reward diproses / dikirim sesuai ketentuan.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 7. SUBSCRIPTION -->
+        <article class="guide-menu-card" data-search="subscription langganan paket member">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-arrows-rotate"></i></div>
+            <h3>Subscription (Paket Member)</h3>
+            <a class="gm-link" href="../customer/subscriptions.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Berlangganan paket sembako berkala (Hemat/Keluarga/Premium) dengan auto-renewal. Setiap pilih paket otomatis masuk ke riwayat pesanan sebagai "Paket Member".</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Pilih paket sesuai kebutuhan (75k / 114k / 200k pts).</li>
+              <li>Klik <strong>Pilih Paket</strong> → status aktif.</li>
+              <li>Tier dihitung otomatis (spend + durasi).</li>
+              <li>Lihat riwayat siklus tagihan di bawah paket.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 8. KOMPLAIN -->
+        <article class="guide-menu-card" data-search="komplain aduan keluhan cs">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#FEF2F2; color:#F94D63;"><i class="fa-solid fa-headset"></i></div>
+            <h3>Komplain</h3>
+            <a class="gm-link" href="../customer/complaints.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Ajukan pengaduan terkait order apa pun (Belanja maupun Paket Member). Pilih order terlebih dahulu, lalu kategori & deskripsi.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Pilih pesanan dari dropdown (semua riwayat tersedia).</li>
+              <li>Pilih kategori (Produk, Pengiriman, Pembayaran, dll).</li>
+              <li>Isi subjek + deskripsi lengkap.</li>
+              <li>Kirim → CS merespon dalam 1x24 jam via chat/email.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 9. PROFIL & TIER -->
+        <article class="guide-menu-card" data-search="profil tier membership member level">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#E5FFF3; color:#008743;"><i class="fa-solid fa-user"></i></div>
+            <h3>Profil & Tier</h3>
+            <a class="gm-link" href="../customer/profile-tier.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Lihat data profil dan level membership (Bronze, Silver, Gold, Platinum, Diamond) + progress otomatis berdasarkan total belanja & durasi berlangganan.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Baca badge tier aktif + masa berlaku.</li>
+              <li>Lihat progress menuju tier berikutnya.</li>
+              <li>Periksa tabel benefit per tier.</li>
+              <li>Baca info skema upgrade otomatis (spend + tahun).</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 10. WISHLIST -->
+        <article class="guide-menu-card" data-search="wishlist simpan hati favorit">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#FDF2F8; color:#E0245E;"><i class="fa-regular fa-heart"></i></div>
+            <h3>Wishlist</h3>
+            <a class="gm-link" href="../customer/wishlists.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Simpan produk favorit agar mudah ditemukan lagi. Produk tersimpan otomatis dari ikon hati di katalog.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Di katalog, klik ikon <strong>hati</strong> pada produk.</li>
+              <li>Buka halaman ini untuk melihat semua tersimpan.</li>
+              <li>Klik hati lagi untuk hapus / tambah ke keranjang.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 11. REVIEW -->
+        <article class="guide-menu-card" data-search="review rating bintang ulasan">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-star"></i></div>
+            <h3>Review Produk</h3>
+            <a class="gm-link" href="../customer/product-reviews.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Beri rating dan ulasan terhadap produk dari order yang statusnya <strong>Selesai</strong>. Semua produk dari order Belanja maupun Paket Member bisa di-review.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Pilih produk dari daftar "pesanan selesai".</li>
+              <li>Klik bintang 1–5 sesuai penilaian.</li>
+              <li>Isi ulasan / pengalaman.</li>
+              <li>Klik <strong>Kirim Review</strong>.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 12. PREFERENSI EMAIL -->
+        <article class="guide-menu-card" data-search="email preferensi notifikasi pengaturan">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-envelope"></i></div>
+            <h3>Preferensi Email</h3>
+            <a class="gm-link" href="../customer/email-preferences.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Atur jenis email yang ingin Anda terima: update pesanan, pembayaran, pengiriman, subscription, promo, dan notifikasi lainnya.</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Nyalakan/matikan toggle sesuai preferensi.</li>
+              <li>Perubahan tersimpan otomatis.</li>
+              <li>Cek inbox untuk pengiriman uji.</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 13. REFERRAL -->
+        <article class="guide-menu-card" data-search="referral referral undang teman ajak">
+          <div class="gm-top">
+            <div class="gm-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fa-solid fa-user-plus"></i></div>
+            <h3>Referral</h3>
+            <a class="gm-link" href="../customer/referrals.html"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>
+          </div>
+          <p class="guide-desc">Ajak teman bergabung dan dapatkan poin bonus (5.000 pts per teman, tanpa batas jumlah referral).</p>
+          <div class="guide-steps">
+            <div class="guide-steps-title"><i class="fa-solid fa-route"></i> Cara Pengoperasian</div>
+            <ol>
+              <li>Tekan tombol <strong>Copy Link</strong>.</li>
+              <li>Bagikan ke teman / medsos.</li>
+              <li>Pantau jumlah referral & bonus poin.</li>
+            </ol>
+          </div>
+        </article>
+
+      </div><!-- /guideGrid -->
+
+      <!-- ===== TIPS & ATURAN ===== -->
+      <div class="guide-section-head" style="margin-top:44px;">
+        <div class="gsh-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-lightbulb"></i></div>
+        <div>
+          <h2>Tips & Aturan Penting</h2>
+          <p>Hal-hal yang perlu Anda pahami sebelum memaksimalkan dashboard customer.</p>
+        </div>
+      </div>
+
+      <div class="guide-tips">
+        <div class="guide-tip">
+          <div class="gt-icon"><i class="fa-solid fa-coins"></i></div>
+          <div><h4>Poin Tidak Tunai</h4><p>Poin hanya dapat ditukar dengan <strong>barang / reward</strong> — tidak dapat diklaim menjadi uang tunai (non-cashable / non-withdrawable).</p></div>
+        </div>
+        <div class="guide-tip">
+          <div class="gt-icon"><i class="fa-solid fa-arrows-turn-up"></i></div>
+          <div><h4>Upgrade Tier Otomatis</h4><p>Tier naik otomatis dari <strong>total belanja</strong> (1jt → Silver, 5jt → Gold, dst) dan <strong>durasi berlangganan</strong> (1th, 3th, 5th).</p></div>
+        </div>
+        <div class="guide-tip">
+          <div class="gt-icon"><i class="fa-solid fa-truck-fast"></i></div>
+          <div><h4>Ongkir Sudah Termasuk</h4><p>Biaya pengiriman <strong>tidak dihitung terpisah</strong> — semua sudah termasuk dalam harga produk (RAB).</p></div>
+        </div>
+        <div class="guide-tip">
+          <div class="gt-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <div><h4>Dua Sumber Pesanan</h4><p>Riwayat pesanan menggabungkan order dari <strong>Belanja Checkout</strong> dan <strong>Paket Member</strong>. Perhatikan kolom sumber masing-masing.</p></div>
+        </div>
+      </div>
+
+      <!-- ===== ALUR LENGKAP ===== -->
+      <div class="guide-section-head" style="margin-top:44px;">
+        <div class="gsh-icon" style="background:#EFF6FF;color:#2C7AFF;"><i class="fa-solid fa-diagram-project"></i></div>
+        <div>
+          <h2>Alur Penggunaan End-to-End</h2>
+          <p>Urutan logis penggunaan dashboard untuk pemula.</p>
+        </div>
+      </div>
+
+      <div class="guide-flow">
+        <div class="flow-steps">
+          <div class="flow-step"><div class="fs-num">1</div><div class="fs-name">Isi Saldo Poin</div></div>
+          <div class="flow-step"><div class="fs-num">2</div><div class="fs-name">Belanja di Katalog</div></div>
+          <div class="flow-step"><div class="fs-num">3</div><div class="fs-name">Checkout</div></div>
+          <div class="flow-step"><div class="fs-num">4</div><div class="fs-name">Pantau Pesanan</div></div>
+          <div class="flow-step"><div class="fs-num">5</div><div class="fs-name">Terima & Review</div></div>
+          <div class="flow-step"><div class="fs-num">6</div><div class="fs-name">Upgrade Tier</div></div>
+          <div class="flow-step"><div class="fs-num">7</div><div class="fs-name">Referral & Reward</div></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="guide-footer">
+    <i class="fa-solid fa-circle-info"></i> Panduan ini hanya untuk <strong>Dashboard Customer</strong>. Bila ada pertanyaan, hubungi <a href="mailto:support@jastip.id">support@jastip.id</a> atau gunakan menu <a href="../customer/complaints.html">Komplain</a>.
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    // ===== Pencarian panduan per menu =====
+    var searchInput = document.getElementById('guideSearch');
+    searchInput.addEventListener('input', function () {
+      var q = this.value.toLowerCase().trim();
+      document.querySelectorAll('#guideGrid .guide-menu-card').forEach(function (card) {
+        var text = card.getAttribute('data-search') + ' ' + card.textContent.toLowerCase();
+        card.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
+      });
+    });
+
+    // Toast atas "Kembali ke Dashboard"
+    document.querySelectorAll('.guide-hero-actions a[href="#menu"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.getElementById('menu');
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penerimaan Barang — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Penerimaan Barang</h1>
+      <p>Laporkan barang yang diterima atau dikembalikan ke pusat</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Penerimaan Barang</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Daftar Penerimaan Barang</h3>
+        <div class="hub-panel-tools">
+          <div class="hub-search-box"><input type="search" id="rcSearch" placeholder="Cari..."><i class="fa-solid fa-magnifying-glass"></i></div>
+          <select class="hub-select" id="rcFilter">
+            <option value="all">Semua Status</option>
+            <option>Menunggu</option><option>Diterima</option><option>Dikembalikan</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Kode</th><th>Jenis</th><th>Referensi</th><th>Detail Barang</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="rcBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal Laporan -->
+    <div class="hub-modal" id="rcModal">
+      <div class="hub-modal-box">
+        <div class="hub-modal-head">
+          <h3 id="rcModalTitle">Laporan Penerimaan</h3>
+          <button class="hub-modal-close" data-close>&times;</button>
+        </div>
+        <div class="hub-modal-body">
+          <div class="hub-summary" style="margin-bottom:14px;">
+            <div class="sum-icon" style="background:#EFF6FF;color:#2C7AFF;"><i class="fa-solid fa-box"></i></div>
+            <div><div class="sum-label">Referensi</div><div class="sum-value" id="rcRef">-</div></div>
+          </div>
+
+          <!-- Detail Barang -->
+          <div class="hub-panel" style="margin-bottom:14px; padding:12px;">
+            <div class="hub-panel-head"><h3>Detail Barang</h3></div>
+            <div class="hub-table-scroll">
+              <table class="hub-table">
+                <thead><tr><th>Nama Barang</th><th>Jumlah</th></tr></thead>
+                <tbody id="rcItems"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="hub-form-grid">
+            <div class="hub-form-group">
+              <label>Status</label>
+              <select id="rcStatus">
+                <option value="Diterima">Diterima</option>
+                <option value="Dikembalikan">Dikembalikan</option>
+              </select>
+            </div>
+            <div class="hub-form-group">
+              <label>Catatan</label>
+              <input type="text" id="rcNote" placeholder="cth: barang lengkap / ada yang rusak">
+            </div>
+          </div>
+        </div>
+        <div class="hub-modal-foot">
+          <button class="hub-btn" data-close>Batal</button>
+          <button class="hub-btn" id="btnReturRc"><i class="fa-solid fa-rotate-left"></i> Ajukan Retur</button>
+          <button class="hub-btn hub-btn-solid" id="btnSaveRc"><i class="fa-solid fa-check"></i> Simpan Laporan</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    /* ===== DATA PENERIMAAN + DETAIL BARANG ===== */
+    var RECEIVINGS = [
+      { id: 'RCV-2026-021', jenis: 'Order Stok', ref: 'SO-2026-084', date: '15 Agu 2026', status: 'Menunggu', items: [
+        { nama: 'Beras Premium 5kg', qty: 30 },
+        { nama: 'Minyak Goreng 2L', qty: 24 },
+        { nama: 'Kopi Arabika 1kg', qty: 12 }
+      ]},
+      { id: 'RCV-2026-020', jenis: 'Order Stok', ref: 'SO-2026-083', date: '14 Agu 2026', status: 'Menunggu', items: [
+        { nama: 'Skincare Set Premium', qty: 10 },
+        { nama: 'Power Bank 20000mAh', qty: 15 }
+      ]},
+      { id: 'RCV-2026-019', jenis: 'Delivery', ref: 'DEL-2026-118', date: '14 Agu 2026', status: 'Diterima', items: [
+        { nama: 'Beras Premium 5kg', qty: 10 },
+        { nama: 'Minyak Goreng 2L', qty: 5 }
+      ]},
+      { id: 'RCV-2026-018', jenis: 'Order Stok', ref: 'SO-2026-082', date: '10 Agu 2026', status: 'Diterima', items: [
+        { nama: 'Kaos Polos Premium', qty: 40 },
+        { nama: 'Backpack Travel 40L', qty: 20 },
+        { nama: 'Vacuum Cleaner', qty: 12 }
+      ]},
+      { id: 'RCV-2026-017', jenis: 'Delivery', ref: 'DEL-2026-114', date: '13 Agu 2026', status: 'Dikembalikan', items: [
+        { nama: 'Skincare Set Premium', qty: 3 }
+      ]},
+      { id: 'RCV-2026-016', jenis: 'Order Stok', ref: 'SO-2026-081', date: '02 Agu 2026', status: 'Diterima', items: [
+        { nama: 'Beras Premium 5kg', qty: 50 },
+        { nama: 'Minyak Goreng 2L', qty: 30 }
+      ]}
+    ];
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function badge(s) {
+      var map = { 'Diterima': 'badge-green', 'Dikembalikan': 'badge-red', 'Menunggu': 'badge-yellow' };
+      return '<span class="badge ' + (map[s] || 'badge-gray') + '">' + s + '</span>';
+    }
+
+    function formatItems(items) {
+      return items.map(function (it) { return it.nama + ' x' + it.qty; }).join(', ');
+    }
+
+    function renderStats() {
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-boxes-stacked', color: '#00AA5B', label: 'Total Penerimaan', value: RECEIVINGS.length },
+        { icon: 'fa-solid fa-circle-check', color: '#2C7AFF', label: 'Diterima', value: RECEIVINGS.filter(function (r) { return r.status === 'Diterima'; }).length },
+        { icon: 'fa-solid fa-rotate-left', color: '#F94D63', label: 'Dikembalikan', value: RECEIVINGS.filter(function (r) { return r.status === 'Dikembalikan'; }).length },
+        { icon: 'fa-solid fa-clock', color: '#F0B429', label: 'Menunggu', value: RECEIVINGS.filter(function (r) { return r.status === 'Menunggu'; }).length }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderTable() {
+      var search = document.getElementById('rcSearch');
+      var filter = document.getElementById('rcFilter');
+      var q = search ? search.value.toLowerCase() : '';
+      var f = filter ? filter.value : 'all';
+      var rows = RECEIVINGS.filter(function (r) {
+        var okS = f === 'all' || r.status === f;
+        var okQ = !q || r.id.toLowerCase().indexOf(q) !== -1 || r.ref.toLowerCase().indexOf(q) !== -1;
+        return okS && okQ;
+      });
+      var body = document.getElementById('rcBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (r) {
+        var aksi = r.status === 'Menunggu'
+          ? '<button class="hub-btn hub-btn-sm hub-btn-solid" data-report="' + r.id + '">Laporkan</button>'
+          : '<span class="hint">Selesai</span>';
+        return '<tr><td><strong>' + r.id + '</strong></td><td>' + r.jenis + '</td><td>' + r.ref + '</td><td>' + formatItems(r.items) + '</td><td>' + r.date + '</td><td>' + badge(r.status) + '</td><td>' + aksi + '</td></tr>';
+      }).join('') : '<tr><td colspan="7" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderStats(); renderTable();
+      var s = document.getElementById('rcSearch'); if (s) s.addEventListener('input', renderTable);
+      var f = document.getElementById('rcFilter'); if (f) f.addEventListener('change', renderTable);
+      var exp = document.getElementById('btnExport'); if (exp) exp.addEventListener('click', function () { showToast('Export menyusul (Demo)'); });
+      document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { document.getElementById('rcModal').classList.remove('open'); }); });
+      document.querySelectorAll('[data-report]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var id = this.getAttribute('data-report');
+          var r = RECEIVINGS.filter(function (x) { return x.id === id; })[0];
+          if (!r) return;
+          window._currentRc = r;
+          document.getElementById('rcModalTitle').textContent = 'Laporan — ' + r.id;
+          document.getElementById('rcRef').textContent = r.ref + ' (' + r.jenis + ')';
+          // Tampilkan detail barang
+          var itemsBody = document.getElementById('rcItems');
+          itemsBody.innerHTML = r.items.map(function (it) {
+            return '<tr><td>' + it.nama + '</td><td><strong>' + it.qty + '</strong></td></tr>';
+          }).join('');
+          document.getElementById('rcStatus').value = 'Diterima';
+          document.getElementById('rcNote').value = '';
+          document.getElementById('rcModal').classList.add('open');
+        });
+      });
+      document.getElementById('btnSaveRc').addEventListener('click', function () {
+        if (!window._currentRc) return;
+        var status = document.getElementById('rcStatus').value;
+        var note = document.getElementById('rcNote').value.trim();
+        window._currentRc.status = status;
+        window._currentRc.note = note;
+        showToast(window._currentRc.id + ' — ' + status + (note ? ' (' + note + ')' : ''));
+        document.getElementById('rcModal').classList.remove('open');
+        renderStats(); renderTable();
+      });
+
+      // Tombol Ajukan Retur → buka halaman retur dengan referensi terisi
+      var btnRetur = document.getElementById('btnReturRc');
+      if (btnRetur) {
+        btnRetur.addEventListener('click', function () {
+          if (!window._currentRc) return;
+          var ref = window._currentRc.ref;
+          var jenis = window._currentRc.jenis || 'Order Stok';
+          window.location.href = 'delivery-returns.html?ref=' + encodeURIComponent(ref) + '&jenis=' + encodeURIComponent(jenis);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

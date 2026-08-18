@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Hub — Jastip</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body class="hub-body" data-role="hub">
+
+  <!-- ================= PAGE HEAD (dipindah ke dalam content oleh hub-layout.js) ================= -->
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Dashboard Hub</h1>
+      <p>Ringkasan performa hub Anda</p>
+      <div class="hub-breadcrumb"><a href="../index.html">Beranda</a><span>/</span><span>Dashboard Hub</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <select class="hub-select" id="dashboardPeriod" aria-label="Periode">
+        <option value="7">7 Hari</option>
+        <option value="30" selected>30 Hari</option>
+        <option value="90">90 Hari</option>
+        <option value="365">1 Tahun</option>
+      </select>
+      <button class="hub-btn"><i class="fa-solid fa-download"></i> Laporan</button>
+      
+    </div>
+  </section>
+
+  <!-- ================= MAIN (dipindah ke dalam content layout) ================= -->
+  <main class="hub-main">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="welcome-left">
+        <h2 id="welcomeTitle">Selamat Datang di Hub 👋</h2>
+        <p id="welcomeSub">Kelola stok, delivery, dan performa hub Anda di satu tempat.</p>
+        <div class="welcome-actions">
+          <a href="hub/receiving.html" class="btn-cust btn-cust-solid"><i class="fa-solid fa-clipboard-check"></i> Penerimaan Barang</a>
+          <a href="hub/warehousing.html" class="btn-cust btn-cust-outline"><i class="fa-solid fa-boxes-stacked"></i> Cek Stok</a>
+        </div>
+      </div>
+      <div class="welcome-right">
+        <div class="welcome-balance">
+          <p class="wb-label">Pendapatan Bulan Ini</p>
+          <p class="wb-value">Rp 325<span> juta</span></p>
+          <a href="hub/fee-report.html" class="wb-link">Lihat laporan fee →</a>
+        </div>
+        <div class="welcome-tier">
+          <p class="wb-label">Order Perlu Diproses</p>
+          <p class="wb-tier">132</p>
+          <div class="hub-progress" style="background:rgba(255,255,255,0.25);"><div class="hub-progress-fill" style="width:68%;background:#FFD45F;"></div></div>
+          <a href="hub/receiving.html" class="wb-link">Laporan penerimaan →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <a href="hub/warehousing.html" class="qa-item"><div class="qa-icon" style="background:#E5FFF3;color:#00AA5B;"><i class="fa-solid fa-boxes-stacked"></i></div>Stok Hub</a>
+      <a href="hub/stock-order.html" class="qa-item"><div class="qa-icon" style="background:#EFF6FF;color:#2C7AFF;"><i class="fa-solid fa-truck-ramp-box"></i></div>Order Stok</a>
+      <a href="hub/receiving.html" class="qa-item"><div class="qa-icon" style="background:#F3E8FF;color:#A78BFA;"><i class="fa-solid fa-clipboard-check"></i></div>Penerimaan</a>
+      <a href="hub/deliveries.html" class="qa-item"><div class="qa-icon" style="background:#E5FFF3;color:#008743;"><i class="fa-solid fa-truck-fast"></i></div>Delivery Masuk</a>
+      <a href="hub/delivery-returns.html" class="qa-item"><div class="qa-icon" style="background:#FEF2F2;color:#F94D63;"><i class="fa-solid fa-rotate-left"></i></div>Retur</a>
+      <a href="hub/fee-report.html" class="qa-item"><div class="qa-icon" style="background:#FDF2F8;color:#DB2777;"><i class="fa-solid fa-file-invoice-dollar"></i></div>Fee</a>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="hub-cards" id="hubStatCards"></div>
+
+    <!-- Alert Stok Menipis -->
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <div>
+          <h3>⚠️ Stok Menipis (≤ ROP)</h3>
+          <p>Perlu segera lakukan order stok agar tidak kehabisan</p>
+        </div>
+        <a href="hub/stock-order.html" class="hub-btn hub-btn-sm"><i class="fa-solid fa-arrow-right"></i> Buat Order</a>
+      </div>
+      <div id="hubStockAlerts"></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid has-bar-last">
+      <div class="chart-box">
+        <h3 id="chart-sales-title">Penjualan Hub per Bulan</h3>
+        <div class="chart-container"><canvas id="chart-sales"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3 id="chart-orders-title">Status Delivery</h3>
+        <div class="chart-container"><canvas id="chart-orders"></canvas></div>
+      </div>
+      <div class="chart-box wide">
+        <h3 id="chart-products-title">Stok per Kategori</h3>
+        <div class="chart-container"><canvas id="chart-products"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Table + Aktivitas -->
+    <div class="dash-two-col">
+      <div class="table-card">
+        <div class="table-head">
+          <h3 id="tableTitle">Order Terbaru di Hub</h3>
+          <div class="table-tools">
+            <div class="search-input">
+              <input type="search" id="tableSearch" placeholder="Cari data...">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <select id="perPageSelect" aria-label="Jumlah per halaman">
+              <option value="5" selected>5 / hal</option>
+              <option value="10">10 / hal</option>
+              <option value="25">25 / hal</option>
+            </select>
+          </div>
+        </div>
+        <div class="chips-wrap" id="filterChips"></div>
+        <div id="tableContainer"></div>
+      </div>
+
+      <div class="chart-box">
+        <h3 style="margin-bottom:6px;">Aktivitas Terbaru</h3>
+        <p class="hub-list-sub" style="margin-bottom:8px;">Event terakhir di hub Anda</p>
+        <div class="activity-list" id="hubActivities"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/hub-layout.js"></script>
+  <script>
+    /* ============ CONTOH DATA DASHBOARD HUB (fallback inline) ============ */
+    var HUB_DATA = {
+      cards: [
+        { icon: 'fa-solid fa-coins', color: '#00AA5B', label: 'Pendapatan Hub', value: 'Rp 325.000.000', change: '+10,2%', changeLabel: 'vs bulan lalu', up: true },
+        { icon: 'fa-solid fa-boxes-stacked', color: '#2C7AFF', label: 'Stok Tersedia', value: '8.420', change: '-3,1%', changeLabel: 'vs bulan lalu', up: false },
+        { icon: 'fa-solid fa-truck-fast', color: '#A78BFA', label: 'Delivery Aktif', value: '128', change: '+15,0%', changeLabel: 'vs bulan lalu', up: true },
+        { icon: 'fa-solid fa-users', color: '#F0B429', label: 'Customer Terdaftar', value: '5.240', change: '+6,8%', changeLabel: 'vs bulan lalu', up: true }
+      ],
+      stockAlerts: [
+        { icon: 'fa-solid fa-triangle-exclamation', color: '#F0B429', bg: '#FFFBEB', title: 'Beras Premium 5kg', desc: 'Stok 12 · ROP 30 · Kategori Sembako', eta: 'Estimasi habis: 3 hari lagi', type: 'warn', action: 'Order Stok' },
+        { icon: 'fa-solid fa-circle-exclamation', color: '#F94D63', bg: '#FEF2F2', title: 'Skincare Set Premium', desc: 'Stok 5 · ROP 20 · Kategori Kecantikan', eta: 'Estimasi habis: Hari ini', type: 'crit', action: 'Order Stok' },
+        { icon: 'fa-solid fa-triangle-exclamation', color: '#F0B429', bg: '#FFFBEB', title: 'Kopi Arabika 1kg', desc: 'Stok 18 · ROP 30 · Kategori Sembako', eta: 'Estimasi habis: 5 hari lagi', type: 'warn', action: 'Order Stok' }
+      ],
+      activities: [
+        { icon: 'fa-solid fa-box-open', color: '#008743', bg: '#E5FFF3', title: 'Packing Selesai', desc: 'PAK-2026-001 · 4 item · ORD-2026-0814-01', time: 'Hari ini · 09:12' },
+        { icon: 'fa-solid fa-truck', color: '#2563EB', bg: '#EFF6FF', title: 'Kurir Di-assign', desc: 'DEL-2026-118 · Bambang (Hub Jakarta Selatan)', time: 'Hari ini · 08:45' },
+        { icon: 'fa-solid fa-boxes-stacked', color: '#B8860B', bg: '#FFFBEB', title: 'Stok Menipis', desc: 'Minyak Goreng 2L · stok 8 ≤ ROP 20', time: 'Kemarin · 20:14' },
+        { icon: 'fa-solid fa-file-invoice-dollar', color: '#DB2777', bg: '#FDF2F8', title: 'Fee Bulanan Dihitung', desc: 'Fee 15% · Rp 48.750.000 · siap dibayar', time: 'Kemarin · 07:00' },
+        { icon: 'fa-solid fa-receipt', color: '#00AA5B', bg: '#E5FFF3', title: 'Order Stok Tiba', desc: 'SO-2026-071 · 12 SKU · dari pusat', time: '02 Agu · 14:30' },
+        { icon: 'fa-solid fa-headset', color: '#2C7AFF', bg: '#EFF6FF', title: 'Komplain Baru', desc: 'CMP-2026-009 · Retur barang — Hub Anda', time: '02 Agu · 10:06' }
+      ]
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sapa user dari session
+      var session = null;
+      try { session = window.JastipAuth ? window.JastipAuth.getSession() : null; } catch (e) {}
+      var firstName = session && session.name ? session.name.split(' ')[0] : 'Owner';
+      var elTitle = document.getElementById('welcomeTitle');
+      if (elTitle) elTitle.textContent = 'Selamat Datang, ' + firstName + ' 👋';
+      var elSub = document.getElementById('welcomeSub');
+      if (elSub) elSub.textContent = (session && session.hub ? session.hub : 'Hub Anda') + ' · Kelola stok, delivery, dan operasional hub dalam satu dashboard.';
+
+      // Stat cards
+      var cardsEl = document.getElementById('hubStatCards');
+      if (cardsEl) {
+        cardsEl.innerHTML = HUB_DATA.cards.map(function (c) {
+          return '<div class="hub-card">' +
+            '<div class="hub-card-top">' +
+            '<span class="hub-card-label">' + c.label + '</span>' +
+            '<div class="hub-card-icon" style="background:' + c.color + '14; color:' + c.color + ';"><i class="' + c.icon + '"></i></div>' +
+            '</div>' +
+            '<div class="hub-card-value">' + c.value + '</div>' +
+            '<div class="hub-card-change ' + (c.up ? 'up' : 'down') + '">' + c.change + ' <span>' + c.changeLabel + '</span></div>' +
+            '</div>';
+        }).join('');
+      }
+
+      // Stock alerts
+      var alerts = document.getElementById('hubStockAlerts');
+      if (alerts) {
+        alerts.innerHTML = HUB_DATA.stockAlerts.map(function (a) {
+          return '<div class="hub-alert ' + a.type + '">' +
+            '<div class="hub-alert-icon" style="background:' + a.bg + '; color:' + a.color + ';"><i class="' + a.icon + '"></i></div>' +
+            '<div class="hub-alert-body">' +
+            '<div class="hub-alert-title">' + a.title + '</div>' +
+            '<div class="hub-alert-desc">' + a.desc + '</div>' +
+            '<div class="hub-alert-eta"><i class="fa-solid fa-clock"></i> ' + a.eta + '</div>' +
+            '</div>' +
+            '<div class="hub-alert-actions"><a href="hub/stock-order.html" class="hub-btn hub-btn-sm hub-btn-solid">' + a.action + '</a></div>' +
+            '</div>';
+        }).join('');
+      }
+
+      // Activities (reuse render dari dashboard.js kalau ada, fallback manual)
+      var actEl = document.getElementById('hubActivities');
+      if (actEl) {
+        actEl.innerHTML = HUB_DATA.activities.map(function (a) {
+          return '<div class="activity-item">' +
+            '<div class="ai-icon" style="background:' + a.bg + '; color:' + a.color + ';"><i class="' + a.icon + '"></i></div>' +
+            '<div class="ai-content">' +
+            '<p class="ai-title">' + a.title + '</p>' +
+            '<p class="ai-desc">' + a.desc + '</p>' +
+            '<p class="ai-time">' + a.time + '</p>' +
+            '</div>' +
+            '</div>';
+        }).join('');
+      }
+
+      // Chart dari dashboard.js (fallback data hub)
+      var dataPath = '../data/dashboard.json';
+      fetch(dataPath).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (d) {
+          if (!d.hub) return;
+          if (window.renderHubCharts) window.renderHubCharts(d.hub);
+          if (window.renderDashboardTable) window.renderDashboardTable(d.hub);
+        })
+        .catch(function () {
+          if (window.renderHubCharts) window.renderHubCharts({
+            charts: {
+              sales: { type: 'line', label: 'Penjualan Hub per Bulan', labels: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu'], datasets: [{ label: 'Penjualan (juta Rp)', data: [190,210,235,220,260,285,300,325], color: '#00AA5B' }] },
+              orders: { type: 'doughnut', label: 'Status Delivery', labels: ['Terantar','Dalam Perjalanan','Menunggu','Gagal'], datasets: [{ data: [980,128,54,12], colors: ['#00AA5B','#2C7AFF','#F0B429','#F94D63'] }] },
+              products: { type: 'bar', label: 'Stok per Kategori', labels: ['Sembako','Elektronik','Fashion','Kecantikan','Peralatan'], datasets: [{ data: [3200,1250,980,760,540], color: '#2C7AFF' }] }
+            }
+          });
+        });
+
+      // Perbaiki icon typo di activities (fix warna)
+      var els = document.querySelectorAll('#hubActivities .ai-icon');
+      if (els[0]) els[0].style.color = '#008743';
+    });
+  </script>
+</body>
+</html>

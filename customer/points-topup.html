@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Points & Top Up — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Points & Top Up</h1>
+      <p>Kelola saldo points dan isi ulang kapan saja</p>
+      <div class="cust-breadcrumb"><a href="../dashboard/customer.html">Dashboard</a><span>/</span><span>Points & Top Up</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container">
+      <!-- Stats -->
+      <div class="cust-grid-cards">
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-coins"></i></div>
+          <div><p class="cs-label">Saldo Aktif</p><p class="cs-value">125.000 pts</p></div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          <div><p class="cs-label">Lifetime Earned</p><p class="cs-value">450.000 pts</p></div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-arrow-trend-down"></i></div>
+          <div><p class="cs-label">Lifetime Spent</p><p class="cs-value">325.000 pts</p></div>
+        </div>
+        <div class="cust-card-stat">
+          <div class="cs-icon" style="background:#FEF2F2; color:#F94D63;"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div><p class="cs-label">Akan Kadaluarsa</p><p class="cs-value">10.000 pts</p></div>
+        </div>
+      </div>
+
+      <!-- Peringatan ketentuan poin -->
+      <div class="cust-panel" style="margin-bottom:0;">
+        <div class="info-warning" style="margin-top:0;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Perhatian — Poin Tidak Bisa Diklaim dengan Uang</strong>
+            <p>Poin Anda <strong>TIDAK dapat diklaim/ditukar dengan uang tunai</strong>.</p>
+            <p>Poin hanya dapat digunakan untuk <strong>berbelanja barang</strong> (produk, voucher belanja, paket umroh, berqurban, dll).</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr; gap:20px; align-items:start;">
+
+        <!-- Form Top-Up -->
+        <div class="cust-panel">
+          <div class="cust-panel-head"><h3>Top Up Points</h3><span class="hint">1 pts = Rp 1</span></div>
+          <p class="hint" style="margin-bottom:14px;">Pilih nominal top-up:</p>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:10px; margin-bottom:16px;">
+            <button type="button" class="btn btn-outline" data-nominal="50000" onclick="selectNominal(this)">50.000 pts</button>
+            <button type="button" class="btn btn-outline" data-nominal="100000" onclick="selectNominal(this)">100.000 pts</button>
+            <button type="button" class="btn btn-outline" data-nominal="250000" onclick="selectNominal(this)">250.000 pts</button>
+            <button type="button" class="btn btn-outline" data-nominal="500000" onclick="selectNominal(this)">500.000 pts</button>
+            <button type="button" class="btn btn-outline" data-nominal="1000000" onclick="selectNominal(this)">1.000.000 pts</button>
+          </div>
+          <div class="form-group">
+            <label for="topupNominal">Nominal Lainnya (Rp)</label>
+            <input type="number" id="topupNominal" class="form-control" placeholder="Masukkan nominal" min="10000">
+          </div>
+          <div class="form-group">
+            <label>Metode Pembayaran</label>
+            <label class="pay-method" style="margin-bottom:0;">
+              <input type="radio" name="topupMetode" value="Transfer Bank" checked>
+              <span class="pm-icon"><i class="fa-solid fa-building-columns"></i></span>
+              <span class="pm-name">Transfer Bank</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="topupBank">Pilih Bank</label>
+            <select id="topupBank" class="form-control">
+              <option value="">— Pilih Bank —</option>
+              <option value="BCA">BCA</option>
+              <option value="BNI">BNI</option>
+              <option value="Mandiri">Mandiri</option>
+              <option value="BRI">BRI</option>
+            </select>
+          </div>
+          <div id="topupRekening" class="rek-info" style="display:none;">
+            <p class="rek-label">No. Rekening Tujuan</p>
+            <p class="rek-number" id="topupRekNumber">—</p>
+            <p class="rek-name">a.n. Jastipku Indonesia</p>
+          </div>
+          <div class="form-group" style="margin-top:14px;">
+            <label for="topupProof">Upload Bukti Pembayaran</label>
+            <label class="file-upload" for="topupProof">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span id="topupProofName">Klik untuk pilih gambar bukti (JPG/PNG, maks 2MB)</span>
+              <input type="file" id="topupProof" accept="image/*" onchange="onTopupProofChange(this)" hidden>
+            </label>
+            <p class="hint" style="margin-top:6px;">Wajib diisi setelah melakukan pembayaran.</p>
+          </div>
+          <button type="button" class="btn btn-solid btn-lg" onclick="topUpSekarang()"><i class="fa-solid fa-arrow-trend-up"></i> Top Up Sekarang</button>
+        </div>
+
+        <!-- Riwayat Transaksi -->
+        <div class="cust-panel">
+          <div class="cust-panel-head"><h3>Riwayat Transaksi</h3></div>
+          <div class="cust-table-wrap">
+            <table class="cust-table">
+              <thead><tr><th>Kode</th><th>Tipe</th><th>Jumlah</th><th>Status</th><th>Tanggal</th></tr></thead>
+              <tbody>
+                <tr><td>TRX-87651</td><td>Top Up</td><td style="color:var(--gn500); font-weight:700;">+150.000</td><td><span class="badge badge-green">Sukses</span></td><td>14 Agu 2026</td></tr>
+                <tr><td>TRX-87210</td><td>Belanja</td><td style="color:var(--red); font-weight:700;">−50.000</td><td><span class="badge badge-green">Sukses</span></td><td>14 Agu 2026</td></tr>
+                <tr><td>TRX-86933</td><td>Top Up</td><td style="color:var(--gn500); font-weight:700;">+100.000</td><td><span class="badge badge-green">Sukses</span></td><td>10 Agu 2026</td></tr>
+                <tr><td>TRX-86112</td><td>Bonus Cashback</td><td style="color:var(--gn500); font-weight:700;">+5.000</td><td><span class="badge badge-green">Sukses</span></td><td>08 Agu 2026</td></tr>
+                <tr><td>TRX-85990</td><td>Belanja</td><td style="color:var(--red); font-weight:700;">−95.000</td><td><span class="badge badge-green">Sukses</span></td><td>02 Agu 2026</td></tr>
+                <tr><td>TRX-85544</td><td>Redeem</td><td style="color:var(--red); font-weight:700;">−75.000</td><td><span class="badge badge-gray">Redeem</span></td><td>28 Jul 2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script>
+    function selectNominal(btn) {
+      document.querySelectorAll('[data-nominal]').forEach(function (b) {
+        b.classList.remove('btn-solid');
+        b.classList.add('btn-outline');
+      });
+      btn.classList.remove('btn-outline');
+      btn.classList.add('btn-solid');
+      var input = document.getElementById('topupNominal');
+      if (input) input.value = btn.getAttribute('data-nominal');
+    }
+
+    var TOPUP_REKENING = {
+      'BCA': '1234567890',
+      'BNI': '0987654321',
+      'Mandiri': '1122334455',
+      'BRI': '5566778899'
+    };
+
+    function onTopupProofChange(input) {
+      var label = document.getElementById('topupProofName');
+      if (input && input.files && input.files.length > 0) {
+        label.textContent = input.files[0].name;
+      } else {
+        label.textContent = 'Klik untuk pilih gambar bukti (JPG/PNG, maks 2MB)';
+      }
+    }
+
+    // Tampilkan no. rekening tujuan sesuai bank terpilih
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'topupBank') {
+        var val = e.target.value;
+        var rek = document.getElementById('topupRekening');
+        var num = document.getElementById('topupRekNumber');
+        if (val && TOPUP_REKENING[val]) {
+          num.textContent = val + ' ' + TOPUP_REKENING[val];
+          rek.style.display = 'block';
+        } else {
+          rek.style.display = 'none';
+        }
+      }
+    });
+
+    function topUpSekarang() {
+      var nominalInput = document.getElementById('topupNominal');
+      var nominal = parseFloat(nominalInput ? nominalInput.value : 0) || 0;
+      var bank = document.getElementById('topupBank');
+      var proof = document.getElementById('topupProof');
+
+      if (nominal <= 0) {
+        alert('Silakan pilih atau masukkan nominal terlebih dahulu!');
+        return;
+      }
+      if (nominal < 10000) {
+        alert('Minimal nominal top-up adalah Rp 10.000!');
+        return;
+      }
+      if (!bank || !bank.value) {
+        alert('Silakan pilih bank tujuan terlebih dahulu!');
+        return;
+      }
+      if (!proof.files || proof.files.length === 0) {
+        alert('Silakan upload bukti pembayaran terlebih dahulu!');
+        return;
+      }
+      alert('Top-up ' + nominal.toLocaleString('id-ID') + ' pts berhasil diproses via Transfer Bank ' + bank.value + '! Bukti pembayaran sedang diverifikasi.');
+    }
+  </script>
+</body>
+</html>

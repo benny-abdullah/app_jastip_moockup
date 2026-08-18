@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Fee — Jastip Hub</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Laporan Fee</h1>
+      <p>Fee hub 15% dari total penjualan yang diproses</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Laporan Fee</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <div class="charts-grid has-bar-last" style="grid-template-columns:1fr 1fr;">
+      <div class="chart-box">
+        <h3>Fee per Bulan</h3>
+        <div class="chart-container"><canvas id="chart-fee"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Split Fee</h3>
+        <div class="chart-container"><canvas id="chart-split"></canvas></div>
+      </div>
+    </div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Riwayat Perhitungan Fee</h3>
+        <div class="hub-panel-tools">
+          <select class="hub-select" id="feeFilter">
+            <option value="all">Semua Status</option>
+            <option>Dihitung</option><option>Disetujui</option><option>Dibayar</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Periode</th><th>Total Penjualan</th><th>Fee 15%</th><th>Status</th><th>Tanggal Bayar</th></tr></thead>
+          <tbody id="feeBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    var FEES = [
+      { periode: 'Juli 2026', total: 'Rp 325.000.000', fee: 'Rp 48.750.000', status: 'Dibayar', paid: '01 Agu 2026' },
+      { periode: 'Juni 2026', total: 'Rp 285.000.000', fee: 'Rp 42.750.000', status: 'Dibayar', paid: '01 Jul 2026' },
+      { periode: 'Mei 2026', total: 'Rp 260.000.000', fee: 'Rp 39.000.000', status: 'Dibayar', paid: '01 Jun 2026' },
+      { periode: 'Agt 2026 (s.d. 15)', total: 'Rp 172.000.000', fee: 'Rp 25.800.000', status: 'Disetujui', paid: '-' }
+    ];
+
+    var chartInst = {};
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function badge(s) {
+      var map = { 'Dibayar': 'badge-green', 'Disetujui': 'badge-blue', 'Dihitung': 'badge-yellow' };
+      return '<span class="badge ' + (map[s] || 'badge-gray') + '">' + s + '</span>';
+    }
+
+    function renderStats() {
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-file-invoice-dollar', color: '#00AA5B', label: 'Fee Bulan Ini', value: 'Rp 25.800.000' },
+        { icon: 'fa-solid fa-coins', color: '#2C7AFF', label: 'Total Penjualan', value: 'Rp 1.042.000.000' },
+        { icon: 'fa-solid fa-circle-check', color: '#F0B429', label: 'Sudah Dibayar', value: '3 periode' },
+        { icon: 'fa-solid fa-hourglass-half', color: '#A78BFA', label: 'Menunggu', value: '1 periode' }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderCharts() {
+      if (!window.Chart) return;
+      if (chartInst.fee) chartInst.fee.destroy();
+      if (chartInst.split) chartInst.split.destroy();
+
+      chartInst.fee = new Chart(document.getElementById('chart-fee'), {
+        type: 'bar',
+        data: {
+          labels: ['Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt'],
+          datasets: [{ label: 'Fee (juta Rp)', data: [30, 32, 39, 42, 48, 25], backgroundColor: '#00AA5BCC', borderRadius: 6 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, grid: { color: '#F2F4F7' } }, x: { grid: { display: false } } } }
+      });
+
+      chartInst.split = new Chart(document.getElementById('chart-split'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Fee Hub 15%', 'Fee Pusat 85%'],
+          datasets: [{ data: [15, 85], backgroundColor: ['#00AA5B', '#9CA3B0'], borderWidth: 2, borderColor: '#FFFFFF' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '65%',
+          plugins: { legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, pointStyle: 'circle', font: { size: 11 } } } } }
+      });
+    }
+
+    function renderTable() {
+      var f = document.getElementById('feeFilter');
+      var st = f ? f.value : 'all';
+      var rows = FEES.filter(function (x) { return st === 'all' || x.status === st; });
+      var body = document.getElementById('feeBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (x) {
+        return '<tr><td><strong>' + x.periode + '</strong></td><td>' + x.total + '</td><td>' + x.fee + '</td><td>' + badge(x.status) + '</td><td>' + x.paid + '</td></tr>';
+      }).join('') : '<tr><td colspan="5" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderStats(); renderCharts(); renderTable();
+      var f = document.getElementById('feeFilter'); if (f) f.addEventListener('change', renderTable);
+      var exp = document.getElementById('btnExport'); if (exp) exp.addEventListener('click', function () { showToast('Export PDF/Excel menyusul (Demo)'); });
+    });
+  </script>
+</body>
+</html>

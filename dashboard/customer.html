@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Customer — Jastip</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body data-role="customer">
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div id="sidebarOverlay"></div>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside id="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-badge">J</span>
+      <span class="logo-text">Jastip<span>.</span> Saya</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="sidebar-label">Menu Utama</p>
+      <div id="sidebarMenu"></div>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebarAvatar">?</div>
+      <div class="sidebar-user-info">
+        <p class="name" id="sidebarName">-</p>
+        <p class="role" id="sidebarRole">-</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="dash-main">
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-title">
+          <h1>Dashboard Customer</h1>
+          <p id="headerDate">-</p>
+        </div>
+      </div>
+
+      <div class="header-search">
+        <input type="search" placeholder="Cari produk, pesanan...">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+
+      <div class="header-right">
+        <a href="../customer/cart.html" class="header-icon-btn" aria-label="Keranjang">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="badge-count">3</span>
+        </a>
+        <button class="header-icon-btn" id="notifBtn" aria-label="Notifikasi">
+          <i class="fa-regular fa-bell"></i>
+          <span class="dot"></span>
+        </button>
+        <div class="header-user">
+          <div class="header-avatar" id="headerAvatar">?</div>
+          <div class="header-user-info">
+            <span class="name" id="headerName">-</span>
+            <div class="header-user-role">
+              <span class="role-badge role-customer" id="headerRole">Customer</span>
+            </div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="dash-content">
+
+      <!-- ===== WELCOME BANNER ===== -->
+      <section class="welcome-banner" id="welcomeBanner">
+        <div class="welcome-left">
+          <h2 id="welcomeTitle">Selamat Datang 👋</h2>
+          <p id="welcomeSub">Silakan lanjutkan belanja atau kelola saldo points Anda.</p>
+          <div class="welcome-actions">
+            <a href="customer-guide.html" class="btn-cust btn-cust-solid" style="background:#fff; color:#008743;"><i class="fa-solid fa-circle-info"></i> Tata Cara Penggunaan</a>
+            <a href="../customer/catalog.html" class="btn-cust btn-cust-outline"><i class="fa-solid fa-store"></i> Belanja</a>
+            <a href="../customer/points-topup.html" class="btn-cust btn-cust-outline"><i class="fa-solid fa-coins"></i> Top Up</a>
+            <a href="../customer/rewards.html" class="btn-cust btn-cust-outline"><i class="fa-solid fa-gift"></i> Reward</a>
+            <a href="../customer/orders.html" class="btn-cust btn-cust-outline"><i class="fa-solid fa-truck-fast"></i> Lacak</a>
+          </div>
+        </div>
+        <div class="welcome-right">
+          <div class="welcome-balance">
+            <p class="wb-label">Saldo Points</p>
+            <p class="wb-value">125.000 <span>pts</span></p>
+            <a href="../customer/points-topup.html" class="wb-link">+ Top Up Sekarang</a>
+          </div>
+          <div class="welcome-tier">
+            <p class="wb-label">Membership</p>
+            <p class="wb-tier"><i class="fa-solid fa-gem"></i> Gold Member</p>
+            <div class="tier-progress-bar"><div class="tier-progress-fill" style="width:75%;"></div></div>
+            <a href="../customer/profile-tier.html" class="wb-link">75% ke Platinum →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== QUICK ACTIONS ===== -->
+      <section class="quick-actions">
+        <a href="../customer/catalog.html" class="qa-item">
+          <div class="qa-icon" style="background:#E5FFF3; color:#00AA5B;"><i class="fa-solid fa-store"></i></div>
+          <span>Katalog</span>
+        </a>
+        <a href="../customer/cart.html" class="qa-item">
+          <div class="qa-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-cart-shopping"></i></div>
+          <span>Keranjang</span>
+        </a>
+        <a href="../customer/wishlists.html" class="qa-item">
+          <div class="qa-icon" style="background:#FDF2F8; color:#DB2777;"><i class="fa-regular fa-heart"></i></div>
+          <span>Wishlist</span>
+        </a>
+        <a href="../customer/product-reviews.html" class="qa-item">
+          <div class="qa-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-star"></i></div>
+          <span>Review</span>
+        </a>
+        <a href="../customer/referrals.html" class="qa-item">
+          <div class="qa-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fa-solid fa-user-plus"></i></div>
+          <span>Referral</span>
+        </a>
+        <a href="../customer/email-preferences.html" class="qa-item">
+          <div class="qa-icon" style="background:#E5FFF3; color:#008743;"><i class="fa-solid fa-envelope"></i></div>
+          <span>Email</span>
+        </a>
+      </section>
+
+      <!-- ===== STAT CARDS ===== -->
+      <div class="cards-grid" id="cardsContainer"></div>
+
+      <!-- ===== TAB SWITCHER ===== -->
+      <div class="dash-tabs">
+        <button class="dash-tab active" data-tab="ringkasan"><i class="fa-solid fa-gauge-high"></i> Ringkasan</button>
+        <button class="dash-tab" data-tab="pesanan"><i class="fa-solid fa-list-check"></i> Pesanan</button>
+        <button class="dash-tab" data-tab="aktivitas"><i class="fa-solid fa-clock-rotate-left"></i> Aktivitas</button>
+      </div>
+
+      <!-- ===== TAB: RINGKASAN ===== -->
+      <div class="tab-panel active" id="tab-ringkasan">
+        <!-- Charts -->
+        <div class="charts-grid has-bar-last">
+          <div class="chart-box">
+            <h3 id="chart-sales-title">Pengeluaran per Bulan</h3>
+            <div class="chart-container"><canvas id="chart-sales"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <h3 id="chart-orders-title">Status Pesanan</h3>
+            <div class="chart-container"><canvas id="chart-orders"></canvas></div>
+          </div>
+          <div class="chart-box wide">
+            <h3 id="chart-products-title">Riwayat Top Up Points</h3>
+            <div class="chart-container"><canvas id="chart-products"></canvas></div>
+          </div>
+        </div>
+
+        <!-- Subscription ringkas -->
+        <div class="dash-two-col">
+          <div class="cust-panel">
+            <div class="cust-panel-head"><h3>Subscription Aktif</h3><a href="../customer/subscriptions.html" class="hint">Kelola →</a></div>
+            <div class="summary-box">
+              <div class="summary-row"><span>Paket</span><span class="value">Sembako Bulanan</span></div>
+              <div class="summary-row"><span>Pengiriman Berikutnya</span><span class="value">15 Sep 2026</span></div>
+              <div class="summary-row"><span>Harga</span><span class="value">114.000 pts/bln</span></div>
+            </div>
+            <a href="../customer/subscriptions.html" class="btn-cust btn-cust-solid btn-block" style="margin-top:14px;">Lihat Subscription</a>
+          </div>
+
+          <!-- Pesanan aktif -->
+          <div class="cust-panel">
+            <div class="cust-panel-head"><h3>Pesanan Aktif</h3><a href="../customer/orders.html" class="hint">Semua →</a></div>
+            <div class="order-active-card" onclick="location.href='../customer/order-tracking.html'">
+              <div class="oac-icon" style="background:#EFF6FF; color:#2C7AFF;"><i class="fa-solid fa-truck"></i></div>
+              <div class="oac-info">
+                <p class="oac-name">ORD-2026-0814-02 · Skincare</p>
+                <p class="oac-status">● Dalam Pengiriman</p>
+              </div>
+              <div class="oac-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </div>
+            <div class="order-active-card" onclick="location.href='../customer/order-tracking.html'">
+              <div class="oac-icon" style="background:#FFFBEB; color:#F0B429;"><i class="fa-solid fa-boxes-stacked"></i></div>
+              <div class="oac-info">
+                <p class="oac-name">ORD-2026-0814-03 · Kopi</p>
+                <p class="oac-status" style="color:#B8860B;">● Diproses di Hub</p>
+              </div>
+              <div class="oac-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </div>
+            <a href="../customer/orders.html" class="btn-cust btn-cust-outline btn-block" style="margin-top:12px;">Lihat Semua Pesanan</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: PESANAN ===== -->
+      <div class="tab-panel" id="tab-pesanan">
+        <div class="table-card">
+          <div class="table-head">
+            <h3 id="tableTitle">Riwayat Pesanan</h3>
+            <div class="table-tools">
+              <div class="search-input">
+                <input type="search" id="tableSearch" placeholder="Cari data...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
+              <select id="perPageSelect" aria-label="Jumlah per halaman">
+                <option value="5">5 / hal</option>
+                <option value="10">10 / hal</option>
+                <option value="25">25 / hal</option>
+              </select>
+            </div>
+          </div>
+          <div class="chips-wrap" id="filterChips"></div>
+          <div id="tableContainer"></div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: AKTIVITAS ===== -->
+      <div class="tab-panel" id="tab-aktivitas">
+        <div class="cust-panel">
+          <div class="cust-panel-head"><h3>Aktivitas Terbaru</h3><span class="hint">8 aktivitas terakhir</span></div>
+          <div class="activity-list" id="activityList"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>

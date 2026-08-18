@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Detail Produk — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Detail Produk</h1>
+      <p>Lihat detail dan belanja produk dengan points</p>
+      <div class="cust-breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="catalog.html">Katalog</a><span>/</span><span>Beras Premium</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container">
+      <div class="pd-layout">
+        <!-- Galeri -->
+        <div>
+          <div class="pd-gallery">
+            <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&h=800&fit=crop&q=80" alt="Beras Premium 5kg">
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="cust-panel" style="margin-bottom:0;">
+          <span class="badge badge-green">Sembako</span>
+          <h2 style="margin-top:10px;">Beras Premium 5kg — Kualitas Bagus</h2>
+          <div class="pd-meta-row">
+            <span><i class="fa-solid fa-star" style="color:#F0B429;"></i> 4.8</span>
+            <span><i class="fa-solid fa-location-dot"></i> Jakarta Selatan</span>
+            <span><i class="fa-solid fa-box"></i> Stok: Tersedia</span>
+          </div>
+          <div class="pd-price">50.000 <small>pts</small></div>
+          <p class="pd-desc">
+            Beras premium kualitas bagus, hasil panen pilihan. Pulen, wangi, dan cocok untuk konsumsi keluarga sehari-hari. Dikemas higienis 5kg.
+          </p>
+          <div class="cust-panel-head" style="margin-top:16px;"><h3>Jumlah</h3></div>
+          <div class="qty-control" style="margin-bottom:16px;">
+            <button type="button" data-qty-btn="-1" aria-label="Kurangi">−</button>
+            <span data-qty>1</span>
+            <button type="button" data-qty-btn="1" aria-label="Tambah">+</button>
+          </div>
+          <div class="pd-actions">
+            <button type="button" class="btn btn-solid btn-lg" onclick="alert('Beras Premium 5kg ditambahkan ke keranjang!')"><i class="fa-solid fa-cart-plus"></i> Tambah ke Keranjang</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="alert('Ditambahkan ke wishlist! (Demo)')"><i class="fa-regular fa-heart"></i> Wishlist</button>
+          </div>
+          <p class="hint" style="margin-top:12px; font-size:12px; color:var(--nn400);">* Biaya pengiriman sudah termasuk dalam harga produk (RAB).</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script>
+    document.querySelectorAll('[data-qty-btn]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var qtyEl = this.parentElement.querySelector('[data-qty]');
+        var qty = parseInt(qtyEl.textContent, 10) || 1;
+        qty += parseInt(this.getAttribute('data-qty-btn'), 10);
+        if (qty < 1) return;
+        qtyEl.textContent = qty;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Andi Pratama",
+      "email": "admin@jastip.id",
+      "password": "admin123",
+      "role": "superadmin",
+      "position": "Superadmin / Admin Pusat",
+      "hub": "Pusat — Jakarta",
+      "joinDate": "2024-01-01",
+      "avatar": "AP"
+    },
+    {
+      "id": 2,
+      "name": "Budi Santoso",
+      "email": "hub@jastip.id",
+      "password": "hub123",
+      "role": "hub",
+      "position": "Owner Hub",
+      "hub": "Hub Jakarta Selatan",
+      "joinDate": "2024-03-15",
+      "avatar": "BS"
+    },
+    {
+      "id": 3,
+      "name": "Citra Lestari",
+      "email": "customer@jastip.id",
+      "password": "customer123",
+      "role": "customer",
+      "position": "Customer",
+      "hub": "Hub Jakarta Selatan",
+      "joinDate": "2025-06-20",
+      "avatar": "CL"
+    }
+  ]
+}

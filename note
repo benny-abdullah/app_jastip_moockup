@@ -1,0 +1,73 @@
+tambahan pada dashborad hub menu sebagai customer kelompokkan sendri menjajdi satu keloompok drodwon list dan buatkan per pagenya 
+bisa di copy dari page customer baca review.md dan view.md
+hpaus side bar menu belanja & point pada sidebar hub karena sudah masuk pad kelopok hub sebagai customer ---- selesai 
+
+next perbaikan skema sederhana portal hub untuk meanisme pengiriman dan order stok per hub yang nanti teknoeksi sama dashborad admin saolnya hub merupakan warga biasa biar mudah dalam mengoperasikan 
+untuk fitur proses WMS - Picking - Packing haous saja pada dashbaord hub 
+karena hub hanay menyalurkan saja peranya dan melaporkan barang diterima atau dikembalikan
+dari produk berlangganan dan produk dari checkout customer 
+klao dia hub sebagai customer dan checkout maka barang langsung dietrima atau dikembalikan setelah dikirm tanpa melalui hub
+
+hapus menu point of sales  --- sudah 
+
+- Plan rencana retur barang pad hub skemanaya bagaimana --- 
+
+- membuat crud dashboard staf
+- membuat crud dashboard admin
+ buat master konversi rupiah , tambahan master paket produk
+
+ ## ✅ TUGAS SELESAI — Gap Dashboard Admin & Implementasi Cetak Surat Pesanan Otomatis
+
+### Ringkasan Analisis
+
+Berdasarkan pemeriksaan menyeluruh pada dashboard role admin, saya menemukan:
+
+**1. Manajemen Pesanan (Order Management) — SUDAH ADA, PERLU PENYEMPURNAAN**
+- ✅ Riwayat pesanan Customer (checkout + paket member) ada di `customer/orders.html` + `js/order-data.js`
+- ✅ Riwayat pesanan Hub ada di `dashboard/hub/hub-orders.html`
+- ❌ Belum ada halaman manajemen pesanan **Superadmin**
+- ❌ Belum ada detail pesanan, aksi status (Konfirmasi/Proses/Kirim/Selesai), cetak invoice
+- ❌ Export CSV masih demo
+
+**2. Manajemen Pengiriman — SUDAH ADA, PERLU TAMBAHAN**
+- ✅ List delivery dari pusat + laporan penerimaan + retur 6 status lengkap
+- ❌ Belum ada cetak surat jalan & label pengiriman
+
+**3. Manajemen Pembelian ke Supplier — MODUL ADA, MENU SEBELUMNYA TIDAK TAMPIL → ✅ DIPERBAIKI**
+- 7 modul Procurement (PR, Approval PR, PO, ETA, Supplier Performance, Replenishment, Backorder) sudah ada di `superadmin-data.js`
+- ❌ Sebelumnya tidak tampil di sidebar → ✅ Kini tampil di grup baru **"Pengadaan"**
+
+**4. Cetak Surat Pesanan Otomatis — ✅ SUDAH DIIMPLEMENTASIKAN**
+
+---
+
+### Perubahan yang Dilakukan
+
+| File | Perubahan |
+|---|---|
+| **`js/superadmin-layout.js`** | ✅ Tambah group **"Pengadaan"** di sidebar superadmin (7 menu: PR, Approval PR, PO, ETA, Supplier Performance, Replenishment, Backorder) + update `FILE_TO_MENU` & `FILE_TO_GROUP` |
+| **`js/superadmin-core.js`** | ✅ Tambah fungsi **`printPurchaseOrder()`** — template surat pesanan otomatis (kop perusahaan, no PO + tanggal otomatis, data supplier, tabel item, PPN/Freight/Total, kolom TTD) + tombol printer (`fa-print`) di kolom aksi |
+| **`js/superadmin-data.js`** | ✅ Modul `purchase-orders`: tambah `hasPrint: true` + data lengkap per PO (`contact`, `supplierAddress`, `createdBy`, `approvedBy`, `items[]` dengan SKU/nama/qty/harga) |
+| **`view.md`** | ✅ Tambah **Section L — Gap Dashboard Admin & Rencana Perbaikan** (17 Agustus 2026) |
+| **`review.md`** | ✅ Tambah **Section 20 — Gap Analysis Dashboard Admin & Rencana Perbaikan** (17 Agustus 2026) |
+
+### Verifikasi
+- ✅ `node --check js/superadmin-layout.js` → OK
+- ✅ `node --check js/superadmin-core.js` → OK
+- ✅ `node --check js/superadmin-data.js` → OK
+- Semua file JS valid tanpa error
+
+### Cara Menggunakan
+1. Login sebagai **Superadmin** (`admin@jastip.id` / `admin123`)
+2. Sidebar kini memiliki menu **"Pengadaan"** di bawah Master Data
+3. Buka **Purchase Order** → setiap baris PO memiliki tombol **🖨️ (cetak)**
+4. Klik tombol cetak → template **Surat Pesanan** terbuka di window baru → otomatis muncul dialog print (`window.print()`)
+
+### Roadmap Selanjutnya (Prioritas Sedang)
+- 🟠 Halaman **Manajemen Pesanan Superadmin** (`dashboard/superadmin/orders.html`)
+- 🟠 **Detail pesanan + aksi** di hub & customer
+- 🟠 **Cetak Surat Jalan** di deliveries
+- 🟡 **Export CSV/Excel** berfungsi (ganti demo "menyusul") lanjtkan yang bekum apa imemntasikan
+
+
+ 

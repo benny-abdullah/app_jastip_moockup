@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belanja & Poin — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Belanja & Poin</h1>
+      <p>Belanja hub sebagai customer & pantau saldo poin</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Belanja & Poin</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn hub-btn-solid" id="btnTopup"><i class="fa-solid fa-coins"></i> Top Up Poin</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <!-- Saldo -->
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Saldo Points Hub</h3>
+        <p>Digunakan untuk belanja kebutuhan operasional hub</p>
+      </div>
+      <div class="hub-cards" id="saldoCards"></div>
+    </div>
+
+    <!-- Riwayat transaksi -->
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Riwayat Transaksi Poin</h3>
+        <div class="hub-panel-tools">
+          <select class="hub-select" id="trxFilter">
+            <option value="all">Semua Tipe</option>
+            <option>Top Up</option><option>Belanja</option><option>Cashback</option><option>Refund</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Tanggal</th><th>Deskripsi</th><th>Tipe</th><th>Nominal</th><th>Status</th></tr></thead>
+          <tbody id="trxBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal Top Up Poin -->
+    <div class="hub-modal" id="topupModal">
+      <div class="hub-modal-box">
+        <div class="hub-modal-head">
+          <h3>Top Up Poin</h3>
+          <button class="hub-modal-close" data-close>&times;</button>
+        </div>
+        <div class="hub-modal-body">
+          <div class="hub-form-grid">
+            <div class="hub-form-group"><label>Nominal (pts)</label><select id="tpNominal"><option>500.000</option><option>1.000.000</option><option>2.000.000</option><option>5.000.000</option></select></div>
+            <div class="hub-form-group"><label>Metode</label><select id="tpMethod"><option>Transfer Bank (BCA)</option><option>QRIS</option><option>E-Wallet</option><option>Virtual Account</option></select></div>
+            <div class="hub-form-group"><label>Deskripsi</label><input type="text" id="tpDesc" placeholder="Top Up via BCA"></div>
+          </div>
+        </div>
+        <div class="hub-modal-foot">
+          <button class="hub-btn" data-close>Batal</button>
+          <button class="hub-btn hub-btn-solid" id="btnSaveTopup"><i class="fa-solid fa-check"></i> Proses Top Up</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    var TXNS = [
+      { date: '15 Agu 2026', desc: 'Top Up via BCA', type: 'Top Up', nominal: '+2.000.000', status: 'Sukses' },
+      { date: '14 Agu 2026', desc: 'Belanja peralatan kantor', type: 'Belanja', nominal: '-350.000', status: 'Sukses' },
+      { date: '12 Agu 2026', desc: 'Cashback promo sembako', type: 'Cashback', nominal: '+15.000', status: 'Sukses' },
+      { date: '10 Agu 2026', desc: 'Refund retur delivery', type: 'Refund', nominal: '+120.000', status: 'Sukses' },
+      { date: '08 Agu 2026', desc: 'Top Up via QRIS', type: 'Top Up', nominal: '+1.000.000', status: 'Sukses' }
+    ];
+
+    var SALDO = 12750000;
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function badge(s) {
+      var map = { 'Sukses': 'badge-green', 'Pending': 'badge-yellow', 'Gagal': 'badge-red' };
+      return '<span class="badge ' + (map[s] || 'badge-gray') + '">' + s + '</span>';
+    }
+
+    function renderSaldo() {
+      var el = document.getElementById('saldoCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-wallet', color: '#00AA5B', label: 'Saldo Saat Ini', value: SALDO.toLocaleString('id-ID') + ' pts' },
+        { icon: 'fa-solid fa-arrow-trend-up', color: '#2C7AFF', label: 'Top Up Bulan Ini', value: '+3.000.000 pts' },
+        { icon: 'fa-solid fa-cart-shopping', color: '#F0B429', label: 'Belanja Bulan Ini', value: 'Rp 4.800.000' },
+        { icon: 'fa-solid fa-circle-check', color: '#A78BFA', label: 'Total Transaksi', value: TXNS.length }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderTable() {
+      var f = document.getElementById('trxFilter');
+      var type = f ? f.value : 'all';
+      var rows = TXNS.filter(function (t) { return type === 'all' || t.type === type; });
+      var body = document.getElementById('trxBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (t) {
+        var cls = t.nominal.charAt(0) === '+' ? 'badge-green' : 'badge-blue';
+        return '<tr><td>' + t.date + '</td><td>' + t.desc + '</td><td>' + t.type + '</td><td><span class="badge ' + cls + '">' + t.nominal + ' pts</span></td><td>' + badge(t.status) + '</td></tr>';
+      }).join('') : '<tr><td colspan="5" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderSaldo(); renderTable();
+      var f = document.getElementById('trxFilter'); if (f) f.addEventListener('change', renderTable);
+      document.getElementById('btnTopup').addEventListener('click', function () {
+        document.getElementById('tpNominal').value = '1.000.000';
+        document.getElementById('tpMethod').value = 'Transfer Bank (BCA)';
+        document.getElementById('tpDesc').value = '';
+        document.getElementById('topupModal').classList.add('open');
+      });
+      document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { document.getElementById('topupModal').classList.remove('open'); }); });
+      document.getElementById('btnSaveTopup').addEventListener('click', function () {
+        var nominal = parseInt(document.getElementById('tpNominal').value.replace(/[^0-9]/g, ''), 10) || 0;
+        var method = document.getElementById('tpMethod').value;
+        var desc = document.getElementById('tpDesc').value.trim() || 'Top Up via ' + method;
+        if (nominal <= 0) { showToast('Nominal tidak valid'); return; }
+        SALDO += nominal;
+        var now = new Date();
+        var date = now.getDate() + ' Agu 2026';
+        TXNS.push({ date: date, desc: desc, type: 'Top Up', nominal: '+' + nominal.toLocaleString('id-ID'), status: 'Sukses' });
+        showToast('Top up ' + nominal.toLocaleString('id-ID') + ' pts berhasil');
+        document.getElementById('topupModal').classList.remove('open');
+        renderSaldo(); renderTable();
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Review Produk — Jastip Hub</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Review Produk</h1>
+      <p>Berikan penilaian dan ulasan untuk produk yang dibeli hub</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Review Produk</span></div>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div style="display:grid; grid-template-columns: 1fr; gap:20px; align-items:start;">
+
+      <!-- Tulis Review -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Tulis Review</h3></div>
+
+        <!-- Pilih produk dari semua order selesai (belanja + paket member) -->
+        <p class="hint" id="reviewOrderInfo" style="margin-bottom:10px;">Pilih produk dari pesanan selesai untuk di-review:</p>
+        <div id="reviewProductList"></div>
+
+        <form id="reviewForm" style="margin-top:14px; border-top:1px solid var(--nn100); padding-top:16px;">
+          <input type="hidden" id="reviewTargetId" value="">
+          <div class="form-group">
+            <label>Rating Anda</label>
+            <div style="font-size:22px; color:#F0B429;" id="starRating">
+              <i class="fa-solid fa-star" data-star="1"></i>
+              <i class="fa-solid fa-star" data-star="2"></i>
+              <i class="fa-solid fa-star" data-star="3"></i>
+              <i class="fa-solid fa-star" data-star="4"></i>
+              <i class="fa-solid fa-star" data-star="5"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reviewText">Ulasan Anda</label>
+            <textarea id="reviewText" class="form-control" rows="4" placeholder="Ceritakan pengalaman Anda menggunakan produk ini..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid btn-lg"><i class="fa-solid fa-paper-plane"></i> Kirim Review</button>
+        </form>
+      </div>
+
+      <!-- Daftar Review -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Ulasan Produk</h3><span class="hint">Rata-rata: 4.8 / 5</span></div>
+        <div class="cust-table-wrap">
+          <table class="cust-table">
+            <thead><tr><th>User</th><th>Rating</th><th>Ulasan</th><th>Tanggal</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Dewi A.</strong></td><td>★★★★★</td><td>Beras pulen dan wangi. Recommended!</td><td>12 Agu 2026</td></tr>
+              <tr><td><strong>Eko S.</strong></td><td>★★★★★</td><td>Kualitas konsisten, pengiriman cepat.</td><td>10 Agu 2026</td></tr>
+              <tr><td><strong>Fitri H.</strong></td><td>★★★★☆</td><td>Bagus, tapi kemasan sedikit penyok.</td><td>05 Agu 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/order-data.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    // Isi dropdown produk yang bisa di-review dari SEMUA order selesai
+    function buildReviewedProducts() {
+      var select = document.getElementById('reviewForm');
+      if (!select) return;
+      var orders = window.JastipOrders ? window.JastipOrders.getAll() : [];
+      var container = document.getElementById('reviewProductList');
+      if (!container) return;
+
+      container.innerHTML = '';
+      var selesai = orders.filter(function (o) {
+        return o.status === 'Selesai' || o.status === 'Terkirim' || o.status === 'Terbayar';
+      });
+
+      if (selesai.length === 0) {
+        container.innerHTML = '<p class="hint">Belum ada pesanan selesai untuk di-review.</p>';
+        return;
+      }
+
+      selesai.forEach(function (o, idx) {
+        (o.produk || []).forEach(function (p) {
+          var item = document.createElement('div');
+          item.className = 'cart-item';
+          item.style.cssText = 'border:none; padding:0 0 14px; margin-bottom:10px;';
+          item.innerHTML =
+            '<div class="ci-img"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=100&h=100&fit=crop&q=80" alt="' + p.nama + '"></div>' +
+            '<div class="ci-info">' +
+            '  <p class="ci-name">' + p.nama + '</p>' +
+            '  <p class="ci-meta">Order #' + o.id + ' · ' + (o.sourceLabel || o.source) + '</p>' +
+            '</div>' +
+            '<button type="button" class="btn btn-outline" style="height:30px;" onclick="setReviewTarget(\'' + o.id + '\', \'' + p.nama.replace(/'/g, "\\'") + '\')">Pilih</button>';
+          container.appendChild(item);
+        });
+      });
+    }
+
+    function setReviewTarget(orderId, namaProduk) {
+      document.getElementById('reviewOrderInfo').textContent = 'Anda mereview: ' + namaProduk + ' · Order ' + orderId;
+      document.getElementById('reviewProductList').innerHTML = '';
+      document.getElementById('reviewProductList').innerHTML = '<div class="cart-item" style="border:none; padding:0 0 14px;"><div class="ci-info"><p class="ci-name">' + namaProduk + '</p><p class="ci-meta">Order #' + orderId + '</p></div></div>';
+      document.getElementById('reviewTargetId').value = orderId;
+    }
+
+    document.addEventListener('DOMContentLoaded', buildReviewedProducts);
+
+    // Star rating demo
+    var selected = 0;
+    document.querySelectorAll('#starRating i').forEach(function (star) {
+      star.addEventListener('mouseenter', function () {
+        var val = parseInt(this.getAttribute('data-star'), 10);
+        document.querySelectorAll('#starRating i').forEach(function (s) {
+          s.style.opacity = parseInt(s.getAttribute('data-star'), 10) <= val ? '1' : '0.3';
+        });
+      });
+      star.addEventListener('click', function () {
+        selected = parseInt(this.getAttribute('data-star'), 10);
+        document.querySelectorAll('#starRating i').forEach(function (s) {
+          s.style.opacity = parseInt(s.getAttribute('data-star'), 10) <= selected ? '1' : '0.3';
+        });
+      });
+    });
+    document.getElementById('reviewForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (selected === 0) { alert('Pilih rating terlebih dahulu! (Demo)'); return; }
+      alert('Review berhasil dikirim! Rating: ' + selected + ' bintang. (Demo)');
+      this.reset();
+      document.querySelectorAll('#starRating i').forEach(function (s) { s.style.opacity = '1'; });
+      selected = 0;
+    });
+  </script>
+</body>
+</html>

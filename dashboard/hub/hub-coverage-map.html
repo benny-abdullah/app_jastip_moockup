@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peta Jangkauan Hub — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Peta Jangkauan Hub</h1>
+      <p>Visualisasi radius layanan hub (10 km) & sebaran customer</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Peta Jangkauan Hub</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+      <button class="hub-btn hub-btn-solid" id="btnRefresh"><i class="fa-solid fa-rotate"></i> Muat Ulang</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <!-- Peta + Info Hub -->
+    <div class="hub-two-col" style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:16px;">
+      <!-- Peta SVG -->
+      <div class="hub-panel">
+        <div class="hub-panel-head">
+          <div>
+            <h3><i class="fa-solid fa-map-location-dot" style="color:#00AA5B;"></i> Peta Jangkauan</h3>
+            <p>Lingkaran hijau = radius layanan hub · Titik = customer & zona</p>
+          </div>
+          <div class="hub-panel-tools">
+            <span class="hub-radius-label" style="background:#E5FFF3;color:#008743;padding:6px 12px;border-radius:20px;font-weight:bold;font-size:13px;"><i class="fa-solid fa-lock"></i> Radius: 10 km</span>
+          </div>
+        </div>
+        <div class="hub-map-wrap" style="position:relative;background:#EAF4EE;border-radius:10px;overflow:hidden;min-height:420px;">
+          <svg id="coverageSvg" viewBox="0 0 600 420" style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grid latar -->
+            <defs>
+              <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#C9E3D3" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="600" height="420" fill="url(#grid)"/>
+
+            <!-- Lingkaran radius (di-update JS) -->
+            <circle id="radiusCircle" cx="300" cy="210" r="150" fill="rgba(0,170,91,0.12)" stroke="#00AA5B" stroke-width="2" stroke-dasharray="6 4"/>
+            <circle id="radiusCircleInner" cx="300" cy="210" r="150" fill="none" stroke="#00AA5B" stroke-width="1" opacity="0.4"/>
+
+            <!-- Label radius -->
+            <text id="radiusLabel" x="300" y="205" text-anchor="middle" fill="#008743" font-size="12" font-weight="bold">10 km</text>
+
+            <!-- Tooltip info customer -->
+            <g id="custTooltip" style="display:none;">
+              <rect id="tooltipBg" x="0" y="0" width="180" height="90" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+              <text id="tooltipName" x="10" y="20" fill="#333" font-size="12" font-weight="bold"></text>
+              <text id="tooltipArea" x="10" y="38" fill="#777" font-size="10"></text>
+              <text id="tooltipDist" x="10" y="54" fill="#00AA5B" font-size="10" font-weight="bold"></text>
+              <text id="tooltipZone" x="10" y="70" fill="#2C7AFF" font-size="10"></text>
+              <text id="tooltipTier" x="10" y="84" fill="#F0B429" font-size="10"></text>
+            </g>
+
+            <!-- Marker customer (di-render JS) -->
+            <g id="customerMarkers"></g>
+            <!-- Marker zona (di-render JS) -->
+            <g id="zoneMarkers"></g>
+
+            <!-- Pusat Hub -->
+            <g id="hubCenter">
+              <circle cx="300" cy="210" r="14" fill="#00AA5B" stroke="#fff" stroke-width="3"/>
+              <circle cx="300" cy="210" r="5" fill="#fff"/>
+              <text x="300" y="195" text-anchor="middle" fill="#008743" font-size="11" font-weight="bold">HUB</text>
+            </g>
+          </svg>
+          <!-- Legenda -->
+          <div style="position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,0.92);border-radius:8px;padding:8px 12px;font-size:12px;box-shadow:0 1px 4px rgba(0,0,0,0.1);">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#00AA5B;display:inline-block;"></span> Customer dalam jangkauan</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#F94D63;display:inline-block;"></span> Customer di luar jangkauan</div>
+            <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#2C7AFF;display:inline-block;"></span> Zona pengiriman</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Hub -->
+      <div>
+        <div class="hub-panel" style="margin-bottom:16px;">
+          <div class="hub-panel-head"><h3><i class="fa-solid fa-store" style="color:#00AA5B;"></i> Info Hub</h3></div>
+          <div id="hubInfo" style="padding:4px 0;"></div>
+        </div>
+        <div class="hub-panel">
+          <div class="hub-panel-head"><h3><i class="fa-solid fa-circle-info" style="color:#2C7AFF;"></i> Tentang Radius</h3></div>
+          <div style="font-size:13px;line-height:1.7;color:#555;">
+            <p>Setiap hub melayani area dalam radius <strong>10 km</strong> dari titik pusatnya. Customer di luar radius akan diarahkan ke hub terdekat lainnya.</p>
+            <p style="margin-top:8px;">Klik titik customer pada peta untuk melihat detail informasi customer.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabel Customer dalam Jangkauan -->
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Customer dalam Jangkauan</h3>
+        <div class="hub-panel-tools">
+          <div class="hub-search-box"><input type="search" id="custSearch" placeholder="Cari customer..."><i class="fa-solid fa-magnifying-glass"></i></div>
+          <select class="hub-select" id="rangeFilter">
+            <option value="all">Semua</option>
+            <option value="in">Dalam Jangkauan</option>
+            <option value="out">Luar Jangkauan</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Customer</th><th>Area</th><th>Jarak dari Hub</th><th>Status</th><th>Zona</th></tr></thead>
+          <tbody id="custBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    /* ============ DATA HUB & CUSTOMER (fallback inline) ============ */
+    var HUB = {
+      name: 'Hub Jakarta Selatan',
+      address: 'Jl. Kemang Raya No. 12, Jakarta Selatan',
+      city: 'Jakarta Selatan',
+      lat: -6.2607,
+      lng: 106.8106,
+      radiusKm: 10
+    };
+
+    // Posisi relatif (x,y) dalam SVG 600x420 — pusat hub di (300,210)
+    // Jarak dihitung dari koordinat relatif (1 unit ≈ 0.1 km)
+    var CUSTOMERS = [
+      { name: 'Citra Lestari', area: 'Tebet', x: 250, y: 180, tier: 'Gold', status: 'Aktif', zone: 'Zona A' },
+      { name: 'Maya Sari', area: 'Kemang', x: 320, y: 200, tier: 'Platinum', status: 'Aktif', zone: 'Zona A' },
+      { name: 'Bambang', area: 'Mampang', x: 280, y: 240, tier: 'Silver', status: 'Aktif', zone: 'Zona A' },
+      { name: 'Rina Amelia', area: 'Fatmawati', x: 340, y: 260, tier: 'Gold', status: 'Nonaktif', zone: 'Zona B' },
+      { name: 'Agus Salim', area: 'Cinere', x: 380, y: 300, tier: 'Silver', status: 'Aktif', zone: 'Zona D' },
+      { name: 'Dewi Anggraini', area: 'Setiabudi', x: 220, y: 160, tier: 'Gold', status: 'Aktif', zone: 'Zona A' },
+      { name: 'Hendra Wijaya', area: 'Jagakarsa', x: 360, y: 320, tier: 'Silver', status: 'Aktif', zone: 'Zona B' },
+      { name: 'Sari Dewi', area: 'Cilandak', x: 330, y: 280, tier: 'Platinum', status: 'Aktif', zone: 'Zona B' },
+      { name: 'Fajar Nugroho', area: 'Bogor', x: 450, y: 350, tier: 'Silver', status: 'Aktif', zone: 'Zona E' },
+      { name: 'Lina Marlina', area: 'Bekasi', x: 480, y: 120, tier: 'Gold', status: 'Nonaktif', zone: 'Zona E' },
+      { name: 'Rudi Hartono', area: 'Depok', x: 420, y: 330, tier: 'Silver', status: 'Aktif', zone: 'Zona D' },
+      { name: 'Nina Suryani', area: 'Kebayoran', x: 290, y: 250, tier: 'Gold', status: 'Aktif', zone: 'Zona B' }
+    ];
+
+    var ZONES = [
+      { name: 'Zona A', x: 280, y: 200, color: '#2C7AFF' },
+      { name: 'Zona B', x: 340, y: 280, color: '#2C7AFF' },
+      { name: 'Zona D', x: 420, y: 330, color: '#2C7AFF' },
+      { name: 'Zona E', x: 460, y: 130, color: '#2C7AFF' }
+    ];
+
+    var HUB_CENTER = { x: 300, y: 210 };
+    var KM_PER_UNIT = 0.1; // 1 unit SVG ≈ 0.1 km
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function calcDistance(cx, cy, px, py) {
+      return Math.sqrt(Math.pow(px - cx, 2) + Math.pow(py - cy, 2)) * KM_PER_UNIT;
+    }
+
+    function getRadiusPx(radiusKm) {
+      return radiusKm / KM_PER_UNIT;
+    }
+
+    function renderStats(radiusKm) {
+      var inRange = CUSTOMERS.filter(function (c) { return calcDistance(HUB_CENTER.x, HUB_CENTER.y, c.x, c.y) <= radiusKm; }).length;
+      var activeZones = ZONES.length;
+      var area = Math.PI * Math.pow(radiusKm, 2);
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-map-location-dot', color: '#00AA5B', label: 'Radius Layanan', value: radiusKm + ' km' },
+        { icon: 'fa-solid fa-user-group', color: '#2C7AFF', label: 'Customer Dalam Jangkauan', value: inRange + ' / ' + CUSTOMERS.length },
+        { icon: 'fa-solid fa-location-dot', color: '#A78BFA', label: 'Zona Aktif', value: activeZones },
+        { icon: 'fa-solid fa-draw-polygon', color: '#F0B429', label: 'Luas Cakupan', value: area.toFixed(0) + ' km²' }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderMap(radiusKm) {
+      var rPx = getRadiusPx(radiusKm);
+      var circle = document.getElementById('radiusCircle');
+      var circleInner = document.getElementById('radiusCircleInner');
+      var label = document.getElementById('radiusLabel');
+      if (circle) { circle.setAttribute('r', rPx); }
+      if (circleInner) { circleInner.setAttribute('r', rPx); }
+      if (label) { label.textContent = radiusKm + ' km'; }
+
+      // Customer markers (klik → tampilkan info)
+      var custG = document.getElementById('customerMarkers');
+      if (custG) {
+        custG.innerHTML = CUSTOMERS.map(function (c) {
+          var dist = calcDistance(HUB_CENTER.x, HUB_CENTER.y, c.x, c.y);
+          var inRange = dist <= radiusKm;
+          var color = inRange ? '#00AA5B' : '#F94D63';
+          return '<g class="cust-marker" data-name="' + c.name + '" data-area="' + c.area + '" data-dist="' + dist.toFixed(1) + '" data-zone="' + c.zone + '" data-tier="' + c.tier + '" data-status="' + c.status + '" style="cursor:pointer;">' +
+            '<circle cx="' + c.x + '" cy="' + c.y + '" r="7" fill="' + color + '" stroke="#fff" stroke-width="2"/>' +
+            '<text x="' + c.x + '" y="' + (c.y - 10) + '" text-anchor="middle" fill="#333" font-size="9">' + c.name.split(' ')[0] + '</text>' +
+            '</g>';
+        }).join('');
+
+        // Bind klik pada marker
+        Array.prototype.forEach.call(custG.querySelectorAll('.cust-marker'), function (g) {
+          g.addEventListener('click', function (e) {
+            e.stopPropagation();
+            showCustTooltip(this);
+          });
+        });
+      }
+
+      // Zone markers
+      var zoneG = document.getElementById('zoneMarkers');
+      if (zoneG) {
+        zoneG.innerHTML = ZONES.map(function (z) {
+          return '<g>' +
+            '<rect x="' + (z.x - 8) + '" y="' + (z.y - 8) + '" width="16" height="16" rx="3" fill="' + z.color + '" stroke="#fff" stroke-width="1.5"/>' +
+            '<text x="' + z.x + '" y="' + (z.y + 3) + '" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">Z</text>' +
+            '<text x="' + z.x + '" y="' + (z.y + 20) + '" text-anchor="middle" fill="#2C7AFF" font-size="9" font-weight="bold">' + z.name + '</text>' +
+            '</g>';
+        }).join('');
+      }
+    }
+
+    function showCustTooltip(marker) {
+      var tooltip = document.getElementById('custTooltip');
+      if (!tooltip) return;
+      var name = marker.getAttribute('data-name');
+      var area = marker.getAttribute('data-area');
+      var dist = marker.getAttribute('data-dist');
+      var zone = marker.getAttribute('data-zone');
+      var tier = marker.getAttribute('data-tier');
+      var status = marker.getAttribute('data-status');
+      var cx = parseFloat(marker.querySelector('circle').getAttribute('cx'));
+      var cy = parseFloat(marker.querySelector('circle').getAttribute('cy'));
+
+      document.getElementById('tooltipName').textContent = name;
+      document.getElementById('tooltipArea').textContent = '📍 ' + area;
+      document.getElementById('tooltipDist').textContent = '📏 ' + dist + ' km dari hub';
+      document.getElementById('tooltipZone').textContent = '🚚 ' + zone;
+      document.getElementById('tooltipTier').textContent = '💎 ' + tier + ' · ' + status;
+
+      // Posisi tooltip di samping marker (hindari keluar viewBox)
+      var tx = cx + 12;
+      var ty = cy - 40;
+      if (tx + 180 > 600) tx = cx - 192;
+      if (ty < 0) ty = cy + 12;
+      tooltip.setAttribute('transform', 'translate(' + tx + ',' + ty + ')');
+      tooltip.style.display = 'block';
+    }
+
+    function hideCustTooltip() {
+      var tooltip = document.getElementById('custTooltip');
+      if (tooltip) tooltip.style.display = 'none';
+    }
+
+    function renderHubInfo() {
+      var el = document.getElementById('hubInfo');
+      if (!el) return;
+      el.innerHTML =
+        '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">' +
+        '  <div class="hub-avatar-sm" style="width:44px;height:44px;background:#E5FFF3;color:#00AA5B;font-size:18px;"><i class="fa-solid fa-store"></i></div>' +
+        '  <div><strong style="font-size:15px;">' + HUB.name + '</strong><br><span style="font-size:12px;color:#777;">' + HUB.city + '</span></div>' +
+        '</div>' +
+        '<div style="font-size:13px;line-height:2;">' +
+        '  <div><i class="fa-solid fa-location-dot" style="color:#00AA5B;width:18px;"></i> ' + HUB.address + '</div>' +
+        '  <div><i class="fa-solid fa-globe" style="color:#2C7AFF;width:18px;"></i> ' + HUB.lat + ', ' + HUB.lng + '</div>' +
+        '  <div><i class="fa-solid fa-circle-dot" style="color:#A78BFA;width:18px;"></i> Radius layanan: <strong>' + HUB.radiusKm + ' km</strong></div>' +
+        '  <div><i class="fa-solid fa-users" style="color:#F0B429;width:18px;"></i> Customer terdaftar: <strong>' + CUSTOMERS.length + '</strong></div>' +
+        '</div>';
+    }
+
+    function renderTable(radiusKm) {
+      var s = document.getElementById('custSearch');
+      var f = document.getElementById('rangeFilter');
+      var q = s ? s.value.toLowerCase() : '';
+      var range = f ? f.value : 'all';
+      var rows = CUSTOMERS.map(function (c) {
+        var dist = calcDistance(HUB_CENTER.x, HUB_CENTER.y, c.x, c.y);
+        return { name: c.name, area: c.area, dist: dist, inRange: dist <= radiusKm, status: c.status, zone: c.zone };
+      }).filter(function (c) {
+        var okR = range === 'all' || (range === 'in' && c.inRange) || (range === 'out' && !c.inRange);
+        var okQ = !q || c.name.toLowerCase().indexOf(q) !== -1 || c.area.toLowerCase().indexOf(q) !== -1;
+        return okR && okQ;
+      }).sort(function (a, b) { return a.dist - b.dist; });
+
+      var body = document.getElementById('custBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (c) {
+        return '<tr>' +
+          '<td><strong>' + c.name + '</strong></td>' +
+          '<td>' + c.area + '</td>' +
+          '<td>' + c.dist.toFixed(1) + ' km</td>' +
+          '<td><span class="badge ' + (c.inRange ? 'badge-green' : 'badge-red') + '">' + (c.inRange ? 'Dalam Jangkauan' : 'Luar Jangkauan') + '</span></td>' +
+          '<td>' + c.zone + '</td>' +
+          '</tr>';
+      }).join('') : '<tr><td colspan="5" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    function refreshAll() {
+      var radius = HUB.radiusKm; // Radius dikunci 10 km
+      renderStats(radius);
+      renderMap(radius);
+      renderTable(radius);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderHubInfo();
+      refreshAll();
+
+      // Klik di luar marker → sembunyikan tooltip
+      var svg = document.getElementById('coverageSvg');
+      if (svg) svg.addEventListener('click', function (e) {
+        if (!e.target.closest('.cust-marker')) hideCustTooltip();
+      });
+
+      var s = document.getElementById('custSearch');
+      if (s) s.addEventListener('input', function () { renderTable(HUB.radiusKm); });
+
+      var f = document.getElementById('rangeFilter');
+      if (f) f.addEventListener('change', function () { renderTable(HUB.radiusKm); });
+
+      var exp = document.getElementById('btnExport');
+      if (exp) exp.addEventListener('click', function () { showToast('Export menyusul (Demo)'); });
+
+      var ref = document.getElementById('btnRefresh');
+      if (ref) ref.addEventListener('click', function () { refreshAll(); hideCustTooltip(); showToast('Peta dimuat ulang'); });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Keranjang — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <!-- KEPALA HALAMAN -->
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Keranjang Belanja</h1>
+      <p>Periksa dan selesaikan belanja Anda</p>
+      <div class="cust-breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="catalog.html">Katalog</a><span>/</span><span>Keranjang</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container">
+      <div style="display:grid; grid-template-columns: 1fr; gap: 20px; align-items:start;">
+        <div>
+          <div class="cust-panel">
+            <div class="cust-panel-head"><h3>Daftar Produk</h3></div>
+            <div id="cartItems">
+              <!-- Item 1 -->
+              <div class="cart-item" data-price="50000" data-qty="2">
+                <div class="ci-img"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200&h=200&fit=crop&q=80" alt="Beras Premium"></div>
+                <div class="ci-info">
+                  <p class="ci-name">Beras Premium 5kg</p>
+                  <p class="ci-meta">Sembako · Jakarta Selatan</p>
+                  <p class="ci-price" data-base="50000">50.000 <small>pts</small></p>
+                </div>
+                <div class="qty-control">
+                  <button type="button" data-qty-btn="-1" aria-label="Kurangi">−</button>
+                  <span data-qty>2</span>
+                  <button type="button" data-qty-btn="1" aria-label="Tambah">+</button>
+                </div>
+                <button type="button" class="ci-remove" data-remove>Hapus</button>
+              </div>
+              <!-- Item 2 -->
+              <div class="cart-item" data-price="28000" data-qty="1">
+                <div class="ci-img"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=200&h=200&fit=crop&q=80" alt="Minyak Goreng"></div>
+                <div class="ci-info">
+                  <p class="ci-name">Minyak Goreng 2L</p>
+                  <p class="ci-meta">Sembako · Jakarta Selatan</p>
+                  <p class="ci-price" data-base="28000">28.000 <small>pts</small></p>
+                </div>
+                <div class="qty-control">
+                  <button type="button" data-qty-btn="-1" aria-label="Kurangi">−</button>
+                  <span data-qty>1</span>
+                  <button type="button" data-qty-btn="1" aria-label="Tambah">+</button>
+                </div>
+                <button type="button" class="ci-remove" data-remove>Hapus</button>
+              </div>
+              <!-- Item 3 -->
+              <div class="cart-item" data-price="85000" data-qty="1">
+                <div class="ci-img"><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=200&h=200&fit=crop&q=80" alt="Power Bank"></div>
+                <div class="ci-info">
+                  <p class="ci-name">Power Bank 20000mAh</p>
+                  <p class="ci-meta">Elektronik · Jakarta Timur</p>
+                  <p class="ci-price" data-base="85000">85.000 <small>pts</small></p>
+                </div>
+                <div class="qty-control">
+                  <button type="button" data-qty-btn="-1" aria-label="Kurangi">−</button>
+                  <span data-qty>1</span>
+                  <button type="button" data-qty-btn="1" aria-label="Tambah">+</button>
+                </div>
+                <button type="button" class="ci-remove" data-remove>Hapus</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ringkasan -->
+        <div>
+          <div class="cust-panel">
+            <div class="cust-panel-head"><h3>Ringkasan Belanja</h3></div>
+            <div class="summary-box">
+              <div class="summary-row"><span>Subtotal</span><span class="value" id="subtotal">163.000 pts</span></div>
+              <div class="summary-row"><span>Biaya Pengiriman</span><span class="value">Gratis</span></div>
+              <div class="summary-row"><span>Diskon</span><span class="value">0 pts</span></div>
+              <div class="summary-row total"><span>Total</span><span id="total">163.000 pts</span></div>
+            </div>
+            <a href="checkout.html" class="btn btn-solid btn-block btn-lg" style="margin-top:14px;">Lanjut ke Checkout</a>
+            <a href="catalog.html" class="btn btn-secondary btn-block" style="margin-top:8px;">Lanjut Belanja</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script>
+    // Qty control + hapus + hitung total (statis demo)
+    document.querySelectorAll('[data-qty-btn]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = this.closest('.cart-item');
+        var qtyEl = item.querySelector('[data-qty]');
+        var qty = parseInt(qtyEl.textContent, 10) || 1;
+        qty += parseInt(this.getAttribute('data-qty-btn'), 10);
+        if (qty < 1) return;
+        qtyEl.textContent = qty;
+        updateCart();
+      });
+    });
+    document.querySelectorAll('[data-remove]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        this.closest('.cart-item').remove();
+        updateCart();
+      });
+    });
+    function fmt(n) { return n.toLocaleString('id-ID'); }
+    function updateCart() {
+      var total = 0;
+      document.querySelectorAll('.cart-item').forEach(function (item) {
+        var price = parseInt(item.getAttribute('data-price'), 10) || 0;
+        var qty = parseInt(item.querySelector('[data-qty]').textContent, 10) || 1;
+        total += price * qty;
+        var priceEl = item.querySelector('.ci-price');
+        if (priceEl) priceEl.innerHTML = fmt(price * qty) + ' <small>pts</small>';
+      });
+      var subtotal = document.getElementById('subtotal');
+      var totalEl = document.getElementById('total');
+      if (subtotal) subtotal.textContent = fmt(total) + ' pts';
+      if (totalEl) totalEl.textContent = fmt(total) + ' pts';
+    }
+  </script>
+</body>
+</html>

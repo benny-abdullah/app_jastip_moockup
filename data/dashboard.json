@@ -1,0 +1,131 @@
+{
+  "superadmin": {
+    "cards": [
+      { "id": 1, "icon": "fa-solid fa-dollar-sign", "color": "#00AA5B", "label": "Total Penjualan", "value": "Rp 1.250.000.000", "change": 12.5, "changeLabel": "vs bulan lalu", "positive": true },
+      { "id": 2, "icon": "fa-solid fa-cart-shopping", "color": "#2C7AFF", "label": "Total Order", "value": "24.560", "change": 8.2, "changeLabel": "vs bulan lalu", "positive": true },
+      { "id": 3, "icon": "fa-solid fa-users", "color": "#A78BFA", "label": "Customer Aktif", "value": "50.320", "change": 4.7, "changeLabel": "vs bulan lalu", "positive": true },
+      { "id": 4, "icon": "fa-solid fa-warehouse", "color": "#F0B429", "label": "Hub Aktif", "value": "100", "change": 2.0, "changeLabel": "vs bulan lalu", "positive": true }
+    ],
+    "charts": {
+      "sales": {
+        "type": "line",
+        "label": "Penjualan per Bulan",
+        "labels": ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu"],
+        "datasets": [{ "label": "Penjualan (juta Rp)", "data": [780, 820, 910, 870, 960, 1050, 1120, 1250], "color": "#00AA5B" }]
+      },
+      "orders": {
+        "type": "doughnut",
+        "label": "Status Order",
+        "labels": ["Selesai", "Diproses", "Dikirim", "Batal"],
+        "datasets": [{ "data": [15420, 4320, 3280, 1540], "colors": ["#00AA5B", "#2C7AFF", "#F0B429", "#F94D63"] }]
+      },
+      "products": {
+        "type": "bar",
+        "label": "Top 5 Produk Terlaris",
+        "labels": ["Beras 5kg", "Minyak 2L", "Skincare", "Kopi Arabika", "Power Bank"],
+        "datasets": [{ "data": [5200, 4800, 3600, 2900, 2400], "color": "#00AA5B" }]
+      }
+    },
+    "tables": {
+      "recentOrders": {
+        "title": "Order Terbaru",
+        "columns": ["Order ID", "Customer", "Produk", "Total", "Status", "Tanggal"],
+        "rows": [
+          ["ORD-2026-0814-01", "Citra Lestari", "Beras Premium 5kg", "50.000 pts", "Selesai", "14 Agu 2026"],
+          ["ORD-2026-0814-02", "Dewi Anggraini", "Skincare Set", "150.000 pts", "Dikirim", "14 Agu 2026"],
+          ["ORD-2026-0814-03", "Eko Saputra", "Power Bank", "85.000 pts", "Diproses", "13 Agu 2026"],
+          ["ORD-2026-0814-04", "Fitri Handayani", "Kopi Arabika", "95.000 pts", "Selesai", "13 Agu 2026"],
+          ["ORD-2026-0814-05", "Galih Prakoso", "Kaos Polos", "35.000 pts", "Dibatalkan", "12 Agu 2026"],
+          ["ORD-2026-0814-06", "Hendra Wijaya", "Backpack 40L", "120.000 pts", "Selesai", "12 Agu 2026"],
+          ["ORD-2026-0814-07", "Indah Permata", "Voucher 100rb", "75.000 pts", "Diproses", "11 Agu 2026"],
+          ["ORD-2026-0814-08", "Joko Susilo", "Minyak Goreng 2L", "28.000 pts", "Selesai", "11 Agu 2026"],
+          ["ORD-2026-0814-09", "Kartika Dewi", "Parfum 100ml", "180.000 pts", "Dikirim", "10 Agu 2026"],
+          ["ORD-2026-0814-10", "Lukman Hakim", "Vacuum Cleaner", "250.000 pts", "Selesai", "10 Agu 2026"]
+        ]
+      }
+    }
+  },
+  "hub": {
+    "cards": [
+      { "id": 1, "icon": "fa-solid fa-coins", "color": "#00AA5B", "label": "Pendapatan Hub", "value": "Rp 325.000.000", "change": 10.2, "changeLabel": "vs bulan lalu", "positive": true },
+      { "id": 2, "icon": "fa-solid fa-boxes-stacked", "color": "#2C7AFF", "label": "Stok Tersedia", "value": "8.420", "change": -3.1, "changeLabel": "vs bulan lalu", "positive": false },
+      { "id": 3, "icon": "fa-solid fa-truck-fast", "color": "#A78BFA", "label": "Delivery Aktif", "value": "128", "change": 15.0, "changeLabel": "vs bulan lalu", "positive": true },
+      { "id": 4, "icon": "fa-solid fa-users", "color": "#F0B429", "label": "Customer Terdaftar", "value": "5.240", "change": 6.8, "changeLabel": "vs bulan lalu", "positive": true }
+    ],
+    "charts": {
+      "sales": {
+        "type": "line",
+        "label": "Penjualan Hub per Bulan",
+        "labels": ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu"],
+        "datasets": [{ "label": "Penjualan (juta Rp)", "data": [190, 210, 235, 220, 260, 285, 300, 325], "color": "#00AA5B" }]
+      },
+      "orders": {
+        "type": "doughnut",
+        "label": "Status Delivery",
+        "labels": ["Terantar", "Dalam Perjalanan", "Menunggu", "Gagal"],
+        "datasets": [{ "data": [980, 128, 54, 12], "colors": ["#00AA5B", "#2C7AFF", "#F0B429", "#F94D63"] }]
+      },
+      "products": {
+        "type": "bar",
+        "label": "Stok per Kategori",
+        "labels": ["Sembako", "Elektronik", "Fashion", "Kecantikan", "Peralatan"],
+        "datasets": [{ "data": [3200, 1250, 980, 760, 540], "color": "#2C7AFF" }]
+      }
+    },
+    "tables": {
+      "recentOrders": {
+        "title": "Order Terbaru di Hub",
+        "columns": ["Order ID", "Customer", "Produk", "Total", "Status", "Tanggal"],
+        "rows": [
+          ["ORD-2026-0814-01", "Citra Lestari", "Beras Premium 5kg", "50.000 pts", "Terantar", "14 Agu 2026"],
+          ["ORD-2026-0814-02", "Maya Sari", "Minyak Goreng 2L", "28.000 pts", "Dalam Perjalanan", "14 Agu 2026"],
+          ["ORD-2026-0814-03", "Bambang", "Skincare Set", "150.000 pts", "Menunggu", "13 Agu 2026"],
+          ["ORD-2026-0814-04", "Rina Amelia", "Kopi Arabika", "95.000 pts", "Terantar", "13 Agu 2026"],
+          ["ORD-2026-0814-05", "Agus Salim", "Kaos Polos", "35.000 pts", "Gagal", "12 Agu 2026"],
+          ["ORD-2026-0814-06", "Sari Dewi", "Backpack 40L", "120.000 pts", "Terantar", "12 Agu 2026"]
+        ]
+      }
+    }
+  },
+  "customer": {
+    "cards": [
+      { "id": 1, "icon": "fa-solid fa-coins", "color": "#00AA5B", "label": "Saldo Points", "value": "125.000 pts", "change": 15.0, "changeLabel": "dari top-up terakhir", "positive": true },
+      { "id": 2, "icon": "fa-solid fa-cart-shopping", "color": "#2C7AFF", "label": "Total Pesanan", "value": "24", "change": 3.0, "changeLabel": "bulan ini", "positive": true },
+      { "id": 3, "icon": "fa-solid fa-truck", "color": "#A78BFA", "label": "Pengiriman Aktif", "value": "2", "change": 0, "changeLabel": "dalam perjalanan", "positive": true },
+      { "id": 4, "icon": "fa-solid fa-gem", "color": "#F0B429", "label": "Tier Membership", "value": "Gold", "change": 75, "changeLabel": "progress ke Platinum", "positive": true }
+    ],
+    "charts": {
+      "sales": {
+        "type": "line",
+        "label": "Pengeluaran per Bulan",
+        "labels": ["Mar", "Apr", "Mei", "Jun", "Jul", "Agu"],
+        "datasets": [{ "label": "Belanja (ribu pts)", "data": [60, 45, 80, 50, 95, 125], "color": "#00AA5B" }]
+      },
+      "orders": {
+        "type": "doughnut",
+        "label": "Status Pesanan",
+        "labels": ["Selesai", "Dikirim", "Diproses"],
+        "datasets": [{ "data": [18, 2, 4], "colors": ["#00AA5B", "#2C7AFF", "#F0B429"] }]
+      },
+      "products": {
+        "type": "bar",
+        "label": "Riwayat Top Up Points",
+        "labels": ["Agu", "Jul", "Jun", "Mei"],
+        "datasets": [{ "data": [150, 100, 100, 100], "color": "#A78BFA" }]
+      }
+    },
+    "tables": {
+      "recentOrders": {
+        "title": "Riwayat Pesanan",
+        "columns": ["Order ID", "Produk", "Total", "Status", "Tanggal"],
+        "rows": [
+          ["ORD-2026-0814-01", "Beras Premium 5kg", "50.000 pts", "Selesai", "14 Agu 2026"],
+          ["ORD-2026-0814-02", "Skincare Set Premium", "150.000 pts", "Dikirim", "13 Agu 2026"],
+          ["ORD-2026-0814-03", "Kopi Arabika 1kg", "95.000 pts", "Selesai", "10 Agu 2026"],
+          ["ORD-2026-0814-04", "Minyak Goreng 2L", "28.000 pts", "Diproses", "08 Agu 2026"],
+          ["ORD-2026-0814-05", "Voucher Belanja", "75.000 pts", "Selesai", "02 Agu 2026"]
+        ]
+      }
+    }
+  }
+}

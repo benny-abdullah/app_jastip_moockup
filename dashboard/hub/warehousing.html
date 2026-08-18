@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stok Hub — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Stok Hub</h1>
+      <p>Pantau stok produk yang diterima dari pusat & buat order stok</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Stok Hub</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+      <button class="hub-btn hub-btn-solid" id="btnOrder"><i class="fa-solid fa-truck-ramp-box"></i> Order Stok</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <div><h3>Stok Menipis (&#8804; ROP)</h3><p>Produk di bawah reorder point — segera order stok ke pusat</p></div>
+      </div>
+      <div id="alertList"></div>
+    </div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Stok Produk Hub</h3>
+        <div class="hub-panel-tools">
+          <div class="hub-search-box"><input type="search" id="stockSearch" placeholder="Cari produk..."><i class="fa-solid fa-magnifying-glass"></i></div>
+          <select class="hub-select" id="catFilter">
+            <option value="all">Semua Kategori</option>
+            <option>Sembako</option><option>Elektronik</option><option>Fashion</option><option>Kecantikan</option><option>Peralatan</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Produk</th><th>Kategori</th><th>Stok</th><th>ROP</th><th>Satuan</th><th>Status</th></tr></thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal Buat Order Stok -->
+    <div class="hub-modal" id="orderModal">
+      <div class="hub-modal-box">
+        <div class="hub-modal-head">
+          <h3>Buat Order Stok</h3>
+          <button class="hub-modal-close" data-close>&times;</button>
+        </div>
+        <div class="hub-modal-body">
+          <div class="hub-form-grid">
+            <div class="hub-form-group"><label>Produk</label><select id="oProduct"><option>Beras Premium 5kg</option><option>Minyak Goreng 2L</option><option>Kopi Arabika 1kg</option><option>Skincare Set Premium</option><option>Power Bank 20000mAh</option><option>Kaos Polos Premium</option><option>Vacuum Cleaner</option><option>Backpack Travel 40L</option></select></div>
+            <div class="hub-form-group"><label>Jumlah</label><input type="number" id="oQty" value="30" min="1"></div>
+            <div class="hub-form-group"><label>Catatan</label><input type="text" id="oNote" placeholder="cth: stok menipis"></div>
+          </div>
+        </div>
+        <div class="hub-modal-foot">
+          <button class="hub-btn" data-close>Batal</button>
+          <button class="hub-btn hub-btn-solid" id="btnSaveOrder"><i class="fa-solid fa-paper-plane"></i> Kirim Order</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    /* ===== DATA STOK (dari pusat — read-only) ===== */
+    var STOCKS = [
+      { no: 1, name: 'Beras Premium 5kg', cat: 'Sembako', stock: 12, rop: 30, unit: 'pcs' },
+      { no: 2, name: 'Minyak Goreng 2L', cat: 'Sembako', stock: 8, rop: 20, unit: 'pcs' },
+      { no: 3, name: 'Kopi Arabika 1kg', cat: 'Sembako', stock: 18, rop: 30, unit: 'pcs' },
+      { no: 4, name: 'Skincare Set Premium', cat: 'Kecantikan', stock: 5, rop: 20, unit: 'pcs' },
+      { no: 5, name: 'Power Bank 20000mAh', cat: 'Elektronik', stock: 35, rop: 15, unit: 'pcs' },
+      { no: 6, name: 'Kaos Polos Premium', cat: 'Fashion', stock: 48, rop: 25, unit: 'pcs' },
+      { no: 7, name: 'Vacuum Cleaner', cat: 'Peralatan', stock: 14, rop: 10, unit: 'pcs' },
+      { no: 8, name: 'Backpack Travel 40L', cat: 'Fashion', stock: 22, rop: 12, unit: 'pcs' }
+    ];
+
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function statusBadge(stock, rop) {
+      if (stock <= rop) return '<span class="badge badge-red">Menipis</span>';
+      if (stock <= rop * 1.5) return '<span class="badge badge-yellow">Waspada</span>';
+      return '<span class="badge badge-green">Aman</span>';
+    }
+
+    function renderStats() {
+      var total = STOCKS.reduce(function (s, r) { return s + r.stock; }, 0);
+      var low = STOCKS.filter(function (r) { return r.stock <= r.rop; }).length;
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-boxes-stacked', color: '#00AA5B', label: 'Total SKU', value: STOCKS.length },
+        { icon: 'fa-solid fa-cubes', color: '#2C7AFF', label: 'Total Stok', value: total },
+        { icon: 'fa-solid fa-triangle-exclamation', color: '#F94D63', label: 'Menipis (<=ROP)', value: low },
+        { icon: 'fa-solid fa-circle-check', color: '#F0B429', label: 'Aman', value: STOCKS.length - low }
+      ].map(function (c) {
+        return '<div class="hub-card">' +
+          '<div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span>' +
+          '<div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div>' +
+          '<div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderAlerts() {
+      var el = document.getElementById('alertList');
+      if (!el) return;
+      var low = STOCKS.filter(function (r) { return r.stock <= r.rop; });
+      el.innerHTML = low.length ? low.map(function (r) {
+        var crit = r.stock <= r.rop * 0.5;
+        return '<div class="hub-alert ' + (crit ? 'crit' : 'warn') + '">' +
+          '<div class="hub-alert-icon" style="background:' + (crit ? '#FEF2F2' : '#FFFBEB') + ';color:' + (crit ? '#F94D63' : '#F0B429') + '">' +
+          '<i class="fa-solid ' + (crit ? 'fa-circle-exclamation' : 'fa-triangle-exclamation') + '"></i></div>' +
+          '<div class="hub-alert-body">' +
+          '<div class="hub-alert-title">' + r.name + '</div>' +
+          '<div class="hub-alert-desc">Stok ' + r.stock + ' · ROP ' + r.rop + ' · ' + r.cat + '</div>' +
+          '<div class="hub-alert-eta"><i class="fa-solid fa-clock"></i> ' + (crit ? 'Segera — berisiko out-of-stock' : 'Perlu order dalam 1–2 hari') + '</div>' +
+          '</div>' +
+          '<div class="hub-alert-actions"><button class="hub-btn hub-btn-sm hub-btn-solid" data-order="' + r.name + '">Order Stok</button></div>' +
+          '</div>';
+      }).join('') : '<p style="text-align:center;color:var(--nn400);padding:14px;">Semua stok aman &#127881;</p>';
+    }
+
+    function getFilterValues() {
+      var search = document.getElementById('stockSearch');
+      var cat = document.getElementById('catFilter');
+      return {
+        q: search ? search.value.toLowerCase() : '',
+        cat: cat ? cat.value : 'all'
+      };
+    }
+
+    function renderTable() {
+      var f = getFilterValues();
+      var rows = STOCKS.filter(function (r) {
+        var okCat = f.cat === 'all' || r.cat === f.cat;
+        var okSearch = !f.q || r.name.toLowerCase().indexOf(f.q) !== -1;
+        return okCat && okSearch;
+      });
+      var body = document.getElementById('stockBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (r) {
+        return '<tr>' +
+          '<td>' + r.name + '</td>' +
+          '<td>' + r.cat + '</td>' +
+          '<td class="hub-qty ' + (r.stock <= r.rop ? (r.stock <= r.rop * 0.5 ? 'crit' : 'warn') : '') + '">' + r.stock + '</td>' +
+          '<td>' + r.rop + '</td>' +
+          '<td>' + r.unit + '</td>' +
+          '<td>' + statusBadge(r.stock, r.rop) + '</td>' +
+          '</tr>';
+      }).join('') : '<tr><td colspan="6" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    function openOrderModal(productName) {
+      var select = document.getElementById('oProduct');
+      if (productName && select) {
+        for (var i = 0; i < select.options.length; i++) {
+          if (select.options[i].value === productName) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      document.getElementById('oQty').value = 30;
+      document.getElementById('oNote').value = '';
+      document.getElementById('orderModal').classList.add('open');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderStats(); renderAlerts(); renderTable();
+      var search = document.getElementById('stockSearch');
+      if (search) search.addEventListener('input', renderTable);
+      var cat = document.getElementById('catFilter');
+      if (cat) cat.addEventListener('change', renderTable);
+      var exp = document.getElementById('btnExport');
+      if (exp) exp.addEventListener('click', function () { showToast('Export Excel menyusul (Demo)'); });
+
+      // Tombol Order Stok di header
+      var btnOrder = document.getElementById('btnOrder');
+      if (btnOrder) btnOrder.addEventListener('click', function () { openOrderModal(); });
+
+      // Tombol Order Stok di alert
+      document.querySelectorAll('[data-order]').forEach(function (b) {
+        b.addEventListener('click', function () { openOrderModal(this.getAttribute('data-order')); });
+      });
+
+      // Modal close
+      document.querySelectorAll('[data-close]').forEach(function (b) {
+        b.addEventListener('click', function () { document.getElementById('orderModal').classList.remove('open'); });
+      });
+
+      // Simpan order
+      var btnSaveOrder = document.getElementById('btnSaveOrder');
+      if (btnSaveOrder) {
+        btnSaveOrder.addEventListener('click', function () {
+          var prod = document.getElementById('oProduct').value;
+          var qty = document.getElementById('oQty').value;
+          var note = document.getElementById('oNote').value.trim();
+          showToast('Order stok ' + prod + ' x' + qty + ' dikirim ke pusat' + (note ? ' (' + note + ')' : ''));
+          document.getElementById('orderModal').classList.remove('open');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

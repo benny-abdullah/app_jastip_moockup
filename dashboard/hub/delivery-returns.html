@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penerimaan / Retur — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Penerimaan / Retur</h1>
+      <p>Laporkan barang yang diterima atau dikembalikan ke pusat</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Penerimaan / Retur</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn hub-btn-solid" id="btnNewReturn"><i class="fa-solid fa-plus"></i> Buat Retur</button>
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Riwayat Penerimaan / Retur</h3>
+        <div class="hub-panel-tools">
+          <div class="hub-search-box"><input type="search" id="retSearch" placeholder="Cari retur..."><i class="fa-solid fa-magnifying-glass"></i></div>
+          <select class="hub-select" id="retFilter">
+            <option value="all">Semua Status</option>
+            <option value="requested">Diajukan</option>
+            <option value="approved">Disetujui</option>
+            <option value="picked_up">Dijemput</option>
+            <option value="returned">Dikembalikan</option>
+            <option value="refunded">Refund</option>
+            <option value="rejected">Ditolak</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Kode</th><th>Referensi</th><th>Jenis</th><th>Detail Barang</th><th>Alasan</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+          <tbody id="retBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Form Retur -->
+  <div class="hub-modal" id="retModal">
+    <div class="hub-modal-box">
+      <div class="hub-modal-head">
+        <h3 id="retModalTitle">Buat Retur Barang</h3>
+        <button class="hub-modal-close" data-close>&times;</button>
+      </div>
+      <div class="hub-modal-body">
+        <div class="hub-form-grid">
+          <div class="hub-form-group">
+            <label>Referensi</label>
+            <select id="retRef">
+              <option value="">— Pilih Referensi —</option>
+              <optgroup label="Delivery">
+                <option value="DEL-2026-118|Delivery">DEL-2026-118 (Delivery)</option>
+                <option value="DEL-2026-117|Delivery">DEL-2026-117 (Delivery)</option>
+                <option value="DEL-2026-116|Delivery">DEL-2026-116 (Delivery)</option>
+              </optgroup>
+              <optgroup label="Order Stok">
+                <option value="SO-2026-084|Order Stok">SO-2026-084 (Order Stok)</option>
+                <option value="SO-2026-083|Order Stok">SO-2026-083 (Order Stok)</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="hub-form-group">
+            <label>Alasan Retur</label>
+            <select id="retAlasan">
+              <option>Barang rusak</option>
+              <option>Barang kurang</option>
+              <option>Salah kirim</option>
+              <option>Alamat tidak ditemukan</option>
+              <option>Customer menolak</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Detail Barang per-item -->
+        <div class="hub-panel" style="margin-bottom:14px; padding:12px;">
+          <div class="hub-panel-head"><h3>Detail Barang</h3></div>
+          <div class="hub-table-scroll">
+            <table class="hub-table">
+              <thead><tr><th>Pilih</th><th>Nama Barang</th><th>Qty Kirim</th><th>Qty Retur</th></tr></thead>
+              <tbody id="retItems"></tbody>
+            </table>
+          </div>
+          <p class="hint" style="margin-top:8px;">Centang barang yang akan diretur dan isi jumlah yang dikembalikan.</p>
+        </div>
+
+        <div class="hub-form-grid">
+          <div class="hub-form-group">
+            <label>Catatan</label>
+            <input type="text" id="retCatatan" placeholder="cth: 2 dari 10 beras penyok">
+          </div>
+          <div class="hub-form-group">
+            <label>Bukti Foto (opsional)</label>
+            <input type="file" id="retBukti" accept="image/*">
+          </div>
+        </div>
+      </div>
+      <div class="hub-modal-foot">
+        <button class="hub-btn" data-close>Batal</button>
+        <button class="hub-btn hub-btn-solid" id="btnSaveRet"><i class="fa-solid fa-check"></i> Ajukan Retur</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detail Retur -->
+  <div class="hub-modal" id="detailModal">
+    <div class="hub-modal-box">
+      <div class="hub-modal-head">
+        <h3 id="detailTitle">Detail Retur</h3>
+        <button class="hub-modal-close" data-close>&times;</button>
+      </div>
+      <div class="hub-modal-body">
+        <div class="hub-summary" style="margin-bottom:14px;">
+          <div class="sum-icon" style="background:#FEF2F2;color:#F94D63;"><i class="fa-solid fa-rotate-left"></i></div>
+          <div><div class="sum-label">Kode Retur</div><div class="sum-value" id="detailCode">-</div></div>
+        </div>
+        <div class="hub-panel" style="margin-bottom:14px; padding:12px;">
+          <div class="hub-panel-head"><h3>Detail Barang Retur</h3></div>
+          <div class="hub-table-scroll">
+            <table class="hub-table">
+              <thead><tr><th>Nama Barang</th><th>Qty Kirim</th><th>Qty Retur</th></tr></thead>
+              <tbody id="detailItems"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="hub-form-grid">
+          <div class="hub-form-group"><label>Referensi</label><div id="detailRef" class="hub-static">-</div></div>
+          <div class="hub-form-group"><label>Jenis</label><div id="detailJenis" class="hub-static">-</div></div>
+          <div class="hub-form-group"><label>Alasan</label><div id="detailAlasan" class="hub-static">-</div></div>
+          <div class="hub-form-group"><label>Status</label><div id="detailStatus" class="hub-static">-</div></div>
+          <div class="hub-form-group"><label>Tanggal</label><div id="detailTanggal" class="hub-static">-</div></div>
+          <div class="hub-form-group"><label>Catatan</label><div id="detailCatatan" class="hub-static">-</div></div>
+        </div>
+      </div>
+      <div class="hub-modal-foot">
+        <button class="hub-btn" data-close>Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/return-data.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    /* ===== DATA REFERENSI UNTUK FORM RETUR ===== */
+    var REF_ITEMS = {
+      'DEL-2026-118': [
+        { nama: 'Beras Premium 5kg', qty_kirim: 10 },
+        { nama: 'Minyak Goreng 2L', qty_kirim: 5 }
+      ],
+      'DEL-2026-117': [
+        { nama: 'Kopi Arabika 1kg', qty_kirim: 8 },
+        { nama: 'Gula Pasir 1kg', qty_kirim: 12 }
+      ],
+      'DEL-2026-116': [
+        { nama: 'Skincare Set Premium', qty_kirim: 3 },
+        { nama: 'Parfum Premium 100ml', qty_kirim: 2 }
+      ],
+      'SO-2026-084': [
+        { nama: 'Beras Premium 5kg', qty_kirim: 30 },
+        { nama: 'Minyak Goreng 2L', qty_kirim: 24 },
+        { nama: 'Kopi Arabika 1kg', qty_kirim: 12 }
+      ],
+      'SO-2026-083': [
+        { nama: 'Skincare Set Premium', qty_kirim: 10 },
+        { nama: 'Power Bank 20000mAh', qty_kirim: 15 }
+      ]
+    };
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function renderStats() {
+      var list = window.JastipReturns.getAll();
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-rotate-left', color: '#00AA5B', label: 'Total Retur', value: list.length },
+        { icon: 'fa-solid fa-clock', color: '#F0B429', label: 'Diajukan', value: list.filter(function (r) { return r.status === 'requested'; }).length },
+        { icon: 'fa-solid fa-circle-check', color: '#2C7AFF', label: 'Disetujui', value: list.filter(function (r) { return r.status === 'approved' || r.status === 'picked_up'; }).length },
+        { icon: 'fa-solid fa-rotate-left', color: '#F94D63', label: 'Dikembalikan', value: list.filter(function (r) { return r.status === 'returned'; }).length },
+        { icon: 'fa-solid fa-money-bill-wave', color: '#A78BFA', label: 'Refund', value: list.filter(function (r) { return r.status === 'refunded'; }).length }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderTable() {
+      var search = document.getElementById('retSearch');
+      var filter = document.getElementById('retFilter');
+      var q = search ? search.value.toLowerCase() : '';
+      var f = filter ? filter.value : 'all';
+      var list = window.JastipReturns.getAll().filter(function (r) {
+        var okS = f === 'all' || r.status === f;
+        var okQ = !q || r.id.toLowerCase().indexOf(q) !== -1 || r.ref.toLowerCase().indexOf(q) !== -1;
+        return okS && okQ;
+      });
+      var body = document.getElementById('retBody');
+      if (!body) return;
+      body.innerHTML = list.length ? list.map(function (r) {
+        return '<tr><td><strong>' + r.id + '</strong></td><td>' + r.ref + '</td><td>' + r.jenis + '</td><td>' + window.JastipReturns.formatItems(r.items) + '</td><td>' + r.alasan + '</td><td>' + window.JastipReturns.statusBadge(r.status) + '</td><td>' + r.tanggal + '</td>' +
+          '<td><button class="hub-btn hub-btn-sm" data-detail="' + r.id + '">Detail</button></td></tr>';
+      }).join('') : '<tr><td colspan="8" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    /* ===== FORM RETUR ===== */
+    function renderRetItems(ref) {
+      var body = document.getElementById('retItems');
+      if (!body) return;
+      var items = REF_ITEMS[ref] || [];
+      body.innerHTML = items.length ? items.map(function (it, i) {
+        return '<tr>' +
+          '<td><input type="checkbox" class="ret-check" data-idx="' + i + '"></td>' +
+          '<td>' + it.nama + '</td>' +
+          '<td><strong>' + it.qty_kirim + '</strong></td>' +
+          '<td><input type="number" class="ret-qty" data-idx="' + i + '" min="0" max="' + it.qty_kirim + '" value="0" disabled style="width:70px;"></td>' +
+          '</tr>';
+      }).join('') : '<tr><td colspan="4" class="hub-empty">Pilih referensi terlebih dahulu</td></tr>';
+    }
+
+    function openRetModal() {
+      document.getElementById('retModalTitle').textContent = 'Buat Retur Barang';
+      document.getElementById('retRef').value = '';
+      document.getElementById('retAlasan').value = 'Barang rusak';
+      document.getElementById('retCatatan').value = '';
+      document.getElementById('retBukti').value = '';
+      renderRetItems('');
+      document.getElementById('retModal').classList.add('open');
+    }
+
+    function openDetail(id) {
+      var r = window.JastipReturns.getById(id);
+      if (!r) return;
+      document.getElementById('detailTitle').textContent = 'Detail — ' + r.id;
+      document.getElementById('detailCode').textContent = r.id;
+      document.getElementById('detailRef').textContent = r.ref;
+      document.getElementById('detailJenis').textContent = r.jenis;
+      document.getElementById('detailAlasan').textContent = r.alasan;
+      document.getElementById('detailStatus').innerHTML = window.JastipReturns.statusBadge(r.status);
+      document.getElementById('detailTanggal').textContent = r.tanggal;
+      document.getElementById('detailCatatan').textContent = r.catatan || '—';
+      var itemsBody = document.getElementById('detailItems');
+      itemsBody.innerHTML = (r.items || []).map(function (it) {
+        return '<tr><td>' + it.nama + '</td><td>' + it.qty_kirim + '</td><td><strong>' + it.qty_retur + '</strong></td></tr>';
+      }).join('') || '<tr><td colspan="3" class="hub-empty">Tidak ada item</td></tr>';
+      document.getElementById('detailModal').classList.add('open');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderStats(); renderTable();
+
+      var s = document.getElementById('retSearch'); if (s) s.addEventListener('input', renderTable);
+      var f = document.getElementById('retFilter'); if (f) f.addEventListener('change', renderTable);
+      var exp = document.getElementById('btnExport'); if (exp) exp.addEventListener('click', function () { showToast('Export menyusul (Demo)'); });
+
+      document.querySelectorAll('[data-close]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.getElementById('retModal').classList.remove('open');
+          document.getElementById('detailModal').classList.remove('open');
+        });
+      });
+
+      var btnNew = document.getElementById('btnNewReturn');
+      if (btnNew) btnNew.addEventListener('click', openRetModal);
+
+      // Dukungan parameter URL ?ref=...&jenis=... (dari tombol Ajukan Retur di deliveries/receiving)
+      var params = new URLSearchParams(window.location.search);
+      var refParam = params.get('ref');
+      var jenisParam = params.get('jenis');
+      if (refParam) {
+        var refSel2 = document.getElementById('retRef');
+        var matchVal = '';
+        Array.prototype.forEach.call(refSel2.options, function (opt) {
+          if (opt.value.split('|')[0] === refParam) matchVal = opt.value;
+        });
+        if (matchVal) {
+          refSel2.value = matchVal;
+          renderRetItems(refParam);
+          document.getElementById('retModal').classList.add('open');
+        }
+      }
+
+      var refSel = document.getElementById('retRef');
+      if (refSel) refSel.addEventListener('change', function () {
+        renderRetItems(this.value);
+      });
+
+      // Checkbox → aktifkan input qty
+      document.getElementById('retItems').addEventListener('change', function (e) {
+        if (e.target.classList.contains('ret-check')) {
+          var idx = e.target.getAttribute('data-idx');
+          var qtyInput = document.querySelector('.ret-qty[data-idx="' + idx + '"]');
+          if (qtyInput) {
+            qtyInput.disabled = !e.target.checked;
+            if (!e.target.checked) qtyInput.value = 0;
+          }
+        }
+      });
+
+      var btnSave = document.getElementById('btnSaveRet');
+      if (btnSave) btnSave.addEventListener('click', function () {
+        var refVal = document.getElementById('retRef').value;
+        if (!refVal) { showToast('Pilih referensi terlebih dahulu'); return; }
+        var ref = refVal.split('|')[0];
+        var jenis = refVal.split('|')[1] || 'Delivery';
+        var alasan = document.getElementById('retAlasan').value;
+        var catatan = document.getElementById('retCatatan').value.trim();
+        var buktiFile = document.getElementById('retBukti').files[0];
+        var bukti = buktiFile ? buktiFile.name : null;
+
+        // Kumpulkan item yang dicentang + qty > 0
+        var items = [];
+        var checks = document.querySelectorAll('.ret-check:checked');
+        checks.forEach(function (chk) {
+          var idx = parseInt(chk.getAttribute('data-idx'), 10);
+          var base = (REF_ITEMS[ref] || [])[idx];
+          var qtyInput = document.querySelector('.ret-qty[data-idx="' + idx + '"]');
+          var qty = qtyInput ? parseInt(qtyInput.value, 10) || 0 : 0;
+          if (base && qty > 0) {
+            items.push({ nama: base.nama, qty_kirim: base.qty_kirim, qty_retur: qty });
+          }
+        });
+
+        if (!items.length) { showToast('Centang barang dan isi qty retur'); return; }
+
+        var created = window.JastipReturns.add({
+          ref: ref,
+          jenis: jenis,
+          alasan: alasan,
+          catatan: catatan,
+          items: items,
+          bukti: bukti
+        });
+
+        showToast('Retur ' + created.id + ' berhasil diajukan');
+        document.getElementById('retModal').classList.remove('open');
+        renderStats(); renderTable();
+      });
+
+      // Tombol Detail (event delegation)
+      document.getElementById('retBody').addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-detail]');
+        if (btn) openDetail(btn.getAttribute('data-detail'));
+      });
+    });
+  </script>
+</body>
+</html>

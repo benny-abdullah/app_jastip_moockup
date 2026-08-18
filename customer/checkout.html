@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Checkout — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Checkout</h1>
+      <p>Konfirmasi alamat dan metode pembayaran</p>
+      <div class="cust-breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="cart.html">Keranjang</a><span>/</span><span>Checkout</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container" style="display:grid; grid-template-columns: 1fr; gap:20px; align-items:start;">
+
+      <!-- Alamat -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Alamat Pengiriman</h3><a href="#" class="hint" onclick="alert('Tambah alamat (Demo)')">+ Tambah Alamat</a></div>
+        <div class="cart-item" style="border:none; padding:0;">
+          <div class="ci-info">
+            <p class="ci-name">Citra Lestari · 0812-3456-7890</p>
+            <p class="ci-meta" style="margin-top:4px;">Jl. Melati No. 12, RT 03/RW 05, Kel. Mampang, Kec. Mampang Prapatan, Jakarta Selatan 12790</p>
+            <span class="badge badge-green" style="margin-top:6px;">Alamat Utama</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metode Bayar -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Metode Pembayaran</h3></div>
+
+        <!-- Points -->
+        <label class="pay-method">
+          <input type="radio" name="pay" value="points" checked onchange="onPayChange()">
+          <span class="pm-icon"><i class="fa-solid fa-coins"></i></span>
+          <span class="pm-name">Points (Saldo: 125.000 pts) <small style="display:block; font-size:11px; color:var(--nn500); font-weight:500;">Saldo akan dipotong sesuai total belanja</small></span>
+        </label>
+
+        
+
+        
+
+        <!-- Transfer Bank -->
+        <label class="pay-method">
+          <input type="radio" name="pay" value="transfer" onchange="onPayChange()">
+          <span class="pm-icon"><i class="fa-solid fa-building-columns"></i></span>
+          <span class="pm-name">Transfer Bank</span>
+        </label>
+
+        <!-- Detail Transfer Bank (muncul jika radio Transfer Bank dipilih) -->
+        <div id="transferDetail" class="pay-detail-box" style="display:none;">
+          <div class="pay-detail-title"><i class="fa-solid fa-building-columns"></i> Transfer Bank</div>
+          <p class="pay-detail-desc">Silakan transfer sebesar <strong>Rp 163.000</strong> ke rekening berikut, lalu unggah bukti pembayaran.</p>
+
+          <div class="form-group">
+            <label for="payBank">Pilih Bank</label>
+            <select id="payBank" class="form-control">
+              <option value="">— Pilih Bank —</option>
+              <option value="BCA">BCA</option>
+              <option value="BNI">BNI</option>
+              <option value="Mandiri">Mandiri</option>
+              <option value="BRI">BRI</option>
+            </select>
+          </div>
+
+          <!-- Info rekening tujuan dinamik -->
+          <div id="payRekening" class="rek-info" style="display:none;">
+            <p class="rek-label">No. Rekening Tujuan</p>
+            <p class="rek-number" id="rekNumber">—</p>
+            <p class="rek-name">a.n. Jastipku Indonesia</p>
+          </div>
+
+          <div class="form-group" style="margin-top:14px;">
+            <label for="payProof">Upload Bukti Pembayaran</label>
+            <label class="file-upload" for="payProof">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span id="payProofName">Klik untuk pilih gambar bukti (JPG/PNG, maks 2MB)</span>
+              <input type="file" id="payProof" accept="image/*" onchange="onProofChange(this, 'payProofName')" hidden>
+            </label>
+          </div>
+
+          <p class="pay-detail-note"><i class="fa-solid fa-circle-info"></i> Pesanan akan diproses setelah bukti pembayaran diverifikasi (1x24 jam).</p>
+        </div>
+      </div>
+
+      <!-- Ringkasan -->
+      <div class="cust-panel">
+        <div class="cust-panel-head"><h3>Ringkasan Checkout</h3></div>
+        <div class="summary-box">
+          <div class="summary-row"><span>Subtotal (3 produk)</span><span class="value">163.000 pts</span></div>
+          <div class="summary-row"><span>Ongkir</span><span class="value">Gratis</span></div>
+          <div class="summary-row"><span>Kode Promo</span><span class="value">—</span></div>
+          <div class="summary-row total"><span>Total Bayar</span><span>163.000 pts</span></div>
+          <div id="paySummaryInfo" class="pay-info">Akan dipotong dari saldo points Anda (saldo cukup)</div>
+        </div>
+        <button type="button" class="btn btn-solid btn-block btn-lg" style="margin-top:14px;" onclick="buatPesanan()"><i class="fa-solid fa-check"></i> Buat Pesanan</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/order-data.js"></script>
+  <script>
+    var REKENING = {
+      'BCA': '1234567890',
+      'BNI': '0987654321',
+      'Mandiri': '1122334455',
+      'BRI': '5566778899'
+    };
+
+    function getPayMethod() {
+      var radios = document.querySelectorAll('input[name="pay"]');
+      for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) return radios[i].value;
+      }
+      return 'points';
+    }
+
+    function onPayChange() {
+      var method = getPayMethod();
+      var detail = document.getElementById('transferDetail');
+      var info = document.getElementById('paySummaryInfo');
+
+      if (method === 'transfer') {
+        detail.style.display = 'block';
+        if (info) info.textContent = 'Bayar via transfer bank sesuai instruksi';
+      } else {
+        detail.style.display = 'none';
+        if (method === 'points') {
+          if (info) info.textContent = 'Akan dipotong dari saldo points Anda (saldo cukup)';
+        } else if (method === 'cash') {
+          if (info) info.textContent = 'Bayar tunai saat pengambilan di Hub';
+        } else {
+          if (info) info.textContent = 'Instruksi QRIS / E-Wallet akan ditampilkan';
+        }
+      }
+    }
+
+    function onProofChange(input, labelId) {
+      var label = document.getElementById(labelId);
+      if (input && input.files && input.files.length > 0) {
+        label.textContent = input.files[0].name;
+      } else {
+        label.textContent = 'Klik untuk pilih gambar bukti (JPG/PNG, maks 2MB)';
+      }
+    }
+
+    // Tampilkan rekening tujuan sesuai bank terpilih
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'payBank') {
+        var val = e.target.value;
+        var rek = document.getElementById('payRekening');
+        var num = document.getElementById('rekNumber');
+        if (val && REKENING[val]) {
+          num.textContent = val + ' ' + REKENING[val];
+          rek.style.display = 'block';
+        } else {
+          rek.style.display = 'none';
+        }
+      }
+    });
+
+    function generateOrderId() {
+      var now = new Date();
+      var pad = function (n) { return String(n).padStart(2, '0'); };
+      var rand = Math.floor(Math.random() * 90 + 10);
+      return 'ORD-' + now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + '-' + rand;
+    }
+
+function buatPesanan() {
+      var method = getPayMethod();
+      var order = {
+        id: generateOrderId(),
+        source: 'checkout',
+        sourceLabel: 'Belanja',
+        produk: [
+          { nama: 'Beras Premium 5kg', qty: 1, harga: 50000 },
+          { nama: 'Kopi Arabika 1kg', qty: 1, harga: 85000 },
+          { nama: 'Minyak Goreng 2L', qty: 1, harga: 28000 }
+        ],
+        totalPts: 163000,
+        status: 'Diproses',
+        metode: '',
+        tanggal: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })
+      };
+
+      if (method === 'transfer') {
+        var bank = document.getElementById('payBank').value;
+        var proof = document.getElementById('payProof');
+        if (!bank) { alert('Silakan pilih bank tujuan terlebih dahulu!'); return; }
+        if (!proof.files || proof.files.length === 0) { alert('Silakan upload bukti pembayaran terlebih dahulu!'); return; }
+        order.metode = 'Transfer ' + bank;
+        if (window.JastipOrders) window.JastipOrders.addCheckout(order);
+        alert('Pesanan berhasil dibuat (menunggu verifikasi 1x24 jam)! Order ' + order.id + ' tersimpan di Riwayat Pesanan.');
+        return;
+      }
+
+      if (method === 'points') {
+        order.metode = 'Points';
+        if (window.JastipOrders) window.JastipOrders.addCheckout(order);
+        alert('Pesanan berhasil dibuat! Saldo points Anda dipotong 163.000 pts. Order ' + order.id + ' tersimpan di Riwayat Pesanan.');
+        return;
+      }
+
+      if (method === 'cash') {
+        order.metode = 'Tunai di Hub';
+        if (window.JastipOrders) window.JastipOrders.addCheckout(order);
+        alert('Pesanan berhasil dibuat! Silakan bayar tunai di Hub. Order ' + order.id + ' tersimpan di Riwayat Pesanan.');
+        return;
+      }
+
+      order.metode = 'QRIS / E-Wallet';
+      if (window.JastipOrders) window.JastipOrders.addCheckout(order);
+      alert('Pesanan berhasil dibuat! Silakan selesaikan pembayaran QRIS / E-Wallet. Order ' + order.id + ' tersimpan di Riwayat Pesanan.');
+    }
+
+    // Inisialisasi tampilan info saldo
+    onPayChange();
+  </script>
+</body>
+</html>

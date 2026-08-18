@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Stok — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Order Stok</h1>
+      <p>Riwayat pengiriman order stok dari pusat & laporkan penerimaan</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Order Stok</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+      <a href="warehousing.html" class="hub-btn hub-btn-solid"><i class="fa-solid fa-plus"></i> Order Baru</a>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Riwayat Pengiriman Order Stok</h3>
+        <div class="hub-panel-tools">
+          <div class="hub-search-box"><input type="search" id="orderSearch" placeholder="Cari order..."><i class="fa-solid fa-magnifying-glass"></i></div>
+          <select class="hub-select" id="statusFilter">
+            <option value="all">Semua Status</option>
+            <option>Draft</option><option>Dikirim</option><option>Dalam Perjalanan</option><option>Selesai</option><option>Dibatalkan</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Order ID</th><th>Tanggal</th><th>Detail Barang</th><th>Estimasi Tiba</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="orderBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal Laporan Penerimaan -->
+    <div class="hub-modal" id="reportModal">
+      <div class="hub-modal-box">
+        <div class="hub-modal-head">
+          <h3 id="reportModalTitle">Laporan Penerimaan</h3>
+          <button class="hub-modal-close" data-close2>&times;</button>
+        </div>
+        <div class="hub-modal-body">
+          <div class="hub-summary" style="margin-bottom:14px;">
+            <div class="sum-icon" style="background:#EFF6FF;color:#2C7AFF;"><i class="fa-solid fa-truck-ramp-box"></i></div>
+            <div><div class="sum-label">Order Stok</div><div class="sum-value" id="reportRef">-</div></div>
+          </div>
+
+          <!-- Detail Barang -->
+          <div class="hub-panel" style="margin-bottom:14px; padding:12px;">
+            <div class="hub-panel-head"><h3>Detail Barang</h3></div>
+            <div class="hub-table-scroll">
+              <table class="hub-table">
+                <thead><tr><th>Nama Barang</th><th>Jumlah</th></tr></thead>
+                <tbody id="reportItems"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="hub-form-grid">
+            <div class="hub-form-group">
+              <label>Status Penerimaan</label>
+              <select id="reportStatus">
+                <option value="Diterima">Barang Diterima</option>
+                <option value="Dikembalikan">Barang Dikembalikan</option>
+              </select>
+            </div>
+            <div class="hub-form-group">
+              <label>Catatan</label>
+              <input type="text" id="reportNote" placeholder="cth: barang lengkap / ada yang rusak">
+            </div>
+          </div>
+        </div>
+        <div class="hub-modal-foot">
+          <button class="hub-btn" data-close2>Batal</button>
+          <button class="hub-btn hub-btn-solid" id="btnSaveReport"><i class="fa-solid fa-check"></i> Simpan Laporan</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    /* ===== DATA ORDER STOK + DETAIL BARANG ===== */
+    var ORDERS = [
+      { id: 'SO-2026-084', date: '15 Agu 2026', eta: '20 Agu 2026', status: 'Dalam Perjalanan', items: [
+        { nama: 'Beras Premium 5kg', qty: 30 },
+        { nama: 'Minyak Goreng 2L', qty: 24 },
+        { nama: 'Kopi Arabika 1kg', qty: 12 }
+      ]},
+      { id: 'SO-2026-083', date: '14 Agu 2026', eta: '19 Agu 2026', status: 'Dalam Perjalanan', items: [
+        { nama: 'Skincare Set Premium', qty: 10 },
+        { nama: 'Power Bank 20000mAh', qty: 15 }
+      ]},
+      { id: 'SO-2026-082', date: '10 Agu 2026', eta: '17 Agu 2026', status: 'Dikirim', items: [
+        { nama: 'Kaos Polos Premium', qty: 40 },
+        { nama: 'Backpack Travel 40L', qty: 20 },
+        { nama: 'Vacuum Cleaner', qty: 12 }
+      ]},
+      { id: 'SO-2026-081', date: '02 Agu 2026', eta: '09 Agu 2026', status: 'Selesai', items: [
+        { nama: 'Beras Premium 5kg', qty: 50 },
+        { nama: 'Minyak Goreng 2L', qty: 30 }
+      ]},
+      { id: 'SO-2026-080', date: '28 Jul 2026', eta: '04 Agu 2026', status: 'Selesai', items: [
+        { nama: 'Kopi Arabika 1kg', qty: 20 }
+      ]},
+      { id: 'SO-2026-079', date: '20 Jul 2026', eta: '27 Jul 2026', status: 'Dibatalkan', items: [
+        { nama: 'Skincare Set Premium', qty: 15 },
+        { nama: 'Power Bank 20000mAh', qty: 10 }
+      ]}
+    ];
+
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function badge(s) {
+      var map = { 'Selesai': 'badge-green', 'Dalam Perjalanan': 'badge-blue', 'Dikirim': 'badge-blue', 'Draft': 'badge-gray', 'Dibatalkan': 'badge-red' };
+      return '<span class="badge ' + (map[s] || 'badge-gray') + '">' + s + '</span>';
+    }
+
+    function formatItems(items) {
+      return items.map(function (it) { return it.nama + ' x' + it.qty; }).join(', ');
+    }
+
+    function renderStats() {
+      var active = ORDERS.filter(function (o) { return o.status !== 'Selesai' && o.status !== 'Dibatalkan'; }).length;
+      var totalItems = ORDERS.reduce(function (s, o) { return s + o.items.reduce(function (x, it) { return x + it.qty; }, 0); }, 0);
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-truck-ramp-box', color: '#00AA5B', label: 'Total Order', value: ORDERS.length },
+        { icon: 'fa-solid fa-shipping-fast', color: '#2C7AFF', label: 'Sedang Berjalan', value: active },
+        { icon: 'fa-solid fa-box', color: '#F0B429', label: 'Total Barang', value: totalItems },
+        { icon: 'fa-solid fa-circle-check', color: '#A78BFA', label: 'Selesai', value: ORDERS.filter(function (o) { return o.status === 'Selesai'; }).length }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderTable() {
+      var search = document.getElementById('orderSearch');
+      var filter = document.getElementById('statusFilter');
+      var q = search ? search.value.toLowerCase() : '';
+      var f = filter ? filter.value : 'all';
+      var rows = ORDERS.filter(function (o) {
+        var okS = f === 'all' || o.status === f;
+        var okQ = !q || o.id.toLowerCase().indexOf(q) !== -1;
+        return okS && okQ;
+      });
+      var body = document.getElementById('orderBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (o) {
+        var aksi = (o.status === 'Dikirim' || o.status === 'Dalam Perjalanan')
+          ? '<button class="hub-btn hub-btn-sm hub-btn-solid" data-report="' + o.id + '">Laporkan</button>'
+          : '<button class="hub-btn hub-btn-sm" data-tracking="' + o.id + '">Lacak</button>';
+        return '<tr><td><strong>' + o.id + '</strong></td><td>' + o.date + '</td><td>' + formatItems(o.items) + '</td><td>' + o.eta + '</td><td>' + badge(o.status) + '</td><td>' + aksi + '</td></tr>';
+      }).join('') : '<tr><td colspan="6" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    function bindEvents() {
+      document.getElementById('btnExport').addEventListener('click', function () { showToast('Export menyusul (Demo)'); });
+      document.querySelectorAll('[data-close2]').forEach(function (b) { b.addEventListener('click', function () { document.getElementById('reportModal').classList.remove('open'); }); });
+      var s = document.getElementById('orderSearch'); if (s) s.addEventListener('input', renderTable);
+      var ft = document.getElementById('statusFilter'); if (ft) ft.addEventListener('change', renderTable);
+      document.querySelectorAll('[data-tracking]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          showToast('Lacak ' + this.getAttribute('data-tracking') + ' (Demo)');
+        });
+      });
+      document.querySelectorAll('[data-report]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var id = this.getAttribute('data-report');
+          var o = ORDERS.filter(function (x) { return x.id === id; })[0];
+          if (!o) return;
+          window._currentOrder = o;
+          document.getElementById('reportModalTitle').textContent = 'Laporan — ' + o.id;
+          document.getElementById('reportRef').textContent = o.id;
+          // Tampilkan detail barang
+          var itemsBody = document.getElementById('reportItems');
+          itemsBody.innerHTML = o.items.map(function (it) {
+            return '<tr><td>' + it.nama + '</td><td><strong>' + it.qty + '</strong></td></tr>';
+          }).join('');
+          document.getElementById('reportStatus').value = 'Diterima';
+          document.getElementById('reportNote').value = '';
+          document.getElementById('reportModal').classList.add('open');
+        });
+      });
+      document.getElementById('btnSaveReport').addEventListener('click', function () {
+        if (!window._currentOrder) return;
+        var status = document.getElementById('reportStatus').value;
+        var note = document.getElementById('reportNote').value.trim();
+        window._currentOrder.status = status === 'Diterima' ? 'Selesai' : 'Dibatalkan';
+        window._currentOrder.report = status + (note ? ' (' + note + ')' : '');
+        showToast(window._currentOrder.id + ' — ' + status + (note ? ' (' + note + ')' : ''));
+        document.getElementById('reportModal').classList.remove('open');
+        renderStats(); renderTable();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () { renderStats(); renderTable(); bindEvents(); });
+  </script>
+</body>
+</html>

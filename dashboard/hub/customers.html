@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Customers</h1>
+      <p>Daftar customer di area hub & lokasi</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Customers</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnExport"><i class="fa-solid fa-download"></i> Export</button>
+      
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-cards" id="statCards"></div>
+
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Daftar Customer</h3>
+        <div class="hub-panel-tools">
+          <div class="hub-search-box"><input type="search" id="custSearch" placeholder="Cari customer..."><i class="fa-solid fa-magnifying-glass"></i></div>
+          <select class="hub-select" id="tierFilter">
+            <option value="all">Semua Tier</option>
+            <option>Silver</option><option>Gold</option><option>Platinum</option>
+          </select>
+        </div>
+      </div>
+      <div class="hub-table-scroll">
+        <table class="hub-table">
+          <thead><tr><th>Customer</th><th>Area</th><th>Tier</th><th>Total Order</th><th>Poin</th><th>Status</th></tr></thead>
+          <tbody id="custBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    var CUSTOMERS = [
+      { name: 'Citra Lestari', area: 'Tebet', tier: 'Gold', orders: 24, pts: '125.000', status: 'Aktif', avatar: 'CL', bg: '#E5FFF3', color: '#00AA5B' },
+      { name: 'Maya Sari', area: 'Kemang', tier: 'Platinum', orders: 41, pts: '310.000', status: 'Aktif', avatar: 'MS', bg: '#FDF2F8', color: '#DB2777' },
+      { name: 'Bambang', area: 'Mampang', tier: 'Silver', orders: 9, pts: '48.000', status: 'Aktif', avatar: 'BM', bg: '#EFF6FF', color: '#2C7AFF' },
+      { name: 'Rina Amelia', area: 'Fatmawati', tier: 'Gold', orders: 19, pts: '98.500', status: 'Nonaktif', avatar: 'RA', bg: '#FFFBEB', color: '#F0B429' },
+      { name: 'Agus Salim', area: 'Cinere', tier: 'Silver', orders: 5, pts: '22.000', status: 'Aktif', avatar: 'AS', bg: '#F3E8FF', color: '#A78BFA' }
+    ];
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function tierBadge(t) {
+      var map = { 'Gold': 'badge-yellow', 'Platinum': 'badge-purple', 'Silver': 'badge-gray' };
+      return '<span class="badge ' + (map[t] || 'badge-gray') + '">' + t + '</span>';
+    }
+
+    function renderStats() {
+      var el = document.getElementById('statCards');
+      if (!el) return;
+      el.innerHTML = [
+        { icon: 'fa-solid fa-user-group', color: '#00AA5B', label: 'Total Customer', value: CUSTOMERS.length },
+        { icon: 'fa-solid fa-gem', color: '#F0B429', label: 'Gold+Platinum', value: CUSTOMERS.filter(function (c) { return c.tier !== 'Silver'; }).length },
+        { icon: 'fa-solid fa-circle-check', color: '#2C7AFF', label: 'Aktif', value: CUSTOMERS.filter(function (c) { return c.status === 'Aktif'; }).length },
+        { icon: 'fa-solid fa-boxes-stacked', color: '#A78BFA', label: 'Total Order', value: CUSTOMERS.reduce(function (s, c) { return s + c.orders; }, 0) }
+      ].map(function (c) {
+        return '<div class="hub-card"><div class="hub-card-top"><span class="hub-card-label">' + c.label + '</span><div class="hub-card-icon" style="background:' + c.color + '14;color:' + c.color + ';"><i class="' + c.icon + '"></i></div></div><div class="hub-card-value">' + c.value + '</div></div>';
+      }).join('');
+    }
+
+    function renderTable() {
+      var s = document.getElementById('custSearch');
+      var f = document.getElementById('tierFilter');
+      var q = s ? s.value.toLowerCase() : '';
+      var tier = f ? f.value : 'all';
+      var rows = CUSTOMERS.filter(function (c) {
+        var okT = tier === 'all' || c.tier === tier;
+        var okQ = !q || c.name.toLowerCase().indexOf(q) !== -1 || c.area.toLowerCase().indexOf(q) !== -1;
+        return okT && okQ;
+      });
+      var body = document.getElementById('custBody');
+      if (!body) return;
+      body.innerHTML = rows.length ? rows.map(function (c) {
+        return '<tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="hub-avatar-sm" style="width:30px;height:30px;background:' + c.bg + ';color:' + c.color + ';font-size:12px;">' + c.avatar + '</div>' + c.name + '</div></td><td>' + c.area + '</td><td>' + tierBadge(c.tier) + '</td><td>' + c.orders + '</td><td>' + c.pts + ' pts</td><td><span class="badge ' + (c.status === 'Aktif' ? 'badge-green' : 'badge-gray') + '">' + c.status + '</span></td></tr>';
+      }).join('') : '<tr><td colspan="6" class="hub-empty">Tidak ada data</td></tr>';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderStats(); renderTable();
+      var s = document.getElementById('custSearch'); if (s) s.addEventListener('input', renderTable);
+      var f = document.getElementById('tierFilter'); if (f) f.addEventListener('change', renderTable);
+      var exp = document.getElementById('btnExport'); if (exp) exp.addEventListener('click', function () { showToast('Export menyusul (Demo)'); });
+      document.getElementById('btnAdd').addEventListener('click', function () { showToast('Tambah customer — demo. Fitur menyusul.'); });
+    });
+  </script>
+</body>
+</html>
+</write_to_file>

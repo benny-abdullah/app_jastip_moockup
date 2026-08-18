@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Pusat Bantuan — Jastip</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- ================= PRELOADER ================= -->
+  <div id="preloader">
+    <div class="preloader-logo">J</div>
+  </div>
+
+  <!-- ================= TOPBAR ================= -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+      <a href="#"><span>Download Jastip App</span></a>
+    </div>
+    <div class="topbar-right">
+      <a href="tentang.html">Tentang Jastip</a>
+      <a href="berjualan.html">Mulai Berjualan</a>
+      <a href="promo.html">Promo</a>
+      <a href="bantuan.html">Pusat Bantuan</a>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="header-main">
+    <div class="header-inner">
+      <a href="index.html" class="logo" aria-label="Jastip Home">
+        <span class="logo-badge">J</span>
+        <span class="logo-text">Jastip<span>.</span></span>
+      </a>
+      <div class="header-category">
+        <i class="fa-solid fa-bars"></i>
+        <span>Kategori</span>
+      </div>
+      <div class="search-wrap">
+        <div class="search-box">
+          <svg class="unf-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="m20.53 19.46-4.4-4.4a7.33 7.33 0 1 0-1.07 1.06l4.41 4.41a.77.77 0 0 0 1.06 0 .77.77 0 0 0 0-1.07Zm-15.78-9a5.75 5.75 0 1 1 5.75 5.75 5.76 5.76 0 0 1-5.75-5.72v-.03Z"></path>
+          </svg>
+          <input type="search" aria-label="Cari di Jastip" placeholder="Cari di Jastip..." autocomplete="off">
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="#" class="header-icon" aria-label="Notifikasi"><i class="fa-regular fa-bell"></i></a>
+        <a href="#" class="header-icon" aria-label="Keranjang">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="badge-count">0</span>
+        </a>
+        <div class="header-divider"></div>
+        <div class="header-auth">
+          <a href="login.html" class="btn btn-outline">Masuk</a>
+          <a href="register.html" class="btn btn-solid">Daftar</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= PAGE HERO ================= -->
+    <section class="page-hero">
+      <div class="container">
+        <h1>Pusat Bantuan</h1>
+        <p>Temukan jawaban atas pertanyaan Anda seputar pesanan, pembayaran, pengiriman, akun, dan lainnya.</p>
+        <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Pusat Bantuan</span></div>
+      </div>
+    </section>
+
+    <!-- ================= KATEGORI BANTUAN ================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header" style="justify-content: center; text-align: center; flex-direction: column; gap: 8px;">
+          <h2 class="section-title">Kategori Bantuan</h2>
+          <p class="section-subtitle">Pilih topik yang ingin Anda tanyakan</p>
+        </div>
+        <div class="help-category-grid" style="margin-top: 32px;">
+          <div class="help-category" onclick="alert('Pesanan — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <h5>Pesanan</h5>
+            <p>Status & detail order</p>
+          </div>
+          <div class="help-category" onclick="alert('Pembayaran — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-credit-card"></i></div>
+            <h5>Pembayaran</h5>
+            <p>Top-up & metode bayar</p>
+          </div>
+          <div class="help-category" onclick="alert('Pengiriman — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-truck-fast"></i></div>
+            <h5>Pengiriman</h5>
+            <p>Lacak paket & retur</p>
+          </div>
+          <div class="help-category" onclick="alert('Akun — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-user"></i></div>
+            <h5>Akun & Membership</h5>
+            <p>Profil, tier, keamanan</p>
+          </div>
+          <div class="help-category" onclick="alert('Points — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-coins"></i></div>
+            <h5>Points & Reward</h5>
+            <p>Saldo, reward, kadaluarsa</p>
+          </div>
+          <div class="help-category" onclick="alert('Subscription — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+            <h5>Subscription</h5>
+            <p>Langganan & auto-renewal</p>
+          </div>
+          <div class="help-category" onclick="alert('Komplain — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-headset"></i></div>
+            <h5>Komplain</h5>
+            <p>Ajukan pengaduan</p>
+          </div>
+          <div class="help-category" onclick="alert('Berjualan — fitur menyusul (Demo)')">
+            <div class="hc-icon"><i class="fa-solid fa-store"></i></div>
+            <h5>Berjualan</h5>
+            <p>Panduan mitra hub</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section class="section" style="background: var(--nn50);">
+      <div class="container" style="max-width: 760px;">
+        <div class="section-header" style="justify-content: center; text-align: center; flex-direction: column; gap: 8px;">
+          <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
+        </div>
+        <div class="faq-list" style="margin-top: 24px;">
+          <div class="faq-item open">
+            <button class="faq-question" type="button">Bagaimana cara top-up points? <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Masuk ke akun Anda, buka menu Points & Top Up, pilih nominal, lalu pilih metode pembayaran (transfer, e-wallet, QRIS, VA). Points masuk otomatis setelah pembayaran berhasil.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">Bagaimana cara melacak pesanan? <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Buka menu Pesanan di dashboard, klik tombol "Lacak" pada order yang ingin dicek. Anda akan melihat timeline status pengiriman secara real-time.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">Apakah points bisa kadaluarsa? <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Ya. Points memiliki masa berlaku sesuai aturan. Sistem akan mengirimkan notifikasi email 7 hari sebelum points Anda kadaluarsa.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">Bagaimana jika barang tidak sesuai? <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Anda dapat mengajukan komplain melalui menu Komplain. Tim CS kami akan membantu proses refund points atau pengembalian barang (retur).</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">Bagaimana cara upgrade tier membership? <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Tier member naik otomatis berdasarkan total belanja dan lifetime points Anda. Semakin sering belanja, semakin tinggi tier dan benefitnya.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">Bagaimana sistem biaya pengiriman? <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Biaya pengiriman sudah termasuk dalam harga produk yang ditetapkan melalui RAB. Tidak ada biaya ongkir tambahan.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= KONTAK ================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header" style="justify-content: center; text-align: center; flex-direction: column; gap: 8px;">
+          <h2 class="section-title">Hubungi Kami</h2>
+          <p class="section-subtitle">Tim support kami siap membantu 24/7</p>
+        </div>
+        <div class="contact-grid" style="margin-top: 32px;">
+          <div class="contact-form-card">
+            <h3>Kirim Pesan</h3>
+            <form id="contactForm" novalidate>
+              <div class="form-group">
+                <label for="cNama">Nama Lengkap</label>
+                <input type="text" id="cNama" class="form-control" placeholder="Nama Anda" autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="cEmail">Email</label>
+                <input type="email" id="cEmail" class="form-control" placeholder="nama@email.com" autocomplete="email">
+              </div>
+              <div class="form-group">
+                <label for="cTopik">Topik</label>
+                <select id="cTopik" class="form-control">
+                  <option value="pesanan">Pesanan</option>
+                  <option value="pembayaran">Pembayaran</option>
+                  <option value="pengiriman">Pengiriman</option>
+                  <option value="points">Points & Reward</option>
+                  <option value="lainnya">Lainnya</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cPesan">Pesan</label>
+                <textarea id="cPesan" class="form-control" rows="4" style="height:auto; padding:10px 12px; resize: vertical;" placeholder="Tulis pertanyaan Anda..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-solid btn-block btn-lg">Kirim Pesan</button>
+            </form>
+          </div>
+          <div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="fa-solid fa-phone"></i></div>
+              <div>
+                <h5>Telepon (24 Jam)</h5>
+                <p>+62 812 3456 7890 (bebas pulsa)</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <h5>Email</h5>
+                <p>support@jastip.id<br>cs@jastip.id</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="fa-solid fa-comments"></i></div>
+              <div>
+                <h5>Live Chat</h5>
+                <p>Melalui aplikasi / dashboard (menu Komplain & Bantuan)</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <h5>Kantor Pusat</h5>
+                <p>Jl. Melati No. 12, Jakarta Selatan, Indonesia</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="ci-icon"><i class="fa-regular fa-clock"></i></div>
+              <div>
+                <h5>Jam Operasional</h5>
+                <p>Senin–Sabtu, 09.00–18.00 WIB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <span class="logo-badge" style="width: 36px; height: 36px; font-size: 18px;">J</span>
+            <span class="logo-text" style="font-size: 18px;">Jastip<span>.</span></span>
+          </a>
+          <p>Sistem ERP Retail & Titip Beli terintegrasi dengan points, reward, dan multi-hub di seluruh Indonesia.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Layanan</h4>
+          <ul>
+            <li><a href="customer/catalog.html">Katalog Produk</a></li>
+            <li><a href="customer/catalog.html?cat=Rewards">Rewards</a></li>
+            <li><a href="#">Subscription</a></li>
+            <li><a href="#">Hub Kami</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Perusahaan</h4>
+          <ul>
+            <li><a href="tentang.html">Tentang Kami</a></li>
+            <li><a href="berjualan.html">Karir</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="bantuan.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Kontak Info</h4>
+          <div class="footer-contact"><i class="fa-solid fa-phone"></i><div><strong>Phone number</strong>+62 812 3456 7890</div></div>
+          <div class="footer-contact"><i class="fa-solid fa-envelope"></i><div><strong>Email Address</strong>support@jastip.id</div></div>
+          <div class="footer-contact"><i class="fa-solid fa-location-dot"></i><div><strong>Office Address</strong>Jakarta Selatan, Indonesia</div></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Jastip — ERP Retail/Titip Beli. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Terms of use</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll ke atas"><i class="fa-solid fa-chevron-up"></i></button>
+  <script src="js/main.js"></script>
+</body>
+</html>

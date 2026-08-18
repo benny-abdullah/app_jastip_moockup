@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preferensi Email — Jastip Hub</title>
+</head>
+<body class="hub-body">
+
+  <section class="hub-page-head">
+    <div class="hub-page-title">
+      <h1>Preferensi Email</h1>
+      <p>Atur notifikasi email yang dikirim ke hub Anda</p>
+      <div class="hub-breadcrumb"><a href="../../dashboard/hub.html">Dashboard</a><span>/</span><span>Preferensi Email</span></div>
+    </div>
+    <div class="hub-page-actions">
+      <button class="hub-btn" id="btnReset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+      <button class="hub-btn hub-btn-solid" id="btnSave"><i class="fa-solid fa-check"></i> Simpan</button>
+    </div>
+  </section>
+
+  <main class="hub-main">
+    <div class="hub-panel">
+      <div class="hub-panel-head">
+        <h3>Jenis Notifikasi Email</h3>
+        <p>8 jenis email penting untuk operasional hub (sesuai view.md Bagian G.2)</p>
+      </div>
+      <div id="prefList"></div>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/hub-layout.js"></script>
+  <script>
+    var PREFS = [
+      { key: 'stock_order', icon: 'fa-solid fa-truck-ramp-box', color: '#00AA5B', bg: '#E5FFF3', title: 'Order Stok Telah Tiba', desc: 'Dikirim saat SO dari pusat tiba di hub', on: true },
+      { key: 'stock_low', icon: 'fa-solid fa-triangle-exclamation', color: '#F94D63', bg: '#FEF2F2', title: 'Stok Menipis', desc: 'Peringatan produk ≤ ROP di warehousing', on: true },
+      { key: 'po_created', icon: 'fa-solid fa-file-signature', color: '#2C7AFF', bg: '#EFF6FF', title: 'PO Dibuat (ke Supplier)', desc: 'Notifikasi saat purchase order dikirim', on: true },
+      { key: 'po_approved', icon: 'fa-solid fa-check-double', color: '#A78BFA', bg: '#F3E8FF', title: 'PO Disetujui', desc: 'Dikirim saat PO hub disetujui pusat', on: true },
+      { key: 'delivery_done', icon: 'fa-solid fa-circle-check', color: '#008743', bg: '#E5FFF3', title: 'Delivery Selesai', desc: 'Pemberitahuan saat delivery selesai', on: false },
+      { key: 'fee_report', icon: 'fa-solid fa-file-invoice-dollar', color: '#DB2777', bg: '#FDF2F8', title: 'Laporan Fee Bulanan', desc: 'Ringkasan fee setiap awal bulan', on: true },
+      { key: 'complaint', icon: 'fa-solid fa-headset', color: '#B8860B', bg: '#FFFBEB', title: 'Komplain Baru di Hub', desc: 'Ada komplain yang masuk ke hub Anda', on: true },
+      { key: 'weekly_sales', icon: 'fa-solid fa-chart-line', color: '#2563EB', bg: '#EFF6FF', title: 'Ringkasan Penjualan Mingguan', desc: 'Dikirim setiap hari Senin', on: true }
+    ];
+
+    function showToast(m) {
+      var t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    }
+
+    function renderList() {
+      var el = document.getElementById('prefList');
+      if (!el) return;
+      el.innerHTML = PREFS.map(function (p) {
+        return '<div class="hub-toggle-row" data-key="' + p.key + '">' +
+          '<div class="hub-tr-icon" style="background:' + p.bg + ';color:' + p.color + ';"><i class="' + p.icon + '"></i></div>' +
+          '<div class="hub-tr-info"><div class="hub-tr-title">' + p.title + '</div><div class="hub-tr-desc">' + p.desc + '</div></div>' +
+          '<label class="switch"><input type="checkbox" ' + (p.on ? 'checked' : '') + '><span class="slider"></span></label>' +
+          '</div>';
+      }).join('');
+    }
+
+    function collect() {
+      var result = {};
+      document.querySelectorAll('#prefList .hub-toggle-row').forEach(function (row) {
+        result[row.getAttribute('data-key')] = row.querySelector('input').checked;
+      });
+      return result;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderList();
+      var save = document.getElementById('btnSave');
+      if (save) save.addEventListener('click', function () {
+        try { localStorage.setItem('jastip_hub_email_prefs', JSON.stringify(collect())); } catch (e) {}
+        showToast('Preferensi email disimpan (demo)');
+      });
+      var reset = document.getElementById('btnReset');
+      if (reset) reset.addEventListener('click', function () {
+        PREFS.forEach(function (p) { p.on = true; });
+        renderList();
+        showToast('Semua notifikasi diaktifkan (reset)');
+      });
+    });
+  </script>
+</body>
+</html>

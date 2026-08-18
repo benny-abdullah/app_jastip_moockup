@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, width=device-width">
+  <title>Subscription — Jastip</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="cust-body">
+
+  <section class="cust-page-head">
+    <div class="container">
+      <h1>Subscription</h1>
+      <p>Langganan sembako berkala dengan auto-renewal</p>
+      <div class="cust-breadcrumb"><a href="../dashboard/customer.html">Dashboard</a><span>/</span><span>Subscription</span></div>
+    </div>
+  </section>
+
+  <main class="cust-main">
+    <div class="container">
+
+      <!-- Langganan Aktif -->
+      <div class="cust-panel" id="subscriptionPanel">
+        <div class="cust-panel-head"><h3>Langganan Anda</h3><span class="badge badge-green" id="subscriptionBadge">Aktif</span></div>
+        <div class="summary-box">
+          <div class="summary-row"><span>Paket</span><span class="value" id="subscriptionPaket">Sembako Bulanan</span></div>
+          <div class="summary-row"><span>Harga</span><span class="value" id="subscriptionHarga">114.000 pts / bulan</span></div>
+          <div class="summary-row"><span>Pengiriman Berikutnya</span><span class="value">15 Sep 2026</span></div>
+          <div class="summary-row"><span>Alamat Kirim</span><span class="value">Jl. Melati No. 12</span></div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-solid" onclick="alert('Upgrade paket (Demo)')"><i class="fa-solid fa-arrow-up"></i> Upgrade</button>
+          <button type="button" class="btn btn-secondary" onclick="batalkanLangganan()"><i class="fa-solid fa-xmark"></i> Batalkan</button>
+        </div>
+
+        <!-- Peringatan penurunan tier saat berhenti berlangganan -->
+        <div class="info-warning" id="tierWarningBox">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Perhatian — Penurunan Tier Membership</strong>
+            <p>Membatalkan langganan akan menurunkan tier membership Anda ke level terendah (Bronze) dan menghapus benefit tier (cashback, diskon, gratis ongkir, akses reward premium).</p>
+            <p>Poin yang sudah terpakai selama langganan <strong>tidak dikembalikan</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paket -->
+      <div class="pack-grid">
+        <div class="pack-card">
+          <p class="pc-name">Hemat</p>
+          <p class="pc-price">75.000 <small>pts/bln</small></p>
+          <ul>
+            <li><i class="fa-solid fa-check"></i> 4 produk sembako dasar</li>
+            <li><i class="fa-solid fa-check"></i> 1x pengiriman / bulan</li>
+            <li><i class="fa-solid fa-check"></i> Gratis ongkir</li>
+          </ul>
+          <button class="btn btn-outline btn-block" onclick="pilihPaket('Hemat', 75000)">Pilih Paket</button>
+        </div>
+        <div class="pack-card featured">
+          <span class="pc-badge">POPULER</span>
+          <p class="pc-name">Keluarga</p>
+          <p class="pc-price">114.000 <small>pts/bln</small></p>
+          <ul>
+            <li><i class="fa-solid fa-check"></i> 6 produk sembako lengkap</li>
+            <li><i class="fa-solid fa-check"></i> 2x pengiriman / bulan</li>
+            <li><i class="fa-solid fa-check"></i> Gratis ongkir</li>
+            <li><i class="fa-solid fa-check"></i> Bonus 5.000 pts / bulan</li>
+          </ul>
+          <button class="btn btn-solid btn-block" onclick="pilihPaket('Keluarga', 114000)">Pilih Paket</button>
+        </div>
+        <div class="pack-card">
+          <p class="pc-name">Premium</p>
+          <p class="pc-price">200.000 <small>pts/bln</small></p>
+          <ul>
+            <li><i class="fa-solid fa-check"></i> 10 produk + pilihan premium</li>
+            <li><i class="fa-solid fa-check"></i> 4x pengiriman / bulan</li>
+            <li><i class="fa-solid fa-check"></i> Gratis ongkir</li>
+            <li><i class="fa-solid fa-check"></i> Bonus 15.000 pts / bulan</li>
+          </ul>
+          <button class="btn btn-outline btn-block" onclick="pilihPaket('Premium', 200000)">Pilih Paket</button>
+        </div>
+      </div>
+
+      <!-- Riwayat Siklus -->
+      <div class="cust-panel" style="margin-top:20px;">
+        <div class="cust-panel-head"><h3>Riwayat Siklus</h3></div>
+        <div class="cust-table-wrap">
+          <table class="cust-table">
+            <thead><tr><th>Periode</th><th>Status</th><th>Order</th><th>Total</th></tr></thead>
+            <tbody>
+              <tr><td>15 Agu 2026</td><td><span class="badge badge-green">Terkirim</span></td><td>ORD-2026-0814-01</td><td>114.000 pts</td></tr>
+              <tr><td>15 Jul 2026</td><td><span class="badge badge-green">Terbayar</span></td><td>ORD-2026-0714-02</td><td>114.000 pts</td></tr>
+              <tr><td>15 Jun 2026</td><td><span class="badge badge-green">Terkirim</span></td><td>ORD-2026-0614-03</td><td>114.000 pts</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/tier.js"></script>
+  <script src="../js/order-data.js"></script>
+  <script>
+    // Data mock customer (prototype — dalam Laravel akan dibaca dari database)
+    var CUSTOMER_PROFILE = { total_spend: 7500000 }; // Rp 7,5 jt → tier Gold (≥ 5jt, ≥ 3 th)
+
+    function getSubscription() {
+      try {
+        return JSON.parse(localStorage.getItem('jastip_subscription')) || null;
+      } catch (e) { return null; }
+    }
+
+    function saveSubscription(sub) {
+      // Simpan tanggal mulai jika belum ada
+      if (!sub.startDate) sub.startDate = new Date().toISOString();
+      try { localStorage.setItem('jastip_subscription', JSON.stringify(sub)); }
+      catch (e) { /* storage tidak tersedia */ }
+    }
+
+    // Pilih paket → berlangganan aktif + tier dihitung otomatis (spend + durasi)
+    // + buat order paket member di data order terpusat
+    function pilihPaket(namaPaket, hargaPts) {
+      saveSubscription({ paket: namaPaket, harga: hargaPts, status: 'aktif' });
+
+      var tier = window.JastipTier ? window.JastipTier.autoUpgradeTier(CUSTOMER_PROFILE.total_spend) : 'bronze';
+
+      // Buat order dari paket member (sumber: subscription)
+      if (window.JastipOrders) {
+        var order = {
+          id: 'SUB-' + Date.now(),
+          source: 'subscription',
+          sourceLabel: 'Paket Member',
+          produk: [{ nama: 'Paket ' + namaPaket + ' (sembako berkala)', qty: 1, harga: hargaPts }],
+          totalPts: hargaPts,
+          status: 'Diproses',
+          metode: 'Auto-renewal',
+          tanggal: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })
+        };
+        window.JastipOrders.setSubscription(order);
+      }
+
+      updateSubscriptionUI();
+      alert('Berhasil berlangganan paket ' + namaPaket + '! Tier Anda saat ini: ' + tier.charAt(0).toUpperCase() + tier.slice(1) + '. Order paket tersimpan di Riwayat Pesanan.');
+    }
+
+    function batalkanLangganan() {
+      var konfirmasi = confirm('Batalkan langganan?\n\nPeringatan: Benefit tier akan dihitung ulang berdasarkan total belanja & durasi berlangganan.\n\nPoin yang sudah terpakai tidak dikembalikan. Lanjutkan?');
+      if (konfirmasi) {
+        var sub = getSubscription() || {};
+        sub.status = 'tidak_aktif';
+        saveSubscription(sub);
+        // Jangan hardcode bronze — hitung ulang dari spend terakhir
+        if (window.JastipTier) {
+          window.JastipTier.autoUpgradeTier(CUSTOMER_PROFILE.total_spend);
+          try {
+            localStorage.setItem('jastip_tier_alasan', 'Berhenti langganan di halaman Subscription');
+          } catch (e) { /* storage tidak tersedia */ }
+        }
+        updateSubscriptionUI();
+        var tier = window.JastipTier ? window.JastipTier.getTier() : 'bronze';
+        alert('Langganan dibatalkan! Tier dihitung ulang: ' + tier.charAt(0).toUpperCase() + tier.slice(1) + '. Periksa halaman Profil & Tier.');
+      }
+    }
+
+    // Perbarui panel Langganan sesuai status di localStorage
+    function updateSubscriptionUI() {
+      var sub = getSubscription();
+      var badge = document.getElementById('subscriptionBadge');
+      var paketEl = document.getElementById('subscriptionPaket');
+      var hargaEl = document.getElementById('subscriptionHarga');
+      var warnBox = document.getElementById('tierWarningBox');
+
+      if (sub && sub.status === 'aktif') {
+        badge.textContent = 'Aktif';
+        badge.className = 'badge badge-green';
+        paketEl.textContent = sub.paket;
+        hargaEl.textContent = Number(sub.harga).toLocaleString('id-ID') + ' pts / bulan';
+        if (warnBox) warnBox.style.display = 'none';
+      } else {
+        badge.textContent = 'Tidak Aktif';
+        badge.className = 'badge badge-gray';
+        paketEl.textContent = '—';
+        hargaEl.textContent = '—';
+        if (warnBox) warnBox.style.display = 'flex';
+      }
+    }
+
+    // Inisialisasi tampilan saat halaman dimuat
+    updateSubscriptionUI();
+  </script>
+</body>
+</html>
