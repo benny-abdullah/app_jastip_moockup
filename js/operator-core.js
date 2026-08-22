@@ -1,12 +1,12 @@
 /* ============================================================
-   JASTIP — SUPERADMIN CORE JS
-   Renderer GENERIK untuk semua halaman superadmin:
+   JASTIP — OPERATOR CORE JS
+   Renderer GENERIK pour toutes les pages operator:
    - Card info (4 kartu)
    - Filter bar (dropdown + filter tanggal Mulai–Akhir)
    - Tabel CRUD (search + filter chip + pagination)
    - Modal tambah/edit/hapus (CRUD via localStorage)
    - Charts (Chart.js: line, doughnut, bar, area)
-   Halaman cukup buat <body class="sa-body"> + <div data-sa-page="modulId">
+   Halaman cukup buat <body class="op-body"> + <div data-op-page="modulId">
    ============================================================ */
 
 (function () {
@@ -15,7 +15,7 @@
   function $(sel, scope) { return (scope || document).querySelector(sel); }
   function $$(sel, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(sel)); }
 
-  var PAGE_SELECTOR = '[data-sa-page]';
+  var PAGE_SELECTOR = '[data-op-page]';
 
   /* ============ FORMATTERS ============ */
   function formatRp(n) {
@@ -40,7 +40,7 @@
       'lunas': 'green', 'matched': 'green', 'completed': 'green', 'resolved': 'green', 'approved': 'green',
       'a': 'green', 'verified': 'green', 'received': 'green', 'shipped': 'green', 'sent': 'green',
       'nonaktif': 'gray', 'rejected': 'gray', 'cancelled': 'gray', 'closed': 'gray', 'expired': 'gray',
-      'nonaktif': 'gray', 'd': 'gray', 'draft': 'gray', 'skipped': 'gray',
+      'd': 'gray', 'draft': 'gray', 'skipped': 'gray',
       'pending': 'amber', 'menunggu': 'amber', 'in progress': 'amber', 'diproses': 'amber',
       'partial': 'amber', 'overdue': 'amber', 'b': 'amber', 'paused': 'amber', 'gagal': 'amber',
       'failed': 'red', 'open': 'red', 'urgent': 'red', 'habis': 'red', 'over budget': 'red',
@@ -48,10 +48,10 @@
       'topup': 'blue', 'cashback': 'green', 'bonus': 'purple', 'purchase': 'blue', 'redeem': 'amber',
       'processed': 'blue', 'in_purchase': 'blue', 'level 2': 'purple', 'high': 'red', 'medium': 'amber',
       'low': 'gray', 'platinum': 'purple', 'gold': 'amber', 'silver': 'gray', 'bronze': 'amber',
-      'normal': 'blue', 'in progress': 'amber', 'menunggu': 'amber', 'storage': 'blue', 'picking': 'purple',
+      'normal': 'blue', 'storage': 'blue', 'picking': 'purple',
       'damaged': 'red', 'quarantine': 'amber', 'fast moving': 'red', 'slow moving': 'blue',
-      'expected': 'amber', 'paid': 'green', 'calculated': 'blue',
-      'retur': 'red', 'dalam perjalanan': 'amber'
+      'expected': 'amber', 'calculated': 'blue', 'dikirim': 'green', 'dalam perjalanan': 'amber',
+      'retur': 'red', 'cancelled': 'gray', 'diamond': 'purple'
     };
     if (v.indexOf('approved') !== -1) return 'green';
     if (v.indexOf('pending') !== -1) return 'amber';
@@ -116,18 +116,18 @@
       }).join('');
       return '<div class="sa-filter-group">' +
         '<label>' + f.label + '</label>' +
-        '<select id="sa-filter-' + f.id + '" data-filter-key="' + f.id + '">' + opts + '</select></div>';
+        '<select id="op-filter-' + f.id + '" data-filter-key="' + f.id + '">' + opts + '</select></div>';
     }).join('');
 
     var dateHtml = '';
     if (module.hasDateFilter) {
-      dateHtml = '<div class="sa-filter-group"><label>Dari</label><input type="date" id="sa-dateFrom" value="2026-07-16"></div>' +
-        '<div class="sa-filter-group"><label>Sampai</label><input type="date" id="sa-dateTo" value="2026-08-15"></div>';
+      dateHtml = '<div class="sa-filter-group"><label>Dari</label><input type="date" id="op-dateFrom" value="2026-07-16"></div>' +
+        '<div class="sa-filter-group"><label>Sampai</label><input type="date" id="op-dateTo" value="2026-08-15"></div>';
     }
 
     return '<div class="sa-filter-bar">' + selects + dateHtml +
-      '<div class="sa-filter-group"><label>&nbsp;</label><button type="button" class="sa-btn-primary" id="sa-applyFilter" style="height:36px"><i class="fa-solid fa-filter"></i> Terapkan</button></div>' +
-      '<div class="sa-filter-group"><label>&nbsp;</label><button type="button" class="sa-btn-secondary" id="sa-resetFilter" style="height:36px">Reset</button></div>' +
+      '<div class="sa-filter-group"><label>&nbsp;</label><button type="button" class="sa-btn-primary" id="op-applyFilter" style="height:36px"><i class="fa-solid fa-filter"></i> Terapkan</button></div>' +
+      '<div class="sa-filter-group"><label>&nbsp;</label><button type="button" class="sa-btn-secondary" id="op-resetFilter" style="height:36px">Reset</button></div>' +
       '</div>';
   }
 
@@ -162,13 +162,7 @@
           var realIdx = state.rows.indexOf(row);
           actions = '<td><div class="sa-actions">' +
             '<button class="sa-edit" data-index="' + realIdx + '" title="Edit"><i class="fa-solid fa-pen"></i></button>' +
-            (module.hasPrint ? '<button class="sa-print" data-index="' + realIdx + '" title="Cetak Surat Pesanan"><i class="fa-solid fa-print"></i></button>' : '') +
             '<button class="sa-del" data-index="' + realIdx + '" title="Hapus"><i class="fa-solid fa-trash"></i></button>' +
-            '</div></td>';
-        } else if (module.hasPrint) {
-          var realIdx2 = state.rows.indexOf(row);
-          actions = '<td><div class="sa-actions">' +
-            '<button class="sa-print" data-index="' + realIdx2 + '" title="Cetak Surat Pesanan"><i class="fa-solid fa-print"></i></button>' +
             '</div></td>';
         }
         return '<tr>' + cells + actions + '</tr>';
@@ -256,18 +250,18 @@
     applyFilters(module);
 
     var head = container.querySelector('.sa-table-head');
-    var searchInput = container.querySelector('#sa-tableSearch');
-    var perPage = container.querySelector('#sa-perPage');
+    var searchInput = container.querySelector('#op-tableSearch');
+    var perPage = container.querySelector('#op-perPage');
 
     // Update tabel
-    var tableWrap = container.querySelector('#sa-tableContainer');
+    var tableWrap = container.querySelector('#op-tableContainer');
     if (tableWrap) tableWrap.innerHTML = buildTable(module);
 
-    var pageWrap = container.querySelector('#sa-paginationContainer');
+    var pageWrap = container.querySelector('#op-paginationContainer');
     if (pageWrap) pageWrap.innerHTML = buildPagination(module);
 
     if (head) {
-      var count = container.querySelector('#sa-countBadge');
+      var count = container.querySelector('#op-countBadge');
       if (count) count.textContent = state.filtered.length + ' data';
     }
     if (searchInput) searchInput.value = state.search;
@@ -277,46 +271,34 @@
   /* ============ BUILD MODAL (CREATE/EDIT) ============ */
   function buildModal(module) {
     var fields = module.modalFields || [];
-    var dataAPI = window.JastipSuperadminData || {};
     var grid = fields.map(function (f) {
       var inputHtml;
       if (f.type === 'select') {
         var options = f.options || [];
-        // Dynamic: ambil opsi dari master data (kategori & supplier) + searchable.
-        // Gunakan getRows() agar membaca localStorage — CRUD yang dilakukan
-        // di suppliers.html / categories.html langsung tampil di dropdown.
-        if (f.dynamic) {
-          var rows = dataAPI.getRows ? dataAPI.getRows(f.dynamicSource || 'categories') : [];
-          options = rows.map(function (r) { return r.name; });
-        }
         var opts = options.map(function (o) {
           return '<option value="' + o + '">' + o + '</option>';
         }).join('');
-        inputHtml = '' +
-          '<div class="sa-search-select">' +
-          '<input type="search" class="sa-select-search" id="sa-search-' + f.key + '" placeholder="Ketik untuk mencari..." autocomplete="off">' +
-          '<select id="sa-field-' + f.key + '" size="5" style="width:100%">' + opts + '</select>' +
-          '</div>';
+        inputHtml = '<select id="op-field-' + f.key + '" style="width:100%">' + opts + '</select>';
       } else if (f.type === 'textarea') {
-        inputHtml = '<textarea id="sa-field-' + f.key + '" rows="3" placeholder="' + (f.placeholder || '') + '"></textarea>';
+        inputHtml = '<textarea id="op-field-' + f.key + '" rows="3" placeholder="' + (f.placeholder || '') + '"></textarea>';
       } else if (f.type === 'date') {
-        inputHtml = '<input type="date" id="sa-field-' + f.key + '">';
+        inputHtml = '<input type="date" id="op-field-' + f.key + '">';
       } else {
-        inputHtml = '<input type="' + (f.type === 'number' ? 'number' : 'text') + '" id="sa-field-' + f.key + '" placeholder="' + (f.placeholder || '') + '">';
+        inputHtml = '<input type="' + (f.type === 'number' ? 'number' : 'text') + '" id="op-field-' + f.key + '" placeholder="' + (f.placeholder || '') + '">';
       }
       return '<div class="sa-form-group' + (f.full ? ' full' : '') + '">' +
         '<label>' + f.label + '</label>' + inputHtml + '</div>';
     }).join('');
 
     return '' +
-      '<div class="sa-modal-overlay" id="saModalOverlay">' +
+      '<div class="sa-modal-overlay" id="opModalOverlay">' +
       '<div class="sa-modal">' +
-      '<div class="sa-modal-head"><h3 id="saModalTitle">Tambah Data</h3>' +
-      '<button type="button" class="sa-modal-close" id="saModalClose"><i class="fa-solid fa-xmark"></i></button></div>' +
+      '<div class="sa-modal-head"><h3 id="opModalTitle">Tambah Data</h3>' +
+      '<button type="button" class="sa-modal-close" id="opModalClose"><i class="fa-solid fa-xmark"></i></button></div>' +
       '<div class="sa-modal-body"><div class="sa-form-grid">' + grid + '</div></div>' +
       '<div class="sa-modal-foot">' +
-      '<button type="button" class="sa-btn-secondary" id="saModalCancel">Batal</button>' +
-      '<button type="button" class="sa-btn-primary" id="saModalSave"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>' +
+      '<button type="button" class="sa-btn-secondary" id="opModalCancel">Batal</button>' +
+      '<button type="button" class="sa-btn-primary" id="opModalSave"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>' +
       '</div>' +
       '</div></div>';
   }
@@ -325,128 +307,29 @@
     state.modalIndex = index;
     state.modalMode = index === -1 ? 'create' : 'edit';
 
-    var overlay = $('#saModalOverlay');
+    var overlay = $('#opModalOverlay');
     if (!overlay) return;
-    var title = $('#saModalTitle');
+    var title = $('#opModalTitle');
     if (title) title.textContent = state.modalMode === 'create' ? 'Tambah ' + module.title : 'Edit ' + module.title;
 
     var row = state.modalIndex === -1 ? {} : state.rows[state.modalIndex];
     (module.modalFields || []).forEach(function (f) {
-      var el = $('#sa-field-' + f.key);
+      var el = $('#op-field-' + f.key);
       if (el && row) {
         el.value = row[f.key] !== undefined && row[f.key] !== null ? row[f.key] : (f.type === 'date' ? '' : '');
       }
     });
 
     overlay.classList.add('show');
-
-    // Bind searchable select (dynamic dropdown: kategori/supplier)
-    $$('.sa-select-search').forEach(function (searchInput) {
-      var key = searchInput.getAttribute('id').replace('sa-search-', '');
-      var selectEl = $('#sa-field-' + key);
-      if (selectEl) {
-        searchInput.addEventListener('input', function () {
-          var q = this.value.toLowerCase();
-          $$('option', selectEl).forEach(function (opt) {
-            opt.style.display = opt.text.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
-          });
-        });
-        searchInput.addEventListener('keydown', function (e) {
-          if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            var visible = $$('option', selectEl).filter(function (o) { return o.style.display !== 'none'; });
-            var idx = visible.indexOf(selectEl.selectedOptions[0]) + (e.key === 'ArrowDown' ? 1 : -1);
-            if (idx >= 0 && idx < visible.length) selectEl.selectedIndex = visible[idx].index;
-          }
-        });
-      }
-    });
-
-    // === MODUL PRODUK: SKU OTOMATIS + KALKULASI RAB REALTIME ===
-    if (module.id === 'products') {
-      // SKU otomatis saat tambah baru (tidak perlu input manual)
-      var skuEl = $('#sa-field-sku');
-      if (skuEl && state.modalMode === 'create') {
-        var nextNum = (state.rows.length + 1);
-        skuEl.value = 'PRD-' + String(nextNum).padStart(3, '0');
-      }
-      bindRabCalculation();
-      updateRabCalculation();
-    }
-  }
-
-  /* ============ KALKULASI RAB PER PRODUK (REALTIME) ============
-     Harga Jual = Harga Biaya × (1 + Total % RAB)
-     Point = Harga Jual (1 pts = Rp 1)
-     Komponen RAB: Fee, Diskon Member, Diskon Lainnya,
-     Biaya Operasional, Biaya Lainnya, Overhead.                */
-  var RAB_FIELDS = [
-    { key: 'feePercent', label: 'Fee' },
-    { key: 'memberDiscountPercent', label: 'Diskon Member' },
-    { key: 'otherDiscountPercent', label: 'Diskon Lainnya' },
-    { key: 'operationalCostPercent', label: 'Biaya Operasional' },
-    { key: 'otherCostPercent', label: 'Biaya Lainnya' },
-    { key: 'overheadPercent', label: 'Overhead' }
-  ];
-
-  function bindRabCalculation() {
-    var priceEl = $('#sa-field-price');
-    if (!priceEl) return;
-
-    RAB_FIELDS.forEach(function (f) {
-      var el = $('#sa-field-' + f.key);
-      if (el) {
-        el.addEventListener('input', function () { calcRab(); });
-      }
-    });
-    if (priceEl) priceEl.addEventListener('input', calcRab);
-  }
-
-  // Konversi Rupiah ke Poin memakai rate aktif dari master currency-conversion.
-  function getConversionRate() {
-    var dataAPI = window.JastipSuperadminData;
-    if (dataAPI && dataAPI.getRows) {
-      var rates = dataAPI.getRows('currency-conversion');
-      var aktif = rates.filter(function (r) { return r.status === 'Aktif'; })[0];
-      if (aktif && aktif.rate > 0) return Number(aktif.rate);
-    }
-    return 1; // fallback: 1 Poin = Rp 1
-  }
-
-  function calcRab() {
-    var priceEl = $('#sa-field-price');
-    var sellingEl = $('#sa-field-sellingPrice');
-    var pointsEl = $('#sa-field-points');
-    if (!priceEl || !sellingEl || !pointsEl) return;
-
-    var base = parseFloat(priceEl.value) || 0;
-    var totalPct = 0;
-    RAB_FIELDS.forEach(function (f) {
-      var el = $('#sa-field-' + f.key);
-      var v = el ? (parseFloat(el.value) || 0) : 0;
-      totalPct += v;
-    });
-
-    var selling = Math.round(base * (1 + totalPct / 100));
-    sellingEl.value = selling;
-    var rate = getConversionRate();
-    pointsEl.value = Math.round(selling / rate); // Harga Jual (Rp) ÷ Rate = Point
-  }
-
-  function updateRabCalculation() {
-    var priceEl = $('#sa-field-price');
-    if (priceEl) {
-      calcRab();
-    }
   }
 
   function saveModal(module) {
-    var dataAPI = window.JastipSuperadminData;
+    var dataAPI = window.JastipOperatorData;
     if (!dataAPI) return;
 
     var newRow = {};
     (module.modalFields || []).forEach(function (f) {
-      var el = $('#sa-field-' + f.key);
+      var el = $('#op-field-' + f.key);
       if (el) {
         var v = el.value;
         if (f.type === 'number') v = Number(v) || 0;
@@ -460,21 +343,21 @@
       state.rows = dataAPI.updateRow(module.id, state.modalIndex, newRow);
     }
 
-    var overlay = $('#saModalOverlay');
+    var overlay = $('#opModalOverlay');
     if (overlay) overlay.classList.remove('show');
 
-    var toast = window.JastipSuperadminLayout && window.JastipSuperadminLayout.toast;
+    var toast = window.JastipOperatorLayout && window.JastipOperatorLayout.toast;
     if (toast) toast(state.modalMode === 'create' ? 'Data berhasil ditambahkan' : 'Data berhasil diperbarui');
 
     if (state.container) render(module, state.container);
   }
 
   function deleteRowConfirm(module, index) {
-    var dataAPI = window.JastipSuperadminData;
+    var dataAPI = window.JastipOperatorData;
     if (!dataAPI) return;
     if (!window.confirm('Yakin ingin menghapus data ini?')) return;
     state.rows = dataAPI.deleteRow(module.id, index);
-    var toast = window.JastipSuperadminLayout && window.JastipSuperadminLayout.toast;
+    var toast = window.JastipOperatorLayout && window.JastipOperatorLayout.toast;
     if (toast) toast('Data berhasil dihapus');
     if (state.container) render(module, state.container);
   }
@@ -491,11 +374,11 @@
     if (charts.length === 0 || typeof Chart === 'undefined') return;
 
     var html = chartBoxesHtml(module);
-    var holder = container.querySelector('#sa-chartsContainer');
+    var holder = container.querySelector('#op-chartsContainer');
     if (holder) holder.innerHTML = html;
 
     charts.forEach(function (ch, i) {
-      var canvas = container.querySelector('#sa-chart-' + i);
+      var canvas = container.querySelector('#op-chart-' + i);
       if (!canvas) return;
       var ctx = canvas.getContext('2d');
 
@@ -534,7 +417,7 @@
       charts.map(function (ch, i) {
         return '<div class="sa-chart-box' + (hasBarLast && i === charts.length - 1 ? ' wide' : '') + '">' +
           '<h3>' + ch.title + '</h3>' +
-          '<div class="sa-chart-container"><canvas id="sa-chart-' + i + '"></canvas></div>' +
+          '<div class="sa-chart-container"><canvas id="op-chart-' + i + '"></canvas></div>' +
           '</div>';
       }).join('') + '</div>';
   }
@@ -542,7 +425,7 @@
   /* ============ BIND EVENTS ============ */
   function bindEvents(module, container) {
     // Search
-    var searchInput = container.querySelector('#sa-tableSearch');
+    var searchInput = container.querySelector('#op-tableSearch');
     if (searchInput) {
       searchInput.addEventListener('input', function () {
         state.search = this.value;
@@ -552,7 +435,7 @@
     }
 
     // Per page
-    var perPage = container.querySelector('#sa-perPage');
+    var perPage = container.querySelector('#op-perPage');
     if (perPage) {
       perPage.addEventListener('change', function () {
         state.perPage = Number(this.value);
@@ -562,7 +445,7 @@
     }
 
     // Chips (event delegation)
-    var chipsWrap = container.querySelector('#sa-chipsContainer');
+    var chipsWrap = container.querySelector('#op-chipsContainer');
     if (chipsWrap) {
       chipsWrap.addEventListener('click', function (e) {
         var chip = e.target.closest('.sa-chip');
@@ -576,7 +459,7 @@
     }
 
     // Pagination (event delegation)
-    var pageWrap = container.querySelector('#sa-paginationContainer');
+    var pageWrap = container.querySelector('#op-paginationContainer');
     if (pageWrap) {
       pageWrap.addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-page]');
@@ -590,26 +473,21 @@
     }
 
     // Tombol aksi tabel (edit/hapus) — delegation
-    var tableWrap = container.querySelector('#sa-tableContainer');
+    var tableWrap = container.querySelector('#op-tableContainer');
     if (tableWrap) {
       tableWrap.addEventListener('click', function (e) {
         var editBtn = e.target.closest('.sa-edit');
         var delBtn = e.target.closest('.sa-del');
-        var printBtn = e.target.closest('.sa-print');
         if (editBtn) {
           openModal(module, Number(editBtn.getAttribute('data-index')));
         } else if (delBtn) {
           deleteRowConfirm(module, Number(delBtn.getAttribute('data-index')));
-        } else if (printBtn) {
-          var idx = Number(printBtn.getAttribute('data-index'));
-          var row = state.rows[idx];
-          if (row) printPurchaseOrder(module, row);
         }
       });
     }
 
     // Tombol tambah
-    var addBtn = container.querySelector('#sa-addBtn');
+    var addBtn = container.querySelector('#op-addBtn');
     if (addBtn) {
       addBtn.addEventListener('click', function () {
         openModal(module, -1);
@@ -617,18 +495,18 @@
     }
 
     // Filter apply/reset
-    var applyBtn = container.querySelector('#sa-applyFilter');
+    var applyBtn = container.querySelector('#op-applyFilter');
     if (applyBtn) {
       applyBtn.addEventListener('click', function () {
         state.page = 1;
         render(module, container);
       });
     }
-    var resetBtn = container.querySelector('#sa-resetFilter');
+    var resetBtn = container.querySelector('#op-resetFilter');
     if (resetBtn) {
       resetBtn.addEventListener('click', function () {
         $$('.sa-filter-bar select', container).forEach(function (s) { s.selectedIndex = 0; });
-        $$('#sa-tableSearch', container).forEach(function (s) { s.value = ''; });
+        $$('#op-tableSearch', container).forEach(function (s) { s.value = ''; });
         state.search = '';
         state.chip = 'Semua';
         state.page = 1;
@@ -638,11 +516,11 @@
     }
 
     // Modal close/cancel/save
-    var overlay = $('#saModalOverlay');
+    var overlay = $('#opModalOverlay');
     if (overlay) {
-      var closeBtn = $('#saModalClose');
-      var cancelBtn = $('#saModalCancel');
-      var saveBtn = $('#saModalSave');
+      var closeBtn = $('#opModalClose');
+      var cancelBtn = $('#opModalCancel');
+      var saveBtn = $('#opModalSave');
       if (closeBtn) closeBtn.addEventListener('click', function () { overlay.classList.remove('show'); });
       if (cancelBtn) cancelBtn.addEventListener('click', function () { overlay.classList.remove('show'); });
       if (saveBtn) saveBtn.addEventListener('click', function () { saveModal(module); });
@@ -652,160 +530,36 @@
     }
   }
 
-  /* ============ CETAK SURAT PESANAN (PURCHASE ORDER) ============
-     Menampilkan template surat pesanan otomatis dalam window baru
-     lalu mencetaknya via window.print(). Data diambil dari row PO. */
-  function printPurchaseOrder(module, row) {
-    if (!row) return;
-
-    var now = new Date();
-    var tanggal = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-
-    // Format Rp
-    function fmtRp(n) {
-      return 'Rp ' + Number(n || 0).toLocaleString('id-ID');
-    }
-
-    // Data supplier (fallback ke nama supplier saja)
-    var supplierName = row.supplier || '-';
-    var supplierAddress = row.supplierAddress || '-';
-    var supplierContact = row.contact || '-';
-
-    // Detail barang: jika row.items tersedia render, jika tidak placeholder
-    var itemsHtml = '';
-    if (row.items && row.items.length) {
-      itemsHtml = row.items.map(function (it, i) {
-        return '<tr>' +
-          '<td style="padding:6px;border:1px solid #ccc;text-align:center;width:36px;">' + (i + 1) + '</td>' +
-          '<td style="padding:6px;border:1px solid #ccc;width:90px;">' + (it.sku || '-') + '</td>' +
-          '<td style="padding:6px;border:1px solid #ccc;">' + it.nama + '</td>' +
-          '<td style="padding:6px;border:1px solid #ccc;text-align:center;">' + (it.qty || 0) + '</td>' +
-          '<td style="padding:6px;border:1px solid #ccc;text-align:right;">' + fmtRp(it.harga) + '</td>' +
-          '<td style="padding:6px;border:1px solid #ccc;text-align:right;">' + fmtRp((it.qty || 0) * (it.harga || 0)) + '</td>' +
-          '</tr>';
-      }).join('');
-    } else {
-      itemsHtml = '<tr>' +
-        '<td style="padding:8px;border:1px solid #ccc;text-align:center;">1</td>' +
-        '<td style="padding:8px;border:1px solid #ccc;">-</td>' +
-        '<td style="padding:8px;border:1px solid #ccc;">Barang sesuai detail pada Purchase Order ' + row.code + '</td>' +
-        '<td style="padding:8px;border:1px solid #ccc;text-align:center;">-</td>' +
-        '<td style="padding:8px;border:1px solid #ccc;text-align:right;">' + fmtRp(row.total) + '</td>' +
-        '<td style="padding:8px;border:1px solid #ccc;text-align:right;">' + fmtRp(row.total) + '</td>' +
-        '</tr>';
-    }
-
-    var html = '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">' +
-      '<title>Surat Pesanan ' + row.code + '</title>' +
-      '<style>' +
-      'body{font-family:Arial,Helvetica,sans-serif;color:#111;margin:24px;}' +
-      '.kop{border-bottom:3px double #000;padding-bottom:12px;margin-bottom:18px;}' +
-      '.kop h1{margin:0;font-size:22px;}' +
-      '.kop p{margin:2px 0;font-size:12px;color:#333;}' +
-      '.judul{text-align:center;margin:20px 0;}' +
-      '.judul h2{margin:0;font-size:18px;}' +
-      '.judul p{margin:2px 0;font-size:12px;}' +
-      'table{width:100%;border-collapse:collapse;}' +
-      'th{background:#f0f0f0;}' +
-      '.info{margin:12px 0;}' +
-      '.info table{border:none;}' +
-      '.info td{padding:2px 0;}' +
-      '.ttd{display:flex;gap:48px;margin-top:56px;}' +
-      '.ttd div{flex:1;text-align:center;}' +
-      '.ttd .nama{margin-top:64px;font-weight:bold;text-decoration:underline;}' +
-      '.ttd .label{font-size:11px;color:#555;}' +
-      '@media print{body{margin:16px;}}' +
-      '</style></head><body>' +
-      // Kop perusahaan
-      '<div class="kop">' +
-      '<h1>JASTIP ERP</h1>' +
-      '<p>Jl. Merdeka No. 1, Jakarta Pusat, Indonesia</p>' +
-      '<p>Telp: (021) 1234-5678 · Email: admin@jastip.id</p>' +
-      '</div>' +
-      // Judul surat
-      '<div class="judul">' +
-      '<h2>SURAT PESANAN (PURCHASE ORDER)</h2>' +
-      '<p>Nomor: ' + row.code + '</p>' +
-      '<p>Tanggal: ' + tanggal + '</p>' +
-      '</div>' +
-      // Data supplier
-      '<div class="info">' +
-      '<table>' +
-      '<tr><td style="width:140px;"><strong>Kepada Yth.</strong></td><td>' + supplierName + '</td></tr>' +
-      '<tr><td>Alamat</td><td>' + supplierAddress + '</td></tr>' +
-      '<tr><td>Kontak</td><td>' + supplierContact + '</td></tr>' +
-      '<tr><td>Estimasi Tiba (ETA)</td><td>' + (row.eta || '-') + '</td></tr>' +
-      '</table>' +
-      '</div>' +
-      '<p>Dengan hormat, kami memesan barang-barang sebagai berikut:</p>' +
-      // Tabel item
-      '<table>' +
-      '<thead><tr>' +
-      '<th style="padding:6px;border:1px solid #ccc;text-align:center;">No</th>' +
-      '<th style="padding:6px;border:1px solid #ccc;">SKU</th>' +
-      '<th style="padding:6px;border:1px solid #ccc;text-align:left;">Nama Barang</th>' +
-      '<th style="padding:6px;border:1px solid #ccc;text-align:center;">Qty</th>' +
-      '<th style="padding:6px;border:1px solid #ccc;text-align:right;">Harga Satuan</th>' +
-      '<th style="padding:6px;border:1px solid #ccc;text-align:right;">Subtotal</th>' +
-      '</tr></thead><tbody>' + itemsHtml +
-      '</tbody></table>' +
-      // Ringkasan keuangan
-      '<table style="margin-top:12px;width:300px;margin-left:auto;">' +
-      '<tr><td style="padding:4px;border-top:1px solid #ccc;">Subtotal</td><td style="padding:4px;border-top:1px solid #ccc;text-align:right;">' + fmtRp(row.total) + '</td></tr>' +
-      '<tr><td style="padding:4px;">PPN</td><td style="padding:4px;text-align:right;">' + fmtRp(row.ppn) + '</td></tr>' +
-      '<tr><td style="padding:4px;">Ongkos Kirim (Freight)</td><td style="padding:4px;text-align:right;">' + fmtRp(row.freight) + '</td></tr>' +
-      '<tr><td style="padding:4px;border-top:2px solid #000;"><strong>TOTAL</strong></td><td style="padding:4px;border-top:2px solid #000;text-align:right;"><strong>' + fmtRp((row.total || 0) + (row.ppn || 0) + (row.freight || 0)) + '</strong></td></tr>' +
-      '</table>' +
-      '<p style="font-size:12px;margin-top:8px;"><strong>Status:</strong> ' + (row.status || '-') + '</p>' +
-      '<p style="font-size:12px;">Syarat & ketentuan berlaku sesuai kesepakatan. Mohon konfirmasi penerimaan pesanan ini sebelum tanggal ETA.</p>' +
-      // Tanda tangan
-      '<div class="ttd">' +
-      '<div><div class="label">Dibuat Oleh</div><div class="nama">' + (row.createdBy || 'Manager Purchasing') + '</div></div>' +
-      '<div><div class="label">Menyetujui</div><div class="nama">' + (row.approvedBy || 'Direktur') + '</div></div>' +
-      '<div><div class="label">Supplier</div><div class="nama">' + supplierName + '</div></div>' +
-      '</div>' +
-      '</body></html>';
-
-    var win = window.open('', '_blank', 'width=800,height=900');
-    if (!win) { alert('Popup diblokir. Izinkan popup untuk mencetak surat pesanan.'); return; }
-    win.document.write(html);
-    win.document.close();
-    win.focus();
-    setTimeout(function () {
-      win.print();
-    }, 400);
-  }
-
   /* ============ BUILD PAGE (main) ============ */
   function buildPage(module, container) {
     var headAction = '';
     if (module.hasCrud) {
-      headAction = '<button type="button" class="sa-btn-primary" id="sa-addBtn"><i class="fa-solid fa-plus"></i> Tambah</button>';
+      headAction = '<button type="button" class="sa-btn-primary" id="op-addBtn"><i class="fa-solid fa-plus"></i> Tambah</button>';
     }
 
     var tableHead = '<div class="sa-table-head">' +
-      '<h3>' + module.title + ' <span style="color:#94a3b8;font-weight:600" id="sa-countBadge"></span></h3>' +
+      '<h3>' + module.title + ' <span style="color:#94a3b8;font-weight:600" id="op-countBadge"></span></h3>' +
       '<div class="sa-table-tools">' +
-      '<div class="sa-search-input"><input type="search" id="sa-tableSearch" placeholder="Cari data..."><i class="fa-solid fa-magnifying-glass"></i></div>' +
-      '<select class="sa-per-page" id="sa-perPage"><option value="5">5 / hal</option><option value="10">10 / hal</option><option value="25">25 / hal</option></select>' +
+      '<div class="sa-search-input"><input type="search" id="op-tableSearch" placeholder="Cari data..."><i class="fa-solid fa-magnifying-glass"></i></div>' +
+      '<select class="sa-per-page" id="op-perPage"><option value="5">5 / hal</option><option value="10">10 / hal</option><option value="25">25 / hal</option></select>' +
       '</div></div>';
 
     var html =
-      '<div class="sa-page-head">' +
+      '<div class="op-page-head">' +
       '<div><h1>' + module.title + '</h1>' +
       '<p>' + (module.desc || '') + '</p></div>' +
       '<div class="sa-head-actions">' + headAction + '</div>' +
       '</div>' +
-      '<div class="sa-main">' +
+      '<div class="op-main">' +
       buildCards(module) +
       buildFilterBar(module) +
       '<div class="sa-table-card">' +
       tableHead +
-      '<div id="sa-chipsContainer">' + buildChips(module) + '</div>' +
-      '<div id="sa-tableContainer"></div>' +
-      '<div id="sa-paginationContainer"></div>' +
+      '<div id="op-chipsContainer">' + buildChips(module) + '</div>' +
+      '<div id="op-tableContainer"></div>' +
+      '<div id="op-paginationContainer"></div>' +
       '</div>' +
-      '<div id="sa-chartsContainer"></div>' +
+      '<div id="op-chartsContainer"></div>' +
       buildModal(module) +
       '</div>';
 
@@ -816,8 +570,8 @@
   function init() {
     var container = $(PAGE_SELECTOR);
     if (!container) return;
-    var moduleId = container.getAttribute('data-sa-page');
-    var dataAPI = window.JastipSuperadminData;
+    var moduleId = container.getAttribute('data-op-page');
+    var dataAPI = window.JastipOperatorData;
     if (!dataAPI) return;
 
     state.container = container;
@@ -834,8 +588,6 @@
     render(module, container);
 
     // Pindahkan konten ke dalam #dashContent setelah layout sidebar ter-inject.
-    // (superadmin-layout.js hanya memindahkan .sa-page-head/.sa-main saat init —
-    //  konten belum ada, jadi kita pindahkan seluruh container di sini.)
     var dashContent = $('#dashContent');
     if (dashContent && container.parentNode !== dashContent && !dashContent.contains(container)) {
       dashContent.appendChild(container);
@@ -854,16 +606,14 @@
     var loop = setInterval(function () {
       tries++;
       var container = $(PAGE_SELECTOR);
-      // Pastikan layout sidebar sudah ditambahkan oleh superadmin-layout.js
+      // Pastikan layout sidebar sudah ditambahkan oleh operator-layout.js
       if (container && !$('#sidebar') && tries < 5) return;
       if (container) init();
       clearInterval(loop);
     }, 120);
-    // Juga init langsung di DOMContentLoaded kasus sederhana
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    // Parent layout init berjalan di DOMContentLoaded juga. Definisikan setelah.
     setTimeout(function () { safeInit(); }, 250);
   });
 })();

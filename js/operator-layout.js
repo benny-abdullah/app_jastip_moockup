@@ -1,70 +1,21 @@
 /* ============================================================
-   JASTIP — SUPERADMIN LAYOUT JS (DINAMIS & TERKELOMPOK)
-   Satu sumber menu + header untuk SEMUA halaman role superadmin.
+   JASTIP — OPERATOR LAYOUT JS (DINAMIS & TERKELOMPOK)
+   Satu sumber menu + header pour SEMUA halaman role operator.
    Sidebar dikelompokkan per modul (collapsible accordion).
-   Jika menu di-update di sini, semua halaman ikut otomatis.
+   Operator/Admin mencakup semua menu operasional.
    ============================================================ */
 
 (function () {
   'use strict';
 
-  /* ============ SATU SUMBER MENU SUPERADMIN (GROUP) ============ */
-  // Disederhanakan sesuai rencana awal (superadmin_rencana awal):
-  // 3 group — Dashboard, Master Data, Operasional (19 menu).
-  var SA_MENU_GROUPS = [
+  /* ============ SATU SUMBER MENU OPERATOR (GROUP) ============ */
+  var OP_MENU_GROUPS = [
     {
       id: 'dashboard-group',
       icon: 'fa-solid fa-chart-line',
       label: 'Dashboard',
       items: [
-        { id: 'dashboard', icon: 'fa-solid fa-gauge-high', label: 'Utama', file: 'dashboard.html' },
-        { id: 'dashboard-sales', icon: 'fa-solid fa-cart-shopping', label: 'Sales', file: 'dashboard-sales.html' },
-        { id: 'dashboard-points', icon: 'fa-solid fa-coins', label: 'Saldo / Point', file: 'dashboard-points-balance.html' },
-        { id: 'dashboard-fee', icon: 'fa-solid fa-hand-holding-dollar', label: 'Fee', file: 'dashboard-fee.html' },
-        { id: 'dashboard-accounting', icon: 'fa-solid fa-calculator', label: 'Accounting', file: 'dashboard-accounting.html' }
-      ]
-    },
-    {
-      id: 'master',
-      icon: 'fa-solid fa-database',
-      label: 'Master Data',
-      items: [
-        { id: 'membership-tiers', icon: 'fa-solid fa-ranking-star', label: 'Membership & Tier', file: 'membership-tiers.html' },
-        { id: 'point-transactions', icon: 'fa-solid fa-coins', label: 'Points', file: 'point-transactions.html' },
-        { id: 'currency-conversion', icon: 'fa-solid fa-arrow-right-arrow-left', label: 'Konversi Rupiah ke Point', file: 'currency-conversion.html' },
-        { id: 'rewards', icon: 'fa-solid fa-gift', label: 'Reward', file: 'rewards.html' },
-        { id: 'products', icon: 'fa-solid fa-box', label: 'Produk', file: 'products.html' },
-        { id: 'categories', icon: 'fa-solid fa-tags', label: 'Kategori', file: 'categories.html' },
-        { id: 'suppliers', icon: 'fa-solid fa-truck-field', label: 'Supplier', file: 'suppliers.html' },
-        { id: 'promos', icon: 'fa-solid fa-percent', label: 'Promo / Event', file: 'promos.html' },
-        { id: 'hubs', icon: 'fa-solid fa-store', label: 'Hub', file: 'hubs.html' },
-        { id: 'customers', icon: 'fa-solid fa-user-group', label: 'Customer', file: 'customers.html' },
-        { id: 'users', icon: 'fa-solid fa-user-shield', label: 'User & Role', file: 'users.html' }
-      ]
-    },
-    {
-      // ============ BARU: GRUP PENGADAAN (PROCUREMENT) ============
-      id: 'pengadaan',
-      icon: 'fa-solid fa-cart-shopping',
-      label: 'Pengadaan',
-      items: [
-        { id: 'purchase-requests', icon: 'fa-solid fa-file-signature', label: 'Purchase Request', file: 'purchase-requests.html' },
-        { id: 'purchase-request-approval', icon: 'fa-solid fa-check-double', label: 'Approval PR', file: 'purchase-request-approval.html' },
-        { id: 'purchase-orders', icon: 'fa-solid fa-file-invoice', label: 'Purchase Order', file: 'purchase-orders.html' },
-        { id: 'po-eta-dashboard', icon: 'fa-solid fa-clock', label: 'ETA Dashboard', file: 'po-eta-dashboard.html' },
-        { id: 'supplier-performance', icon: 'fa-solid fa-star', label: 'Supplier Performance', file: 'supplier-performance.html' },
-        { id: 'replenishment-suggestions', icon: 'fa-solid fa-wand-magic-sparkles', label: 'Replenishment', file: 'replenishment-suggestions.html' },
-        { id: 'backorders', icon: 'fa-solid fa-circle-exclamation', label: 'Backorder', file: 'backorders.html' }
-      ]
-    },
-    {
-      id: 'stok-gudang',
-      icon: 'fa-solid fa-warehouse',
-      label: 'Stok & Gudang',
-      items: [
-        { id: 'stock-management', icon: 'fa-solid fa-boxes-stacked', label: 'Manajemen Stok', file: 'stock-management.html' },
-        { id: 'dashboard-wh-internal', icon: 'fa-solid fa-warehouse', label: 'Warehouse Internal', file: 'dashboard-warehouse-internal.html' },
-        { id: 'dashboard-wh-external', icon: 'fa-solid fa-boxes-stacked', label: 'Warehouse External', file: 'dashboard-warehouse-external.html' }
+        { id: 'dashboard', icon: 'fa-solid fa-gauge-high', label: 'Utama', file: 'dashboard.html' }
       ]
     },
     {
@@ -72,82 +23,65 @@
       icon: 'fa-solid fa-gears',
       label: 'Operasional',
       items: [
-        { id: 'payments', icon: 'fa-solid fa-credit-card', label: 'Payment', file: 'payments.html' },
+        { id: 'orders', icon: 'fa-solid fa-cart-shopping', label: 'Pesanan', file: 'orders.html' },
         { id: 'deliveries', icon: 'fa-solid fa-truck-fast', label: 'Pengiriman', file: 'deliveries.html' },
-        { id: 'subscription-management', icon: 'fa-solid fa-arrows-rotate', label: 'Subscription', file: 'subscription-management.html' },
-        { id: 'complaints', icon: 'fa-solid fa-headset', label: 'Pengaduan / CS', file: 'complaints.html' }
+        { id: 'complaints', icon: 'fa-solid fa-headset', label: 'Komplain / CS', file: 'complaints.html' }
+      ]
+    },
+    {
+      id: 'stok-gudang',
+      icon: 'fa-solid fa-warehouse',
+      label: 'Stok & Gudang',
+      items: [
+        { id: 'stock', icon: 'fa-solid fa-boxes-stacked', label: 'Manajemen Stok', file: 'stock.html' },
+        { id: 'warehouse', icon: 'fa-solid fa-warehouse', label: 'Warehouse', file: 'warehouse.html' }
+      ]
+    },
+    {
+      id: 'keuangan',
+      icon: 'fa-solid fa-sack-dollar',
+      label: 'Keuangan',
+      items: [
+        { id: 'points', icon: 'fa-solid fa-coins', label: 'Transaksi Poin', file: 'points.html' },
+        { id: 'payments', icon: 'fa-solid fa-credit-card', label: 'Payment', file: 'payments.html' }
+      ]
+    },
+    {
+      id: 'pelanggan',
+      icon: 'fa-solid fa-user-group',
+      label: 'Pelanggan',
+      items: [
+        { id: 'customers', icon: 'fa-solid fa-user', label: 'Customer', file: 'customers.html' },
+        { id: 'membership', icon: 'fa-solid fa-ranking-star', label: 'Membership & Tier', file: 'membership.html' }
       ]
     }
   ];
 
   /* ============ MAP NAMA FILE → MENU & GROUP ============ */
-  // Hanya 19 menu yang tampil (sesuai rencana awal).
   var FILE_TO_MENU = {
     'dashboard.html': 'dashboard',
-    'dashboard-warehouse-internal.html': 'dashboard-wh-internal',
-    'dashboard-warehouse-external.html': 'dashboard-wh-external',
-    'dashboard-sales.html': 'dashboard-sales',
-    'dashboard-points-balance.html': 'dashboard-points',
-    'dashboard-fee.html': 'dashboard-fee',
-    'dashboard-accounting.html': 'dashboard-accounting',
-    'membership-tiers.html': 'membership-tiers',
-    'point-transactions.html': 'point-transactions',
-    'currency-conversion.html': 'currency-conversion',
-    'rewards.html': 'rewards',
-    'products.html': 'products',
-    'categories.html': 'categories',
-    'suppliers.html': 'suppliers',
-    'promos.html': 'promos',
-    'hubs.html': 'hubs',
-    'customers.html': 'customers',
-    'users.html': 'users',
-    'stock-management.html': 'stock-management',
-    'payments.html': 'payments',
+    'orders.html': 'orders',
     'deliveries.html': 'deliveries',
-    'subscription-management.html': 'subscription-management',
     'complaints.html': 'complaints',
-    // ===== MODUL PENGADAAN (PROCUREMENT) =====
-    'purchase-requests.html': 'purchase-requests',
-    'purchase-request-approval.html': 'purchase-request-approval',
-    'purchase-orders.html': 'purchase-orders',
-    'po-eta-dashboard.html': 'po-eta-dashboard',
-    'supplier-performance.html': 'supplier-performance',
-    'replenishment-suggestions.html': 'replenishment-suggestions',
-    'backorders.html': 'backorders'
+    'stock.html': 'stock',
+    'warehouse.html': 'warehouse',
+    'points.html': 'points',
+    'payments.html': 'payments',
+    'customers.html': 'customers',
+    'membership.html': 'membership'
   };
 
   var FILE_TO_GROUP = {
     'dashboard.html': 'dashboard-group',
-    'dashboard-sales.html': 'dashboard-group',
-    'dashboard-points-balance.html': 'dashboard-group',
-    'dashboard-fee.html': 'dashboard-group',
-    'dashboard-accounting.html': 'dashboard-group',
-    'membership-tiers.html': 'master',
-    'point-transactions.html': 'master',
-    'currency-conversion.html': 'master',
-    'rewards.html': 'master',
-    'products.html': 'master',
-    'categories.html': 'master',
-    'suppliers.html': 'master',
-    'promos.html': 'master',
-    'hubs.html': 'master',
-    'customers.html': 'master',
-    'users.html': 'master',
-    'stock-management.html': 'stok-gudang',
-    'dashboard-warehouse-internal.html': 'stok-gudang',
-    'dashboard-warehouse-external.html': 'stok-gudang',
-    'payments.html': 'operasional',
+    'orders.html': 'operasional',
     'deliveries.html': 'operasional',
-    'subscription-management.html': 'operasional',
     'complaints.html': 'operasional',
-    // ===== MODUL PENGADAAN (PROCUREMENT) =====
-    'purchase-requests.html': 'pengadaan',
-    'purchase-request-approval.html': 'pengadaan',
-    'purchase-orders.html': 'pengadaan',
-    'po-eta-dashboard.html': 'pengadaan',
-    'supplier-performance.html': 'pengadaan',
-    'replenishment-suggestions.html': 'pengadaan',
-    'backorders.html': 'pengadaan'
+    'stock.html': 'stok-gudang',
+    'warehouse.html': 'stok-gudang',
+    'points.html': 'keuangan',
+    'payments.html': 'keuangan',
+    'customers.html': 'pelanggan',
+    'membership.html': 'pelanggan'
   };
 
   /* ============ UTIL ============ */
@@ -178,18 +112,18 @@
   }
 
   /* ============ BASIS PATH RELATIF ============
-     Halaman dashboard/superadmin.html → submenu pakai 'superadmin/xxx.html'
-     Halaman dashboard/superadmin/xxx.html → submenu cuma 'xxx.html'     */
+     Halaman dashboard/operator.html → submenu pakai 'operator/xxx.html'
+     Halaman dashboard/operator/xxx.html → submenu cuma 'xxx.html'     */
   function getFileHref(file) {
-    var inFolder = window.location.pathname.indexOf('/superadmin/') !== -1;
-    return inFolder ? file : 'superadmin/' + file;
+    var inFolder = window.location.pathname.indexOf('/operator/') !== -1;
+    return inFolder ? file : 'operator/' + file;
   }
   function getDashboardHref() {
-    var inFolder = window.location.pathname.indexOf('/superadmin/') !== -1;
-    return inFolder ? '../../dashboard/superadmin.html' : 'superadmin.html';
+    var inFolder = window.location.pathname.indexOf('/operator/') !== -1;
+    return inFolder ? '../../dashboard/operator.html' : 'operator.html';
   }
   function getCssBase() {
-    return window.location.pathname.indexOf('/superadmin/') !== -1 ? '../../' : '../';
+    return window.location.pathname.indexOf('/operator/') !== -1 ? '../../' : '../';
   }
 
   /* ============ AMBIL SESSION USER ============ */
@@ -217,7 +151,7 @@
 
   /* ============ BUILD SIDEBAR (GROUP) ============ */
   function buildSidebar(activeId, activeGroupId) {
-    var groupHtml = SA_MENU_GROUPS.map(function (group) {
+    var groupHtml = OP_MENU_GROUPS.map(function (group) {
       var isOpen = group.id === activeGroupId;
       var subItems = group.items.map(function (item) {
         var isActive = item.id === activeId;
@@ -242,7 +176,7 @@
       '<aside id="sidebar">' +
       '  <div class="sidebar-brand">' +
       '    <span class="logo-badge">J</span>' +
-      '    <span class="logo-text">Jastip<span>.</span> Admin</span>' +
+      '    <span class="logo-text">Jastip<span>.</span> Operator</span>' +
       '  </div>' +
       '  <nav class="sidebar-nav">' +
       '    <p class="sidebar-label">Menu Utama</p>' +
@@ -265,7 +199,7 @@
       '  <div class="header-left">' +
       '    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>' +
       '    <div class="header-title">' +
-      '      <h1 id="headerTitle">Dashboard Superadmin</h1>' +
+      '      <h1 id="headerTitle">Dashboard Operator</h1>' +
       '      <p id="headerDate">-</p>' +
       '    </div>' +
       '  </div>' +
@@ -279,7 +213,7 @@
       '      <div class="header-avatar" id="headerAvatar">?</div>' +
       '      <div class="header-user-info">' +
       '        <span class="name" id="headerName">-</span>' +
-      '        <div class="header-user-role"><span class="role-badge role-admin" id="headerRole">Superadmin</span></div>' +
+      '        <div class="header-user-role"><span class="role-badge role-admin" id="headerRole">Operator</span></div>' +
       '      </div>' +
       '    </div>' +
       '    <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>' +
@@ -289,9 +223,9 @@
 
   /* ============ RENDER USER INFO ============ */
   function renderUser(session) {
-    var name = session ? session.name : 'Admin Pusat';
+    var name = session ? session.name : 'Operator';
     var avatar = session && session.avatar ? session.avatar : name.charAt(0).toUpperCase();
-    var roleText = session && session.hub ? session.hub : (session && session.position ? session.position : 'Superadmin');
+    var roleText = session && session.position ? session.position : 'Operator / Admin';
 
     var els = {
       '#headerAvatar': avatar,
@@ -365,8 +299,8 @@
 
   /* ============ MOVE CONTENT ============ */
   function moveContent() {
-    var pageHead = $('.sa-page-head');
-    var main = $('.sa-main');
+    var pageHead = $('.op-page-head');
+    var main = $('.op-main');
     var content = $('#dashContent');
     if (!content) return;
 
@@ -380,14 +314,21 @@
   }
 
   /* ============ INIT ============ */
-  function initSuperadminLayout() {
+  function initOperatorLayout() {
     var body = document.body;
-    if (!body.classList.contains('sa-body')) return;
+    if (!body.classList.contains('op-body')) return;
     if ($('#sidebar')) return;
+
+    // Proteksi: hanya role operator yang bisa akses halaman operator
+    if (window.JastipAuth && window.JastipAuth.checkSession) {
+      var session = window.JastipAuth.checkSession('operator');
+      if (!session) return;
+    }
 
     ensureCss(getCssBase() + 'css/dashboard.css');
     ensureCss(getCssBase() + 'css/hub.css');
     ensureCss(getCssBase() + 'css/superadmin.css');
+    ensureCss(getCssBase() + 'css/operator.css');
     ensureCss('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
 
     var activeId = getActiveMenuId();
@@ -408,7 +349,7 @@
 
     // Set judul header dari halaman
     var titleEl = $('#headerTitle');
-    var h1 = $('.sa-page-head h1');
+    var h1 = $('.op-page-head h1');
     if (titleEl && h1) titleEl.textContent = h1.textContent;
 
     renderUser(getSession());
@@ -417,11 +358,11 @@
   }
 
   // Ekspos global
-  window.JastipSuperadminLayout = {
-    init: initSuperadminLayout,
-    menuGroups: SA_MENU_GROUPS,
+  window.JastipOperatorLayout = {
+    init: initOperatorLayout,
+    menuGroups: OP_MENU_GROUPS,
     toast: showToast
   };
 
-  document.addEventListener('DOMContentLoaded', initSuperadminLayout);
+  document.addEventListener('DOMContentLoaded', initOperatorLayout);
 })();

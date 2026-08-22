@@ -2213,6 +2213,45 @@
         { key: 'status', label: 'Status', type: 'select', options: ['Open','In Progress','Resolved','Closed'] }
       ]
     },
+    deliveries: {
+      title: 'Pengiriman', desc: 'Kelola seluruh pengiriman lintas hub', icon: 'fa-solid fa-truck-fast', hasCrud: true,
+      cards: [
+        { label: 'Total Pengiriman', value: '3.240', sub: 'bulan Agustus', icon: 'fa-solid fa-truck-fast', color: 'linear-gradient(135deg,#3b82f6,#60a5fa)' },
+        { label: 'Dikirim', value: '2.890', sub: '89,2% on-time', icon: 'fa-solid fa-circle-check', color: 'linear-gradient(135deg,#00AA5B,#34d399)' },
+        { label: 'Dalam Perjalanan', value: '312', sub: '9,6% dari total', icon: 'fa-solid fa-truck-ramp-box', color: 'linear-gradient(135deg,#f59e0b,#fbbf24)' },
+        { label: 'Gagal / Retur', value: '38', sub: '1,2% dari total', icon: 'fa-solid fa-circle-xmark', color: 'linear-gradient(135deg,#ef4444,#f87171)' }
+      ],
+      filters: [
+        { id: 'hubFilter', label: 'Hub', options: ['Semua Hub','Jakarta Selatan','Bandung','Surabaya','Medan','Makassar'] },
+        { id: 'kurirFilter', label: 'Kurir', options: ['Semua Kurir','Rudi','Sari','Tono','Umar','Vina','Bambang','Lina'] },
+        { id: 'statusFilter', label: 'Status', options: ['Semua Status','Dikirim','Dalam Perjalanan','Gagal','Retur'] }
+      ],
+      hasDateFilter: true, chips: ['Semua', 'Dikirim', 'Dalam Perjalanan', 'Gagal', 'Retur'],
+      columns: [
+        { key: 'deliveryCode', label: 'Kode Delivery' }, { key: 'orderCode', label: 'Order' }, { key: 'customer', label: 'Customer' },
+        { key: 'hub', label: 'Hub' }, { key: 'kurir', label: 'Kurir' }, { key: 'status', label: 'Status', type: 'badge' },
+        { key: 'date', label: 'Tanggal' }
+      ],
+      rows: [
+        { deliveryCode: 'DLV-2026-0815-001', orderCode: 'ORD-2026-0815-001', customer: 'Budi Santoso', hub: 'Jakarta Selatan', kurir: 'Rudi', status: 'Dikirim', date: '15 Agu 2026' },
+        { deliveryCode: 'DLV-2026-0815-002', orderCode: 'ORD-2026-0815-002', customer: 'Siti Rahayu', hub: 'Bandung', kurir: 'Sari', status: 'Dalam Perjalanan', date: '15 Agu 2026' },
+        { deliveryCode: 'DLV-2026-0815-003', orderCode: 'ORD-2026-0815-003', customer: 'Andi Wijaya', hub: 'Surabaya', kurir: 'Tono', status: 'Dalam Perjalanan', date: '15 Agu 2026' },
+        { deliveryCode: 'DLV-2026-0814-018', orderCode: 'ORD-2026-0814-018', customer: 'Dewi Lestari', hub: 'Jakarta Selatan', kurir: 'Rudi', status: 'Dikirim', date: '14 Agu 2026' },
+        { deliveryCode: 'DLV-2026-0814-019', orderCode: 'ORD-2026-0814-019', customer: 'Rudi Hartono', hub: 'Medan', kurir: 'Umar', status: 'Gagal', date: '14 Agu 2026' },
+        { deliveryCode: 'DLV-2026-0814-020', orderCode: 'ORD-2026-0814-020', customer: 'Maya Anggraini', hub: 'Makassar', kurir: 'Vina', status: 'Retur', date: '14 Agu 2026' },
+        { deliveryCode: 'DLV-2026-0813-011', orderCode: 'ORD-2026-0813-011', customer: 'Agus Salim', hub: 'Bandung', kurir: 'Bambang', status: 'Dikirim', date: '13 Agu 2026' },
+        { deliveryCode: 'DLV-2026-0813-012', orderCode: 'ORD-2026-0813-012', customer: 'Nina Sari', hub: 'Surabaya', kurir: 'Lina', status: 'Dalam Perjalanan', date: '13 Agu 2026' }
+      ],
+      modalFields: [
+        { key: 'deliveryCode', label: 'Kode Delivery', type: 'text' },
+        { key: 'orderCode', label: 'Kode Order', type: 'text' },
+        { key: 'customer', label: 'Customer', type: 'text' },
+        { key: 'hub', label: 'Hub', type: 'select', options: ['Jakarta Selatan','Bandung','Surabaya','Medan','Makassar'] },
+        { key: 'kurir', label: 'Kurir', type: 'select', options: ['Rudi','Sari','Tono','Umar','Vina','Bambang','Lina'] },
+        { key: 'status', label: 'Status', type: 'select', options: ['Dikirim','Dalam Perjalanan','Gagal','Retur'] },
+        { key: 'date', label: 'Tanggal', type: 'date' }
+      ]
+    },
     'complaint-slas': {
       title: 'SLA Komplain', desc: 'Target respons & resolusi SLA', icon: 'fa-solid fa-stopwatch', hasCrud: true,
       cards: [

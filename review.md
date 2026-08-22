@@ -4390,7 +4390,14 @@ Refund poin/dana → REFUNDED (Refund)   |   Jika ditolak → REJECTED (Ditolak)
 3. **Aksi per pesanan**: Konfirmasi → Proses → Kirim → Selesai → Batalkan.
 4. **Export CSV/Excel berfungsi** (ganti `showToast('Export menyusul (Demo)')`).
 
-### 20.2 Manajemen Pengiriman (Delivery Management) — SUDAH ADA, PERLU DISEMPURNAKAN
+### 20.2 Manajemen Pengiriman (Delivery Management) — SUDAH ADA, PERLU DISEMPURNAKAN — SUDAH ADA, PERLU DISEMPURNAKAN + MODUL SUPERADMIN BARU
+
+**Perubahan yang dilakukan (22 Agustus 2026):**
+
+- **`dashboard/superadmin/deliveries.html` (BARU)** — Halaman **Pengiriman** superadmin: CRUD lengkap, 4 kartu statistik (Total, Dikirim, Dalam Perjalanan, Gagal/Retur), filter Hub/Kurir/Status + tanggal, data contoh, pagination.
+- **`js/superadmin-data.js` (EDIT)** — Modul `deliveries` baru: kolom Kode Delivery, Order, Customer, Hub, Kurir, Status, Tanggal; CRUD via localStorage (`jastip_sa_deliveries`).
+- **`js/superadmin-layout.js` (EDIT)** — Menu **"Pengiriman"** (ikon `fa-truck-fast`) ditambahkan ke group **Operasional** sidebar superadmin + update `FILE_TO_MENU` & `FILE_TO_GROUP`.
+- **`js/superadmin-core.js` (EDIT)** — Tambah warna badge untuk status `retur` (merah) dan `dalam perjalanan` (amber).
 
 **Kondisi saat ini (peran hub = penyalur):**
 
@@ -4460,3 +4467,6 @@ Refund poin/dana → REFUNDED (Refund)   |   Jika ditolak → REJECTED (Ditolak)
 
 *Update v2.2 (17 Agustus 2026): Menambahkan Section 20 — Gap Analysis Dashboard Admin & Rencana Perbaikan. Implementasi utama: **grup menu Pengadaan** di sidebar superadmin (7 modul Procurement) + **cetak surat pesanan otomatis** (Purchase Order) dengan template lengkap.*
 
+---
+
+*Update v2.3 (22 Agustus 2026): Menambahkan modul **Pengiriman (Delivery Management)** di dashboard superadmin — halaman `dashboard/superadmin/deliveries.html`, menu "Pengiriman" di sidebar Operasional, data CRUD modul `deliveries`, dan badge status `retur`/`dalam perjalanan` di `superadmin-core.js`.*

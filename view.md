@@ -761,7 +761,12 @@ Refund poin/dana → REFUNDED (Refund)   |   Jika ditolak → REJECTED (Ditolak)
 | **Cetak Invoice / Struk** | ❌ Belum | perlu template print |
 | **Export CSV/Excel berfungsi** | ❌ Belum | masih demo `showToast('Export menyusul (Demo)')` |
 
-### L.2 Manajemen Pengiriman (Delivery Management) — SUDAH ADA, PERLU DISEMPURNAKAN
+### L.2 Manajemen Pengiriman (Delivery Management) — SUDAH ADA, PERLU DISEMPURNAKAN — SUDAH ADA + MODUL SUPERADMIN BARU ✅ (22 Agustus 2026)
+
+- [x] **`dashboard/superadmin/deliveries.html` (BARU)** — Halaman **Pengiriman** superadmin: CRUD lengkap, kartu statistik, filter Hub/Kurir/Status + tanggal.
+- [x] **`js/superadmin-data.js` (EDIT)** — Modul `deliveries` baru + CRUD via localStorage (`jastip_sa_deliveries`).
+- [x] **`js/superadmin-layout.js` (EDIT)** — Menu **"Pengiriman"** ditambahkan ke group **Operasional** sidebar superadmin.
+- [x] **`js/superadmin-core.js` (EDIT)** — Badge status `retur` (merah) & `dalam perjalanan` (amber).
 
 | Fitur | Status | Detail |
 |---|---|---|
@@ -816,3 +821,7 @@ Refund poin/dana → REFUNDED (Refund)   |   Jika ditolak → REJECTED (Ditolak)
 ---
 
 *Update v2.2 (17 Agustus 2026): Menambahkan Section L — Gap Dashboard Admin & Rencana Perbaikan. Implementasi utama: **grup menu Pengadaan** di sidebar superadmin + **cetak surat pesanan otomatis** (PO).*
+
+---
+
+*Update v2.3 (22 Agustus 2026): Menambahkan **menu Pengiriman** di dashboard superadmin — `dashboard/superadmin/deliveries.html` + modul data `deliveries` + badge status baru.*

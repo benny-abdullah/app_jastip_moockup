@@ -1,0 +1,102 @@
+/* ============================================================
+   JASTIP — OPERATOR CSS
+   Style khusus Dashboard Operator
+   (layout body, page head, main, dan responsive components)
+   ============================================================ */
+
+/* ---------- LAYOUT: geser konten dari sidebar 240px (sama dgn sa/hub) ---------- */
+body.op-body { margin-left: 240px; }
+
+/* ---------- PAGE HEAD ---------- */
+.op-page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.op-page-head h1 { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; }
+.op-page-head p { font-size: 13px; color: #64748b; margin: 4px 0 0; }
+.op-page-head .sa-head-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* ---------- MAIN ---------- */
+.op-main { display: flex; flex-direction: column; gap: 18px; }
+
+/* ============================================================
+   RESPONSIVE OPERATOR
+   ============================================================ */
+
+/* Tablet / layar sedang (≤1024px) */
+@media (max-width: 1024px) {
+  .sa-card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  body.op-body { margin-left: 0; }
+
+  .op-page-head { flex-direction: column; align-items: stretch; }
+  .op-page-head .sa-head-actions { justify-content: flex-start; }
+
+  .sa-card-grid { grid-template-columns: 1fr; }
+
+  .sa-filter-bar { flex-direction: column; align-items: stretch; }
+  .sa-filter-group { min-width: 100%; }
+  .sa-filter-group select,
+  .sa-filter-group input[type="date"] { width: 100%; }
+
+  .sa-charts-grid { grid-template-columns: 1fr; }
+
+  .sa-table-head { flex-direction: column; align-items: stretch; }
+  .sa-table-tools { justify-content: space-between; }
+}
+
+/* Mobile kecil (≤640px) */
+@media (max-width: 640px) {
+  .sa-table-tools { flex-direction: column; align-items: stretch; gap: 8px; }
+  .sa-search-input input { width: 100%; }
+
+  .sa-pagination { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .sa-page-btns { flex-wrap: wrap; }
+
+  .sa-form-grid { grid-template-columns: 1fr; }
+
+  .sa-chart-box .sa-chart-container { height: 220px; }
+}
+
+/* Layar sangat kecil (≤480px) */
+@media (max-width: 480px) {
+  .sa-table-card { border-radius: 10px; }
+  .sa-table th,
+  .sa-table td { padding: 10px; }
+
+  .sa-btn-primary,
+  .sa-btn-secondary { width: 100%; justify-content: center; }
+
+  .sa-modal { max-height: 92vh; }
+  .sa-modal-body { padding: 14px 16px; }
+  .sa-modal-foot { flex-direction: column-reverse; }
+  .sa-modal-foot .sa-btn-primary,
+  .sa-modal-foot .sa-btn-secondary { width: 100%; }
+
+  .sa-chips { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ============================================================
+   HEADER RESPONSIVE (operator)
+   ============================================================ */
+
+/* Mobile: tampilkan hanya ikon pada tombol Keluar agar header tidak overflow */
+@media (max-width: 768px) {
+  .dash-header { padding: 0 12px; gap: 8px; }
+  .header-left { gap: 8px; }
+  .header-title h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .logout-btn { font-size: 0; width: 36px; height: 36px; padding: 0; justify-content: center; }
+  .logout-btn i { font-size: 14px; }
+}
+
+/* Mobile sangat kecil: pertahankan area header user tetap rapi */
+@media (max-width: 400px) {
+  .header-user { padding: 4px; }
+}
