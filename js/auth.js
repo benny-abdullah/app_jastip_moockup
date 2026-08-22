@@ -56,7 +56,8 @@
   var FALLBACK_USERS = [
     { id: 1, name: 'Andi Pratama', email: 'admin@jastip.id', password: 'admin123', role: 'superadmin', position: 'Superadmin / Admin Pusat', hub: 'Pusat — Jakarta', joinDate: '2024-01-01', avatar: 'AP' },
     { id: 2, name: 'Budi Santoso', email: 'hub@jastip.id', password: 'hub123', role: 'hub', position: 'Owner Hub', hub: 'Hub Jakarta Selatan', joinDate: '2024-03-15', avatar: 'BS' },
-    { id: 3, name: 'Citra Lestari', email: 'customer@jastip.id', password: 'customer123', role: 'customer', position: 'Customer', hub: 'Hub Jakarta Selatan', joinDate: '2025-06-20', avatar: 'CL' }
+    { id: 3, name: 'Citra Lestari', email: 'customer@jastip.id', password: 'customer123', role: 'customer', position: 'Customer', hub: 'Hub Jakarta Selatan', joinDate: '2025-06-20', avatar: 'CL' },
+    { id: 4, name: 'Dedi Kurniawan', email: 'operator@jastip.id', password: 'operator123', role: 'operator', position: 'Operator / Admin', hub: 'Pusat — Jakarta', joinDate: '2025-01-10', avatar: 'DK' }
   ];
 
   /* ============ FETCH USERS ============ */
@@ -122,7 +123,7 @@
         email: data.email,
         password: data.password,
         role: data.role,
-        position: data.role === 'superadmin' ? 'Superadmin / Admin Pusat' : data.role === 'hub' ? 'Owner Hub' : 'Customer',
+        position: data.role === 'superadmin' ? 'Superadmin / Admin Pusat' : data.role === 'hub' ? 'Owner Hub' : data.role === 'operator' ? 'Operator / Admin' : 'Customer',
         hub: data.role === 'customer' || data.role === 'hub' ? 'Hub Jakarta Selatan' : 'Pusat — Jakarta',
         joinDate: new Date().toISOString().slice(0, 10),
         avatar: data.name.charAt(0).toUpperCase()
@@ -149,7 +150,8 @@
     var map = {
       superadmin: 'dashboard/superadmin.html',
       hub: 'dashboard/hub.html',
-      customer: 'dashboard/customer.html'
+      customer: 'dashboard/customer.html',
+      operator: 'dashboard/operator.html'
     };
     return rootPrefix() + (map[role] || 'index.html');
   }

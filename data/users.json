@@ -32,6 +32,17 @@
       "hub": "Hub Jakarta Selatan",
       "joinDate": "2025-06-20",
       "avatar": "CL"
+    },
+    {
+      "id": 4,
+      "name": "Dedi Kurniawan",
+      "email": "operator@jastip.id",
+      "password": "operator123",
+      "role": "operator",
+      "position": "Operator / Admin",
+      "hub": "Pusat — Jakarta",
+      "joinDate": "2025-01-10",
+      "avatar": "DK"
     }
   ]
 }
